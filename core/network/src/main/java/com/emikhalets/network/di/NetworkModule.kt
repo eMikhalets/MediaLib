@@ -1,5 +1,6 @@
 package com.emikhalets.network.di
 
+import com.emikhalets.network.MOVIES_API_KEY
 import com.emikhalets.network.MOVIES_BASE_URL
 import com.emikhalets.network.RetrofitFactory
 import com.emikhalets.network.api.MoviesApi
@@ -25,12 +26,14 @@ object NetworkModule {
     @Provides
     @Singleton
     @MoviesRetrofit
-    fun providesMoviesRetrofit(): Retrofit = RetrofitFactory(MOVIES_BASE_URL).retrofit()
+    fun providesMoviesRetrofit(): Retrofit =
+        RetrofitFactory(MOVIES_BASE_URL, MOVIES_API_KEY).retrofit()
 
     @Provides
     @Singleton
     @BooksRetrofit
-    fun providesBooksRetrofit(): Retrofit = RetrofitFactory("").retrofit()
+    fun providesBooksRetrofit(): Retrofit =
+        RetrofitFactory("", MOVIES_API_KEY).retrofit()
 
     @Provides
     @Singleton
