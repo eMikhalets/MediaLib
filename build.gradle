@@ -1,19 +1,17 @@
 buildscript {
     ext {
-        versions = [
-                compose: '1.2.0-beta03',
-                hilt   : '2.42',
-                room   : '2.4.2',
-        ]
+        version_kotlin = '1.7.10'
+        version_compose = '1.3.0'
+        version_hilt = '2.44'
+        version_room = '2.4.3'
     }
 }
 
 plugins {
-    id('com.android.application') version '7.2.1' apply false
-    id('com.android.library') version '7.2.1' apply false
-    id('org.jetbrains.kotlin.android') version '1.6.21' apply false
+    id('com.android.application') version '7.2.2' apply false
+    id('com.android.library') version '7.2.2' apply false
+    id('org.jetbrains.kotlin.android') version '1.7.10' apply false
     id('com.google.dagger.hilt.android') version '2.41' apply false
-    id('org.jetbrains.kotlin.plugin.serialization') version '1.6.21' apply false
 }
 
 task clean(type: Delete) {
