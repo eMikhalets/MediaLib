@@ -14,4 +14,6 @@ dependencyResolutionManagement {
 }
 rootProject.name = "MediaLib"
 include ':app'
+include ':feature:movies'
 include ':core:network'
+include ':core:ui'

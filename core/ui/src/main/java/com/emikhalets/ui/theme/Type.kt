@@ -1,4 +1,4 @@
-package com.emikhalets.medialib.ui.theme
+package com.emikhalets.ui.theme
 
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle
