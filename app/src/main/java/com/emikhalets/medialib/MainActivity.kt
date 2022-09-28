@@ -3,40 +3,22 @@ package com.emikhalets.medialib
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.emikhalets.medialib.presentation.theme.MediaLibTheme
+import com.emikhalets.medialib.presentation.core.AppScaffold
+import com.emikhalets.medialib.presentation.screens.main.MainScreen
+import com.emikhalets.medialib.presentation.theme.AppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
-            MediaLibTheme {
-                Surface(modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background) {
-                    Greeting("Android")
+            AppTheme {
+                AppScaffold {
+                    MainScreen()
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    MediaLibTheme {
-        Greeting("Android")
     }
 }
