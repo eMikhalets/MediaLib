@@ -18,7 +18,7 @@ class MoviesPagingSource(
         return try {
             val nextPage = params.key ?: 1
             val response = moviesApi.getSearchedMovies(query, nextPage)
-            val nextKey = if (response.total_pages == nextPage) null else nextPage + 1
+            val nextKey = if (response.totalPages == nextPage) null else nextPage + 1
             LoadResult.Page(response.results ?: emptyList(), null, nextKey)
         } catch (ex: Exception) {
             LoadResult.Error(ex)

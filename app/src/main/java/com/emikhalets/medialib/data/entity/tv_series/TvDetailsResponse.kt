@@ -1,9 +1,6 @@
 package com.emikhalets.medialib.data.entity.tv_series
 
 import com.emikhalets.medialib.data.entity.Genre
-import com.emikhalets.medialib.data.entity.ProductionCompany
-import com.emikhalets.medialib.data.entity.ProductionCountry
-import com.emikhalets.medialib.data.entity.SpokenLanguage
 
 data class TvDetailsResponse(
     val backdrop_path: String?,
@@ -28,10 +25,7 @@ data class TvDetailsResponse(
     val overview: String?,
     val popularity: Double?,
     val poster_path: String?,
-    val production_companies: List<ProductionCompany>?,
-    val production_countries: List<ProductionCountry>?,
     val seasons: List<Season>?,
-    val spoken_languages: List<SpokenLanguage>?,
     val status: String?,
     val tagline: String?,
     val type: String?,

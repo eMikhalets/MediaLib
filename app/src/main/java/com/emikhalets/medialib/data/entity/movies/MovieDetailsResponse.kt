@@ -1,34 +1,22 @@
 package com.emikhalets.medialib.data.entity.movies
 
 import com.emikhalets.medialib.data.entity.Genre
-import com.emikhalets.medialib.data.entity.ProductionCompany
-import com.emikhalets.medialib.data.entity.ProductionCountry
-import com.emikhalets.medialib.data.entity.SpokenLanguage
+import com.google.gson.annotations.SerializedName
 
 data class MovieDetailsResponse(
-    val adult: Boolean?,
-    val backdrop_path: String?,
-    val belongs_to_collection: Int?,
-    val budget: Int?,
-    val genres: List<Genre>?,
-    val homepage: String?,
-    val id: Int?,
-    val imdb_id: String?,
-    val original_language: String?,
-    val original_title: String?,
-    val overview: String?,
-    val popularity: Double?,
-    val poster_path: String?,
-    val production_companies: List<ProductionCompany>?,
-    val production_countries: List<ProductionCountry>?,
-    val release_date: String?,
-    val revenue: Int?,
-    val runtime: Int?,
-    val spoken_languages: List<SpokenLanguage>?,
-    val status: String?,
-    val tagline: String?,
-    val title: String?,
-    val video: Boolean?,
-    val vote_average: Double?,
-    val vote_count: Int?,
+    @SerializedName("id") val id: Int? = null,
+    @SerializedName("title") val title: String? = null,
+    @SerializedName("budget") val budget: Int? = null,
+    @SerializedName("backdrop_path") val backdrop: String? = null,
+    @SerializedName("genres") val genres: List<Genre>? = null,
+    @SerializedName("imdb_id") val imdbId: String? = null,
+    @SerializedName("original_title") val originalTitle: String? = null,
+    @SerializedName("overview") val overview: String? = null,
+    @SerializedName("poster_path") val poster: String? = null,
+    @SerializedName("release_date") val releaseDate: String? = null,
+    @SerializedName("revenue") val revenue: Int? = null,
+    @SerializedName("runtime") val runtime: Int? = null,
+    @SerializedName("status") val status: String? = null,
+    @SerializedName("tagline") val tagline: String? = null,
+    @SerializedName("vote_average") val voteAverage: Double? = null,
 )

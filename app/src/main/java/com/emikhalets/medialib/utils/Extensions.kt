@@ -24,3 +24,7 @@ fun <T : Any> LazyGridScope.items(
         content(lazyPagingItems[index])
     }
 }
+
+fun buildMovieImage(path: String?): String {
+    return "https://image.tmdb.org/t/p/w500/$path"
+}

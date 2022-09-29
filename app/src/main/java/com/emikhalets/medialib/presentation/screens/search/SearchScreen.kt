@@ -44,6 +44,7 @@ import coil.request.ImageRequest
 import com.emikhalets.medialib.R
 import com.emikhalets.medialib.data.entity.movies.MovieSearchResult
 import com.emikhalets.medialib.presentation.theme.AppTheme
+import com.emikhalets.medialib.utils.buildMovieImage
 import com.emikhalets.medialib.utils.items
 import kotlinx.coroutines.flow.flowOf
 
@@ -132,8 +133,9 @@ private fun MovieItem(
         Box(modifier = Modifier.fillMaxWidth()) {
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
-                    .data(movie.poster_path)
+                    .data(buildMovieImage(movie.poster))
                     .crossfade(true)
+                    .error(R.drawable.ph_movie)
                     .build(),
                 contentDescription = "movie poster",
                 placeholder = painterResource(R.drawable.ph_movie),
@@ -143,7 +145,7 @@ private fun MovieItem(
                     .padding(horizontal = 8.dp)
 
             )
-            movie.vote_average?.let { rating ->
+            movie.voteAverage?.let { rating ->
                 Text(
                     text = rating.toString(),
                     textAlign = TextAlign.Center,
@@ -185,8 +187,8 @@ private fun MovieItem(
 }
 
 private fun formatMovieFooter(movie: MovieSearchResult): String {
-    val genre = movie.genre_ids?.firstOrNull() ?: "no genre"
-    val year = movie.release_date?.split("-")?.firstOrNull()
+    val genre = movie.genres?.firstOrNull() ?: "no genre"
+    val year = movie.releaseDate?.split("-")?.firstOrNull()
     return if (year == null) {
         genre.toString()
     } else {
@@ -235,50 +237,50 @@ private fun getPreviewMoviesFlow(): LazyPagingItems<MovieSearchResult> {
                 MovieSearchResult(
                     id = 1,
                     title = "Spider-man",
-                    genre_ids = listOf(1, 2, 3),
-                    poster_path = "",
-                    release_date = "2012-04-25",
-                    vote_average = 5.6
+                    genres = listOf(1, 2, 3),
+                    poster = "",
+                    releaseDate = "2012-04-25",
+                    voteAverage = 5.6
                 ),
                 MovieSearchResult(
                     id = 1,
                     title = "Spider-man 2",
-                    genre_ids = listOf(1, 2, 3),
-                    poster_path = "",
-                    release_date = "2012-04-25",
-                    vote_average = 5.6
+                    genres = listOf(1, 2, 3),
+                    poster = "",
+                    releaseDate = "2012-04-25",
+                    voteAverage = 5.6
                 ),
                 MovieSearchResult(
                     id = 1,
                     title = "Spider-man 3",
-                    genre_ids = listOf(1, 2, 3),
-                    poster_path = "",
-                    release_date = "2012-04-25",
-                    vote_average = 5.6
+                    genres = listOf(1, 2, 3),
+                    poster = "",
+                    releaseDate = "2012-04-25",
+                    voteAverage = 5.6
                 ),
                 MovieSearchResult(
                     id = 1,
                     title = "Avengers",
-                    genre_ids = listOf(1, 2, 3),
-                    poster_path = "",
-                    release_date = "2012-04-25",
-                    vote_average = 5.6
+                    genres = listOf(1, 2, 3),
+                    poster = "",
+                    releaseDate = "2012-04-25",
+                    voteAverage = 5.6
                 ),
                 MovieSearchResult(
                     id = 1,
                     title = "Venom",
-                    genre_ids = listOf(1, 2, 3),
-                    poster_path = "",
-                    release_date = "2012-04-25",
-                    vote_average = 5.6
+                    genres = listOf(1, 2, 3),
+                    poster = "",
+                    releaseDate = "2012-04-25",
+                    voteAverage = 5.6
                 ),
                 MovieSearchResult(
                     id = 1,
                     title = "Naked gun",
-                    genre_ids = listOf(1, 2, 3),
-                    poster_path = "",
-                    release_date = "2012-04-25",
-                    vote_average = 5.6
+                    genres = listOf(1, 2, 3),
+                    poster = "",
+                    releaseDate = "2012-04-25",
+                    voteAverage = 5.6
                 ),
             )
         )
