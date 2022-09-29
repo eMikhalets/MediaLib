@@ -1,8 +1,9 @@
 package com.emikhalets.medialib.data.entity.movies
 
+import com.google.gson.annotations.SerializedName
+
 data class MovieSearchResponse(
-    val page: Int?,
-    val results: List<MovieSearchResult>?,
-    val total_results: Int?,
-    val total_pages: Int?,
+    @SerializedName("page") val page: Int? = null,
+    @SerializedName("results") val results: List<MovieSearchResult>? = null,
+    @SerializedName("total_pages") val total_pages: Int? = null,
 )

@@ -1,18 +1,12 @@
 package com.emikhalets.medialib.data.entity.movies
 
+import com.google.gson.annotations.SerializedName
+
 data class MovieSearchResult(
-    val poster_path: String?,
-    val adult: Boolean?,
-    val overview: String?,
-    val release_date: String?,
-    val genre_ids: List<Int>?,
-    val id: Int?,
-    val original_title: String?,
-    val original_language: String?,
-    val title: String?,
-    val backdrop_path: String?,
-    val popularity: Double?,
-    val vote_count: Int?,
-    val video: Boolean?,
-    val vote_average: Double?,
+    @SerializedName("id") val id: Int? = null,
+    @SerializedName("title") val title: String? = null,
+    @SerializedName("genre_ids") val genre_ids: List<Int>? = null,
+    @SerializedName("poster_path") val poster_path: String? = null,
+    @SerializedName("release_date") val release_date: String? = null,
+    @SerializedName("vote_average") val vote_average: Double? = null,
 )

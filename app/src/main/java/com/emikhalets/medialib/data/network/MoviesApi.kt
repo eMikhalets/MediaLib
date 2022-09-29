@@ -17,5 +17,7 @@ interface MoviesApi {
     @GET("search/movie")
     suspend fun getSearchedMovies(
         @Query("query") query: String,
+        @Query("page") page: Int,
+        @Query("include_adult") adult: Boolean = true,
     ): MovieSearchResponse
 }
