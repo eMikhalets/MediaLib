@@ -10,6 +10,7 @@ import com.emikhalets.medialib.data.repository.MoviesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -26,6 +27,7 @@ class SearchViewModel @Inject constructor(
     fun search(query: String) {
         cancelJob(searchJob, "Starting a new search request")
         searchJob = viewModelScope.launch {
+            delay(750)
             val moviesFlow = repo.search(query).cachedIn(viewModelScope)
             state = state.setMoviesFlow(moviesFlow)
         }

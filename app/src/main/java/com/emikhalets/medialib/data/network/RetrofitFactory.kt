@@ -11,12 +11,12 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.*
 import javax.inject.Inject
 
-private const val MOVIES_BASE_URL = "https://api.themoviedb.org/3"
+private const val MOVIES_BASE_URL = "https://api.themoviedb.org/3/"
 private const val MOVIES_API_KEY = "8da3652ecf7f31da7ee6027aa3aa8b53"
 
 class RetrofitFactory @Inject constructor(private val prefs: AppPrefs) {
 
-    private val timeout: Long = 30
+    private val timeout: Long = 15
 
     private val gson: Gson = GsonBuilder()
         .setLenient()

@@ -12,12 +12,15 @@ import com.emikhalets.medialib.presentation.screens.search.SearchScreen
 @Composable
 fun AppNavGraph(navController: NavHostController) {
     NavHost(navController, AppScreen.Main.route) {
+
         composable(AppScreen.Main.route) {
             MainScreen(navController)
         }
+
         composable(AppScreen.Search.route) {
             SearchScreen(navController)
         }
+
     }
 }
 

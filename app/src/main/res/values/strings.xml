@@ -3,4 +3,6 @@
 
     <string name="screen_name_main">Home</string>
     <string name="screen_name_search">Search</string>
+    <string name="search_no_movies">No movies on query</string>
+    <string name="search_query_placeholder">Movie name</string>
 </resources>

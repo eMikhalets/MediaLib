@@ -4,10 +4,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -28,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -41,6 +40,7 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import coil.transform.RoundedCornersTransformation
 import com.emikhalets.medialib.R
 import com.emikhalets.medialib.data.entity.movies.MovieSearchResult
 import com.emikhalets.medialib.presentation.theme.AppTheme
@@ -81,21 +81,21 @@ fun SearchScreen(
             value = query,
             onValueChange = onQueryChange,
             leadingIcon = { Icon(Icons.Rounded.Search, "search icon") },
+            placeholder = { Text(stringResource(R.string.search_query_placeholder)) },
+            maxLines = 1,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(4.dp)
         )
 
-        Spacer(modifier = Modifier.height(8.dp))
-
-        if (query.isBlank() || query.isEmpty()) {
+        if (movies.itemCount == 0) {
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier.fillMaxSize()
             ) {
                 Text(
-                    text = "No movies on query",
-                    fontSize = 20.sp,
+                    text = stringResource(R.string.search_no_movies),
+                    fontSize = 24.sp,
                     fontWeight = FontWeight.Medium,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.align(Alignment.Center)
@@ -135,6 +135,7 @@ private fun MovieItem(
                 model = ImageRequest.Builder(LocalContext.current)
                     .data(buildMovieImage(movie.poster))
                     .crossfade(true)
+                    .transformations(RoundedCornersTransformation(getImageCornerRadius()))
                     .error(R.drawable.ph_movie)
                     .build(),
                 contentDescription = "movie poster",
@@ -148,11 +149,13 @@ private fun MovieItem(
             movie.voteAverage?.let { rating ->
                 Text(
                     text = rating.toString(),
+                    color = MaterialTheme.colors.onPrimary,
+                    fontSize = 12.sp,
                     textAlign = TextAlign.Center,
                     modifier = Modifier
                         .padding(top = 4.dp)
-                        .background(MaterialTheme.colors.primary.copy(alpha = 0.35f))
-                        .padding(horizontal = 4.dp)
+                        .background(MaterialTheme.colors.primary)
+                        .padding(horizontal = 8.dp)
                 )
             }
             Icon(
@@ -167,6 +170,7 @@ private fun MovieItem(
 
         Text(
             text = movie.title ?: "No title",
+            fontSize = 14.sp,
             maxLines = 2,
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier
@@ -177,6 +181,7 @@ private fun MovieItem(
         Text(
             text = formatMovieFooter(movie),
             color = MaterialTheme.colors.onBackground.copy(alpha = 0.5f),
+            fontSize = 12.sp,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier
@@ -186,10 +191,15 @@ private fun MovieItem(
     }
 }
 
+@Composable
+private fun getImageCornerRadius(): Float {
+    return 8 * LocalContext.current.resources.displayMetrics.density
+}
+
 private fun formatMovieFooter(movie: MovieSearchResult): String {
     val genre = movie.genres?.firstOrNull() ?: "no genre"
     val year = movie.releaseDate?.split("-")?.firstOrNull()
-    return if (year == null) {
+    return if (year?.trim().isNullOrEmpty()) {
         genre.toString()
     } else {
         "$genre, $year"
