@@ -44,7 +44,8 @@ import coil.transform.RoundedCornersTransformation
 import com.emikhalets.medialib.R
 import com.emikhalets.medialib.data.entity.movies.MovieSearchResult
 import com.emikhalets.medialib.presentation.theme.AppTheme
-import com.emikhalets.medialib.utils.buildMovieImage
+import com.emikhalets.medialib.utils.GenresHelper
+import com.emikhalets.medialib.utils.ImagePathBuilder
 import com.emikhalets.medialib.utils.items
 import kotlinx.coroutines.flow.flowOf
 
@@ -59,6 +60,7 @@ fun SearchScreen(
     SearchScreen(
         query = query,
         movies = movies,
+        genresHelper = viewModel.genreHelper,
         onQueryChange = {
             query = it
             viewModel.search(query)
@@ -72,6 +74,7 @@ fun SearchScreen(
 fun SearchScreen(
     query: String,
     movies: LazyPagingItems<MovieSearchResult>,
+    genresHelper: GenresHelper,
     onQueryChange: (String) -> Unit,
     onMovieClick: (MovieSearchResult) -> Unit,
     onMovieViewedClick: (MovieSearchResult) -> Unit,
@@ -110,7 +113,7 @@ fun SearchScreen(
             ) {
                 items(movies) { movie ->
                     movie?.let {
-                        MovieItem(movie, onMovieClick, onMovieViewedClick)
+                        MovieItem(movie, genresHelper, onMovieClick, onMovieViewedClick)
                     }
                 }
             }
@@ -121,6 +124,7 @@ fun SearchScreen(
 @Composable
 private fun MovieItem(
     movie: MovieSearchResult,
+    genresHelper: GenresHelper,
     onMovieClick: (MovieSearchResult) -> Unit,
     onMovieViewedClick: (MovieSearchResult) -> Unit,
 ) {
@@ -133,7 +137,7 @@ private fun MovieItem(
         Box(modifier = Modifier.fillMaxWidth()) {
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
-                    .data(buildMovieImage(movie.poster))
+                    .data(ImagePathBuilder().buildPosterPath(movie.poster))
                     .crossfade(true)
                     .transformations(RoundedCornersTransformation(getImageCornerRadius()))
                     .error(R.drawable.ph_movie)
@@ -179,7 +183,7 @@ private fun MovieItem(
                 .padding(top = 8.dp)
         )
         Text(
-            text = formatMovieFooter(movie),
+            text = formatMovieFooter(movie, genresHelper),
             color = MaterialTheme.colors.onBackground.copy(alpha = 0.5f),
             fontSize = 12.sp,
             maxLines = 1,
@@ -196,11 +200,14 @@ private fun getImageCornerRadius(): Float {
     return 8 * LocalContext.current.resources.displayMetrics.density
 }
 
-private fun formatMovieFooter(movie: MovieSearchResult): String {
-    val genre = movie.genres?.firstOrNull() ?: "no genre"
+private fun formatMovieFooter(
+    movie: MovieSearchResult,
+    genresHelper: GenresHelper,
+): String {
+    val genre = genresHelper.getMovieGenre(movie.genres?.firstOrNull())
     val year = movie.releaseDate?.split("-")?.firstOrNull()
     return if (year?.trim().isNullOrEmpty()) {
-        genre.toString()
+        genre
     } else {
         "$genre, $year"
     }
@@ -213,6 +220,7 @@ private fun ScreenPreview() {
         SearchScreen(
             query = "Some movie",
             movies = getPreviewMoviesFlow(),
+            genresHelper = GenresHelper(),
             onQueryChange = {},
             onMovieClick = {},
             onMovieViewedClick = {},
@@ -227,6 +235,7 @@ private fun ScreenEmptyPreview() {
         SearchScreen(
             query = "",
             movies = getPreviewEmptyFlow(),
+            genresHelper = GenresHelper(),
             onQueryChange = {},
             onMovieClick = {},
             onMovieViewedClick = {},

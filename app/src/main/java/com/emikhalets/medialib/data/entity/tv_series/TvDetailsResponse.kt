@@ -1,13 +1,13 @@
 package com.emikhalets.medialib.data.entity.tv_series
 
-import com.emikhalets.medialib.data.entity.Genre
+import com.emikhalets.medialib.data.entity.support.GenreData
 
 data class TvDetailsResponse(
     val backdrop_path: String?,
     val created_by: List<CreatedBy>?,
     val episode_run_time: List<Int>?,
     val first_air_date: String?,
-    val genres: List<Genre>?,
+    val genres: List<GenreData>?,
     val homepage: String?,
     val id: Int?,
     val in_production: String?,

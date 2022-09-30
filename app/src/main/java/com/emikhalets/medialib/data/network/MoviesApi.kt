@@ -13,7 +13,6 @@ interface MoviesApi {
         @Path("movie_id") movieId: Int,
     ): MovieDetailsResponse
 
-    // TODO: paging
     @GET("search/movie")
     suspend fun getSearchedMovies(
         @Query("query") query: String,
