@@ -10,4 +10,6 @@ interface MoviesRepository {
     suspend fun search(query: String): Flow<PagingData<MovieSearchResult>>
 
     suspend fun details(id: Int): Result<MovieDetailsResponse>
+
+    suspend fun saveLocal(movieRemote: MovieDetailsResponse): Result<Boolean>
 }

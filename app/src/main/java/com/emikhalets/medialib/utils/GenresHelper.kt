@@ -59,7 +59,7 @@ class GenresHelper @Inject constructor() {
     }
 
     companion object {
-        private const val NO_GENRE = "no genre"
-        private const val NO_GENRES = "no genres"
+        const val NO_GENRE = "no genre"
+        const val NO_GENRES = "no genres"
     }
 }
