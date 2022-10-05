@@ -2,6 +2,7 @@ package com.emikhalets.medialib.utils
 
 import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
 import androidx.paging.compose.LazyPagingItems
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -24,3 +25,7 @@ fun <T : Any> LazyGridScope.items(
         content(lazyPagingItems[index])
     }
 }
+
+val Int.px: Float
+    @Composable
+    get() = this * LocalContext.current.resources.displayMetrics.density

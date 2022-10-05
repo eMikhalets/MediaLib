@@ -54,4 +54,12 @@ class MoviesRepositoryImpl @Inject constructor(
             result != null
         }
     }
+
+    override suspend fun getMovieLocal(id: Int): Result<MovieDB> {
+        return execute { moviesDao.getItem(id) }
+    }
+
+    override suspend fun isMovieSaved(id: Int): Result<Boolean> {
+        return execute { moviesDao.isExist(id) }
+    }
 }

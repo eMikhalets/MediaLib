@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey
 data class MovieDB(
     @PrimaryKey @ColumnInfo(name = "id") val id: Int,
     @ColumnInfo(name = "title") val title: String,
-    @ColumnInfo(name = "budget") val budget: Int,
+    @ColumnInfo(name = "budget") val budget: Long,
     @ColumnInfo(name = "backdrop_path") val backdrop: String,
     @ColumnInfo(name = "genres") val genres: String,
     @ColumnInfo(name = "imdb_id") val imdbId: String,
@@ -16,7 +16,7 @@ data class MovieDB(
     @ColumnInfo(name = "overview") val overview: String,
     @ColumnInfo(name = "poster_path") val poster: String,
     @ColumnInfo(name = "release_date") val releaseDate: String,
-    @ColumnInfo(name = "revenue") val revenue: Int,
+    @ColumnInfo(name = "revenue") val revenue: Long,
     @ColumnInfo(name = "runtime") val runtime: Int,
     @ColumnInfo(name = "status") val status: String,
     @ColumnInfo(name = "tagline") val tagline: String,

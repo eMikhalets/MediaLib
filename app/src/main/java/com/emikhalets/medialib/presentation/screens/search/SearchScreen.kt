@@ -47,6 +47,7 @@ import com.emikhalets.medialib.presentation.theme.AppTheme
 import com.emikhalets.medialib.utils.GenresHelper
 import com.emikhalets.medialib.utils.ImagePathBuilder
 import com.emikhalets.medialib.utils.items
+import com.emikhalets.medialib.utils.px
 import kotlinx.coroutines.flow.flowOf
 
 @Composable
@@ -139,11 +140,11 @@ private fun MovieItem(
                 model = ImageRequest.Builder(LocalContext.current)
                     .data(ImagePathBuilder().buildPosterPath(movie.poster))
                     .crossfade(true)
-                    .transformations(RoundedCornersTransformation(getImageCornerRadius()))
-                    .error(R.drawable.ph_movie)
+                    .transformations(RoundedCornersTransformation(8.px))
+                    .error(R.drawable.ph_poster)
                     .build(),
                 contentDescription = "movie poster",
-                placeholder = painterResource(R.drawable.ph_movie),
+                placeholder = painterResource(R.drawable.ph_poster),
                 contentScale = ContentScale.FillWidth,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -193,11 +194,6 @@ private fun MovieItem(
                 .padding(horizontal = 8.dp)
         )
     }
-}
-
-@Composable
-private fun getImageCornerRadius(): Float {
-    return 8 * LocalContext.current.resources.displayMetrics.density
 }
 
 private fun formatMovieFooter(

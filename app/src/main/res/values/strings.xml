@@ -5,4 +5,14 @@
     <string name="screen_name_search">Search</string>
     <string name="search_no_movies">No movies on query</string>
     <string name="search_query_placeholder">Movie name</string>
+
+    <string name="searched_no_movie">Loading movie error</string>
+    <string name="searched_rating">Rating: %s</string>
+    <string name="searched_runtime">Runtime: %s</string>
+    <string name="searched_date">Release: %s</string>
+    <string name="searched_save">Save</string>
+    <string name="searched_genres">Genres: %s</string>
+    <string name="searched_overview">Overview</string>
+    <string name="searched_budget">Budget: %s</string>
+    <string name="searched_revenue">Revenue: %s</string>
 </resources>

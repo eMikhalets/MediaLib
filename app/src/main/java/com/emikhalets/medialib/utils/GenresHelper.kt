@@ -61,5 +61,9 @@ class GenresHelper @Inject constructor() {
     companion object {
         const val NO_GENRE = "no genre"
         const val NO_GENRES = "no genres"
+
+        fun remoteToString(genres: List<GenreData>?): String {
+            return genres?.joinToString(", ") { it.name.toString() } ?: NO_GENRES
+        }
     }
 }
