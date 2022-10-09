@@ -190,7 +190,7 @@ private fun MovieItem(
         }
 
         Text(
-            text = movie.title ?: "No title",
+            text = movie.title ?: stringResource(R.string.app_no_title),
             fontSize = 14.sp,
             maxLines = 2,
             overflow = TextOverflow.Ellipsis,

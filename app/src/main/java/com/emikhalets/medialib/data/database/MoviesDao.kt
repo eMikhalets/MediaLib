@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
 import com.emikhalets.medialib.data.entity.database.MovieDB
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface MoviesDao {
@@ -13,14 +14,8 @@ interface MoviesDao {
     @Insert
     suspend fun insert(item: MovieDB): Long?
 
-    @Insert
-    suspend fun insertAll(items: List<MovieDB>): List<Long>
-
     @Update
     suspend fun update(item: MovieDB): Int
-
-    @Update
-    suspend fun updateAll(items: List<MovieDB>): Int
 
     @Delete
     suspend fun delete(item: MovieDB): Int
@@ -28,8 +23,11 @@ interface MoviesDao {
     @Query("DELETE FROM movies")
     suspend fun drop()
 
-    @Query("SELECT * FROM movies")
-    suspend fun getAll(): List<MovieDB>
+    @Query("SELECT * FROM movies ORDER BY save_date DESC")
+    fun getAllOrderByDateDesc(): Flow<List<MovieDB>>
+
+    @Query("SELECT * FROM movies WHERE title LIKE '%' || :query || '%' ORDER BY save_date DESC")
+    fun getAllOrderByDateDesc(query: String): Flow<List<MovieDB>>
 
     @Query("SELECT * FROM movies WHERE id=:id")
     suspend fun getItem(id: Int): MovieDB

@@ -3,6 +3,7 @@ package com.emikhalets.medialib.data.entity.database
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.util.*
 
 @Entity(tableName = "movies")
 data class MovieDB(
@@ -21,4 +22,6 @@ data class MovieDB(
     @ColumnInfo(name = "status") val status: String,
     @ColumnInfo(name = "tagline") val tagline: String,
     @ColumnInfo(name = "vote_average") val voteAverage: Double,
+    @ColumnInfo(name = "save_date") val saveDate: Long = Date().time,
+    @ColumnInfo(name = "comment") val comment: String = "",
 )

@@ -167,7 +167,7 @@ private fun SearchedMovieScreen(
             }
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = movie.title ?: "",
+                text = movie.title ?: stringResource(R.string.app_no_title),
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Medium,
                 modifier = Modifier

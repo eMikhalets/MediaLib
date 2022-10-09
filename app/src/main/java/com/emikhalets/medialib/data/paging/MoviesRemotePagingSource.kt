@@ -5,7 +5,7 @@ import androidx.paging.PagingState
 import com.emikhalets.medialib.data.entity.movies.MovieSearchResult
 import com.emikhalets.medialib.data.network.MoviesApi
 
-class MoviesPagingSource(
+class MoviesRemotePagingSource(
     private val query: String,
     private val moviesApi: MoviesApi,
 ) : PagingSource<Int, MovieSearchResult>() {

@@ -8,7 +8,7 @@ import com.emikhalets.medialib.data.entity.database.MovieDB
 import com.emikhalets.medialib.data.entity.movies.MovieDetailsResponse
 import com.emikhalets.medialib.data.entity.movies.MovieSearchResult
 import com.emikhalets.medialib.data.network.MoviesApi
-import com.emikhalets.medialib.data.paging.MoviesPagingSource
+import com.emikhalets.medialib.data.paging.MoviesRemotePagingSource
 import com.emikhalets.medialib.utils.GenresHelper
 import com.emikhalets.medialib.utils.execute
 import kotlinx.coroutines.flow.Flow
@@ -20,7 +20,7 @@ class MoviesRepositoryImpl @Inject constructor(
 ) : MoviesRepository {
 
     override suspend fun search(query: String): Flow<PagingData<MovieSearchResult>> {
-        val source = MoviesPagingSource(query, moviesApi)
+        val source = MoviesRemotePagingSource(query, moviesApi)
         return Pager(PagingConfig(20)) { source }.flow
     }
 
@@ -53,6 +53,14 @@ class MoviesRepositoryImpl @Inject constructor(
             val result = moviesDao.insert(mappedMovie)
             result != null
         }
+    }
+
+    override suspend fun getMoviesLocal(): Result<Flow<List<MovieDB>>> {
+        return execute { moviesDao.getAllOrderByDateDesc() }
+    }
+
+    override suspend fun getMoviesLocal(query: String): Result<Flow<List<MovieDB>>> {
+        return execute { moviesDao.getAllOrderByDateDesc(query) }
     }
 
     override suspend fun getMovieLocal(id: Int): Result<MovieDB> {

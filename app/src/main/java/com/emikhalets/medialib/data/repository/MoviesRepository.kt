@@ -14,6 +14,10 @@ interface MoviesRepository {
 
     suspend fun saveLocal(movieRemote: MovieDetailsResponse): Result<Boolean>
 
+    suspend fun getMoviesLocal(): Result<Flow<List<MovieDB>>>
+
+    suspend fun getMoviesLocal(query: String): Result<Flow<List<MovieDB>>>
+
     suspend fun getMovieLocal(id: Int): Result<MovieDB>
 
     suspend fun isMovieSaved(id: Int): Result<Boolean>

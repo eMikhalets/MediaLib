@@ -1,8 +1,18 @@
 <resources>
     <string name="app_name">MediaLib</string>
+    <string name="app_no_title">No Title</string>
 
     <string name="screen_name_main">Home</string>
     <string name="screen_name_search">Search</string>
+    <string name="screen_name_saved_movie">Movie</string>
+
+    <string name="main_no_movies">No saved movies</string>
+    <string name="main_no_movies_query">No movies on query</string>
+    <string name="main_query_placeholder">Movie name</string>
+    <string name="main_genres">Genres: %s</string>
+    <string name="main_date">Release: %s</string>
+    <string name="main_runtime">Runtime: %s</string>
+
     <string name="search_no_movies">No movies on query</string>
     <string name="search_query_placeholder">Movie name</string>
 
