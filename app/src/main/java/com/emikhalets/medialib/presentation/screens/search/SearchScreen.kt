@@ -2,6 +2,7 @@ package com.emikhalets.medialib.presentation.screens.search
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -9,12 +10,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -23,8 +24,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -35,6 +38,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -43,6 +47,7 @@ import coil.request.ImageRequest
 import coil.transform.RoundedCornersTransformation
 import com.emikhalets.medialib.R
 import com.emikhalets.medialib.data.entity.movies.MovieSearchResult
+import com.emikhalets.medialib.presentation.navToSearchedMovie
 import com.emikhalets.medialib.presentation.theme.AppTheme
 import com.emikhalets.medialib.utils.GenresHelper
 import com.emikhalets.medialib.utils.ImagePathBuilder
@@ -66,8 +71,7 @@ fun SearchScreen(
             query = it
             viewModel.search(query)
         },
-        onMovieClick = {},
-        onMovieViewedClick = {},
+        onMovieClick = { navController.navToSearchedMovie(it) },
     )
 }
 
@@ -77,10 +81,20 @@ fun SearchScreen(
     movies: LazyPagingItems<MovieSearchResult>,
     genresHelper: GenresHelper,
     onQueryChange: (String) -> Unit,
-    onMovieClick: (MovieSearchResult) -> Unit,
-    onMovieViewedClick: (MovieSearchResult) -> Unit,
+    onMovieClick: (Int) -> Unit,
 ) {
-    Column(Modifier.fillMaxSize()) {
+    val localFocusManager = LocalFocusManager.current
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .pointerInput(Unit) {
+                detectTapGestures(
+                    onPress = { localFocusManager.clearFocus() },
+                    onTap = { localFocusManager.clearFocus() }
+                )
+            }
+    ) {
         OutlinedTextField(
             value = query,
             onValueChange = onQueryChange,
@@ -92,29 +106,40 @@ fun SearchScreen(
                 .padding(4.dp)
         )
 
-        if (movies.itemCount == 0) {
+        if (query.isNotEmpty() && movies.loadState.refresh == LoadState.Loading) {
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier.fillMaxSize()
             ) {
-                Text(
-                    text = stringResource(R.string.search_no_movies),
-                    fontSize = 24.sp,
-                    fontWeight = FontWeight.Medium,
-                    textAlign = TextAlign.Center,
+                CircularProgressIndicator(
                     modifier = Modifier.align(Alignment.Center)
                 )
             }
         } else {
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(3),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 8.dp)
-            ) {
-                items(movies) { movie ->
-                    movie?.let {
-                        MovieItem(movie, genresHelper, onMovieClick, onMovieViewedClick)
+            if (movies.itemCount == 0) {
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    Text(
+                        text = stringResource(R.string.search_no_movies),
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.Medium,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.align(Alignment.Center)
+                    )
+                }
+            } else {
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(3),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 8.dp)
+                ) {
+                    items(movies) { movie ->
+                        movie?.let {
+                            MovieItem(movie, genresHelper, onMovieClick)
+                        }
                     }
                 }
             }
@@ -126,13 +151,12 @@ fun SearchScreen(
 private fun MovieItem(
     movie: MovieSearchResult,
     genresHelper: GenresHelper,
-    onMovieClick: (MovieSearchResult) -> Unit,
-    onMovieViewedClick: (MovieSearchResult) -> Unit,
+    onMovieClick: (Int) -> Unit,
 ) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { onMovieClick(movie) }
+            .clickable { movie.id?.let { onMovieClick(it) } }
             .padding(8.dp)
     ) {
         Box(modifier = Modifier.fillMaxWidth()) {
@@ -163,14 +187,6 @@ private fun MovieItem(
                         .padding(horizontal = 8.dp)
                 )
             }
-            Icon(
-                imageVector = Icons.Rounded.Favorite,
-                contentDescription = "adding movie icon",
-                modifier = Modifier
-                    .clickable { onMovieViewedClick(movie) }
-                    .align(Alignment.TopEnd)
-                    .padding(top = 4.dp)
-            )
         }
 
         Text(
@@ -219,7 +235,6 @@ private fun ScreenPreview() {
             genresHelper = GenresHelper(),
             onQueryChange = {},
             onMovieClick = {},
-            onMovieViewedClick = {},
         )
     }
 }
@@ -234,7 +249,6 @@ private fun ScreenEmptyPreview() {
             genresHelper = GenresHelper(),
             onQueryChange = {},
             onMovieClick = {},
-            onMovieViewedClick = {},
         )
     }
 }

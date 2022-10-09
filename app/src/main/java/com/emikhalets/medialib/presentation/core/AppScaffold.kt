@@ -90,7 +90,7 @@ fun AppDrawer(navController: NavHostController, drawerState: DrawerState) {
 
     val screens = remember {
         val list = mutableStateListOf<AppScreen>()
-        list.addAll(AppScreen.getScreens())
+        list.addAll(AppScreen.getDrawerScreens())
         list
     }
 

@@ -38,7 +38,7 @@ class MoviesRepositoryImpl @Inject constructor(
             backdrop = movieRemote.backdrop ?: "",
             genres = genresString ?: GenresHelper.NO_GENRES,
             imdbId = movieRemote.imdbId ?: "",
-            originalTitle = movieRemote.originalTitle ?: "",
+            originalTitle = "${movieRemote.originalTitle} + (${movieRemote.originalLanguage})",
             overview = movieRemote.overview ?: "",
             poster = movieRemote.poster ?: "",
             releaseDate = movieRemote.releaseDate ?: "",

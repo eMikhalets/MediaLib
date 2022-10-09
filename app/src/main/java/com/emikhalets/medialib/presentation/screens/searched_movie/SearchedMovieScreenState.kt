@@ -4,7 +4,7 @@ import com.emikhalets.medialib.data.entity.movies.MovieDetailsResponse
 
 data class SearchedMovieScreenState(
     val movie: MovieDetailsResponse? = null,
-    val isAlreadySaved: Boolean = false,
+    val isAlreadySaved: Boolean = true,
     val savedMovie: Boolean = false,
 ) {
 
@@ -12,8 +12,8 @@ data class SearchedMovieScreenState(
         return this.copy(movie = movie)
     }
 
-    fun setAlreadySaved(): SearchedMovieScreenState {
-        return this.copy(isAlreadySaved = true)
+    fun setNotYetSaved(): SearchedMovieScreenState {
+        return this.copy(isAlreadySaved = false)
     }
 
     fun setSavedMovie(): SearchedMovieScreenState {

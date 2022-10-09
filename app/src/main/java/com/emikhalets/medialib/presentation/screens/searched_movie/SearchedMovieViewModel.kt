@@ -26,7 +26,7 @@ class SearchedMovieViewModel @Inject constructor(
 
     fun isAlreadySaved(id: Int) {
         viewModelScope.launch {
-            repo.isMovieSaved(id).onSuccess { state = state.setAlreadySaved() }
+            repo.isMovieSaved(id).onSuccess { if (!it) state = state.setNotYetSaved() }
         }
     }
 

@@ -1,18 +1,19 @@
 package com.emikhalets.medialib.utils
 
+import com.emikhalets.medialib.data.entity.database.GenreDB
 import com.emikhalets.medialib.data.entity.support.GenreData
 import javax.inject.Inject
 
 class GenresHelper @Inject constructor() {
 
-    private var movieGenres: List<GenreData> = emptyList()
-    private var tvGenres: List<GenreData> = emptyList()
+    private var movieGenres: List<GenreDB> = emptyList()
+    private var tvGenres: List<GenreDB> = emptyList()
 
-    fun setMoviesGenres(list: List<GenreData>?) {
+    fun setMoviesGenres(list: List<GenreDB>?) {
         movieGenres = list ?: emptyList()
     }
 
-    fun setTvGenres(list: List<GenreData>?) {
+    fun setTvGenres(list: List<GenreDB>?) {
         tvGenres = list ?: emptyList()
     }
 
@@ -36,18 +37,18 @@ class GenresHelper @Inject constructor() {
         return getGenres(ids, tvGenres)
     }
 
-    private fun getGenre(id: Int, genres: List<GenreData>): String {
+    private fun getGenre(id: Int, genres: List<GenreDB>): String {
         return try {
-            genres.find { it.id == id }?.name ?: NO_GENRE
+            genres.find { it.genreId == id }?.name ?: NO_GENRE
         } catch (ex: IndexOutOfBoundsException) {
             NO_GENRE
         }
     }
 
-    private fun getGenres(ids: List<Int>, genres: List<GenreData>): String {
+    private fun getGenres(ids: List<Int>, genres: List<GenreDB>): String {
         return try {
             val genresList = mutableListOf<String>()
-            ids.forEach { id -> genres.find { it.id == id }?.name?.let { genresList.add(it) } }
+            ids.forEach { id -> genres.find { it.genreId == id }?.name?.let { genresList.add(it) } }
             if (genresList.isEmpty()) {
                 NO_GENRES
             } else {
@@ -63,7 +64,7 @@ class GenresHelper @Inject constructor() {
         const val NO_GENRES = "no genres"
 
         fun remoteToString(genres: List<GenreData>?): String {
-            return genres?.joinToString(", ") { it.name.toString() } ?: NO_GENRES
+            return genres?.joinToString(", ") { it.name ?: "" } ?: NO_GENRES
         }
     }
 }

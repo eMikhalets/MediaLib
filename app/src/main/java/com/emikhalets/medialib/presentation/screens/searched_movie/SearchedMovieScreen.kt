@@ -50,7 +50,10 @@ fun SearchedMovieScreen(
 ) {
     LaunchedEffect(Unit) {
         viewModel.getMovie(movieId)
-        viewModel.isAlreadySaved(movieId)
+    }
+
+    LaunchedEffect(viewModel.state.movie) {
+        if (viewModel.state.movie != null) viewModel.isAlreadySaved(movieId)
     }
 
     SearchedMovieScreen(
@@ -87,7 +90,7 @@ private fun SearchedMovieScreen(
         ) {
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
-                    .data(ImagePathBuilder().buildBackdropPath(movie.poster))
+                    .data(ImagePathBuilder().buildBackdropPath(movie.backdrop))
                     .crossfade(true)
                     .error(R.drawable.ph_backdrop)
                     .build(),
@@ -165,17 +168,16 @@ private fun SearchedMovieScreen(
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = movie.title ?: "",
-                fontSize = 18.sp,
+                fontSize = 24.sp,
                 fontWeight = FontWeight.Medium,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp)
             )
             if (movie.originalTitle != null) {
-                Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = movie.originalTitle,
-                    fontSize = 14.sp,
+                    text = "${movie.originalTitle} + (${movie.originalLanguage})",
+                    fontSize = 16.sp,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp)

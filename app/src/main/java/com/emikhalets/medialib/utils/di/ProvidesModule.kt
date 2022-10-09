@@ -2,6 +2,7 @@ package com.emikhalets.medialib.utils.di
 
 import android.content.Context
 import com.emikhalets.medialib.data.database.AppDatabase
+import com.emikhalets.medialib.data.database.GenresDao
 import com.emikhalets.medialib.data.database.MoviesDao
 import com.emikhalets.medialib.data.network.MoviesApi
 import com.emikhalets.medialib.data.network.RetrofitFactory
@@ -45,6 +46,10 @@ object ProvidesModule {
     @Singleton
     @Provides
     fun providesMoviesDao(database: AppDatabase): MoviesDao = database.moviesDao
+
+    @Singleton
+    @Provides
+    fun providesGenresDao(database: AppDatabase): GenresDao = database.genresDao
 
     // Other
 

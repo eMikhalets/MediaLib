@@ -4,11 +4,13 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.emikhalets.medialib.data.entity.database.GenreDB
 import com.emikhalets.medialib.data.entity.database.MovieDB
 
 @Database(
     entities = [
         MovieDB::class,
+        GenreDB::class,
     ],
     autoMigrations = [],
     version = 1,
@@ -17,6 +19,7 @@ import com.emikhalets.medialib.data.entity.database.MovieDB
 abstract class AppDatabase : RoomDatabase() {
 
     abstract val moviesDao: MoviesDao
+    abstract val genresDao: GenresDao
 
     companion object {
 

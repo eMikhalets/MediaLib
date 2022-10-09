@@ -11,6 +11,7 @@ data class MovieDetailsResponse(
     @SerializedName("genres") val genres: List<GenreData>? = null,
     @SerializedName("imdb_id") val imdbId: String? = null,
     @SerializedName("original_title") val originalTitle: String? = null,
+    @SerializedName("original_language") val originalLanguage: String? = null,
     @SerializedName("overview") val overview: String? = null,
     @SerializedName("poster_path") val poster: String? = null,
     @SerializedName("release_date") val releaseDate: String? = null,
