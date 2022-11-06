@@ -1,12 +1,12 @@
 package com.emikhalets.medialib.presentation.screens.movies
 
-import com.emikhalets.medialib.data.entity.database.MovieDB
+import com.emikhalets.medialib.data.entity.views.MovieEntity
 
 data class MoviesScreenState(
-    val movies: List<MovieDB> = emptyList(),
+    val movies: List<MovieEntity> = emptyList(),
 ) {
 
-    fun setMovies(movies: List<MovieDB>): MoviesScreenState {
+    fun setMovies(movies: List<MovieEntity>): MoviesScreenState {
         return this.copy(movies = movies)
     }
 }

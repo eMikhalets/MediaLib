@@ -1,13 +1,27 @@
 <resources>
     <!--  General  -->
     <string name="app_name">MediaLib</string>
-    <string name="app_no_title">No Title</string>
+    <string name="app_no_title">Без названия</string>
+    <string name="app_root_list_empty">Список пуст</string>
+    <string name="app_root_list_query_empty">По данному запросу ничего не найдено</string>
 
     <!--  Screen titles  -->
     <string name="screen_name_movies">Фильмы</string>
     <string name="screen_name_serials">Сериалы</string>
     <string name="screen_name_books">Книги</string>
     <string name="screen_name_music">Музыка</string>
+
+    <!--  Movies screen  -->
+    <string name="movies_query_placeholder">Название фильма</string>
+
+    <!--  Serials screen  -->
+    <string name="serials_query_placeholder">Название сериала</string>
+
+    <!--  Books screen  -->
+    <string name="books_query_placeholder">Название книги</string>
+
+    <!--  Music screen  -->
+    <string name="music_query_placeholder">Название композиции</string>
 
 
     <string name="screen_name_main">Home</string>

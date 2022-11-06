@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.emikhalets.medialib.data.entity.views.MovieEntity
 import com.emikhalets.medialib.data.repository.MoviesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CancellationException
@@ -34,7 +35,7 @@ class MoviesViewModel @Inject constructor(
                 repo.getMoviesLocal(query)
             }
             moviesResponse.onSuccess { movies ->
-                movies.collectLatest { state = state.setMovies(it) }
+                movies.collectLatest { state = state.setMovies(it.map { db -> MovieEntity(db) }) }
             }
         }
     }
