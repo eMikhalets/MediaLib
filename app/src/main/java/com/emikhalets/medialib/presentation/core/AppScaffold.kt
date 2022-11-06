@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Divider
@@ -19,20 +20,24 @@ import androidx.compose.material.icons.rounded.Menu
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.emikhalets.medialib.R
 import com.emikhalets.medialib.presentation.AppScreen
 import com.emikhalets.medialib.presentation.theme.AppTheme
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Composable
@@ -40,12 +45,39 @@ fun AppScaffold(
     navController: NavHostController,
     content: @Composable () -> Unit,
 ) {
+    val scope = rememberCoroutineScope()
     val scaffoldState = rememberScaffoldState()
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+
+    val rootScreens = remember {
+        listOf(AppScreen.Movies, AppScreen.Serials, AppScreen.Books, AppScreen.Music)
+    }
+
+    val title = AppScreen.getTitle(navBackStackEntry)
+    val currentScreen = AppScreen.getScreen(navBackStackEntry)
+    val isCurrentScreenRoot = rootScreens.contains(currentScreen)
 
     Scaffold(
         scaffoldState = scaffoldState,
-        topBar = { AppTopBar(navController, scaffoldState.drawerState) },
-        drawerContent = { AppDrawer(navController, scaffoldState.drawerState) }
+        topBar = {
+            AppToolbar(
+                title,
+                isCurrentScreenRoot,
+                scaffoldState.drawerState,
+                scope,
+                navController
+            )
+        },
+        drawerContent = {
+            AppDrawer(
+                isCurrentScreenRoot,
+                scaffoldState.drawerState,
+                scope,
+                navController,
+                navBackStackEntry,
+                rootScreens
+            )
+        }
     ) {
         Box(modifier = Modifier.padding(it)) {
             content()
@@ -54,15 +86,18 @@ fun AppScaffold(
 }
 
 @Composable
-fun AppTopBar(navController: NavHostController, drawerState: DrawerState) {
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val scope = rememberCoroutineScope()
-
+private fun AppToolbar(
+    title: String,
+    isCurrentScreenRoot: Boolean,
+    drawerState: DrawerState,
+    scope: CoroutineScope,
+    navController: NavHostController,
+) {
     TopAppBar(
-        title = { Text("Some title") },
+        title = { Text(title) },
         elevation = 0.dp,
         navigationIcon = {
-            if (navBackStackEntry?.destination?.route == AppScreen.Main.route) {
+            if (isCurrentScreenRoot) {
                 Icon(
                     imageVector = Icons.Rounded.Menu,
                     contentDescription = "",
@@ -84,61 +119,89 @@ fun AppTopBar(navController: NavHostController, drawerState: DrawerState) {
 }
 
 @Composable
-fun AppDrawer(navController: NavHostController, drawerState: DrawerState) {
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val scope = rememberCoroutineScope()
-
-    val screens = remember {
-        val list = mutableStateListOf<AppScreen>()
-        list.addAll(AppScreen.getDrawerScreens())
-        list
-    }
-
-    Text(
-        text = "Some header",
-        fontSize = 24.sp,
-        modifier = Modifier.padding(16.dp)
-    )
-
-    Divider()
-
-    screens.forEach { screen ->
+private fun AppDrawer(
+    isCurrentScreenRoot: Boolean,
+    drawerState: DrawerState,
+    scope: CoroutineScope,
+    navController: NavHostController,
+    navBackStackEntry: NavBackStackEntry?,
+    rootScreens: List<AppScreen>,
+) {
+    if (isCurrentScreenRoot) {
         Text(
-            text = stringResource(screen.name),
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(
-                    if (navBackStackEntry?.destination?.route == screen.route) {
-                        MaterialTheme.colors.primary.copy(alpha = 0.2f)
-                    } else {
-                        Color.Transparent
-                    }
-                )
-                .clickable {
-                    if (navBackStackEntry?.destination?.route != screen.route) {
-                        navController.navigate(screen.route)
-                    }
-                    scope.launch { drawerState.close() }
-                }
-                .padding(16.dp)
+            text = stringResource(R.string.app_name),
+            fontSize = 24.sp,
+            fontWeight = FontWeight.Medium,
+            modifier = Modifier.padding(16.dp)
         )
+        Divider()
+        rootScreens.forEach { screen ->
+            Text(
+                text = stringResource(screen.titleRes),
+                fontSize = 18.sp,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(
+                        if (navBackStackEntry?.destination?.route == screen.route) {
+                            MaterialTheme.colors.primary.copy(alpha = 0.2f)
+                        } else {
+                            Color.Transparent
+                        }
+                    )
+                    .clickable {
+                        if (navBackStackEntry?.destination?.route != screen.route) {
+                            navController.navigate(screen.route) {
+                                popUpTo(navController.graph.findStartDestination().id) {
+                                    saveState = true
+                                }
+                                launchSingleTop = true
+                                restoreState = true
+                            }
+                        }
+                        scope.launch { drawerState.close() }
+                    }
+                    .padding(16.dp)
+            )
+        }
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-private fun AppTopBarPreview() {
+private fun ScaffoldPreview() {
     AppTheme {
-        AppTopBar(rememberNavController(), rememberScaffoldState().drawerState)
+        AppScaffold(rememberNavController()) {
+            Box(modifier = Modifier.fillMaxSize())
+        }
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-private fun AppDrawerPreview() {
+private fun ToolbarPreview() {
     AppTheme {
-        Column {
-            AppDrawer(rememberNavController(), rememberScaffoldState().drawerState)
+        AppToolbar(
+            "Test title",
+            false,
+            rememberScaffoldState().drawerState,
+            rememberCoroutineScope(),
+            rememberNavController())
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun DrawerPreview() {
+    AppTheme {
+        Column(Modifier.fillMaxSize()) {
+            AppDrawer(
+                true,
+                rememberScaffoldState().drawerState,
+                rememberCoroutineScope(),
+                rememberNavController(),
+                rememberNavController().currentBackStackEntryAsState().value,
+                listOf(AppScreen.Movies, AppScreen.Serials, AppScreen.Books, AppScreen.Music),
+            )
         }
     }
 }
