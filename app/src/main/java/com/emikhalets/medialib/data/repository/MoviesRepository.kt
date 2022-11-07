@@ -18,7 +18,11 @@ interface MoviesRepository {
 
     suspend fun getMoviesLocal(query: String): Result<Flow<List<MovieDB>>>
 
-    suspend fun getMovieLocal(id: Int): Result<MovieDB>
+    suspend fun getMovieLocal(id: Int): Result<Flow<MovieDB>>
+
+    suspend fun updateMovieLocal(movieDB: MovieDB): Result<Int>
+
+    suspend fun deleteMovieLocal(movieDB: MovieDB): Result<Int>
 
     suspend fun isMovieSaved(id: Int): Result<Boolean>
 }

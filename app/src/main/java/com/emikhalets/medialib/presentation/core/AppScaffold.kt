@@ -26,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -43,6 +44,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun AppScaffold(
     navController: NavHostController,
+    title: String? = "",
     content: @Composable () -> Unit,
 ) {
     val scope = rememberCoroutineScope()
@@ -53,7 +55,7 @@ fun AppScaffold(
         listOf(AppScreen.Movies, AppScreen.Serials, AppScreen.Books, AppScreen.Music)
     }
 
-    val title = AppScreen.getTitle(navBackStackEntry)
+    val toolbarTitle = if (title.isNullOrEmpty()) AppScreen.getTitle(navBackStackEntry) else title
     val currentScreen = AppScreen.getScreen(navBackStackEntry)
     val isCurrentScreenRoot = rootScreens.contains(currentScreen)
 
@@ -61,7 +63,7 @@ fun AppScaffold(
         scaffoldState = scaffoldState,
         topBar = {
             AppToolbar(
-                title,
+                toolbarTitle,
                 isCurrentScreenRoot,
                 scaffoldState.drawerState,
                 scope,
@@ -94,7 +96,13 @@ private fun AppToolbar(
     navController: NavHostController,
 ) {
     TopAppBar(
-        title = { Text(title) },
+        title = {
+            Text(
+                text = title,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+        },
         elevation = 0.dp,
         navigationIcon = {
             if (isCurrentScreenRoot) {

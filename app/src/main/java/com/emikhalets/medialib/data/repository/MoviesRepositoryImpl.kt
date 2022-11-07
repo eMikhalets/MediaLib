@@ -63,8 +63,16 @@ class MoviesRepositoryImpl @Inject constructor(
         return execute { moviesDao.getAllOrderByDateDesc(query) }
     }
 
-    override suspend fun getMovieLocal(id: Int): Result<MovieDB> {
+    override suspend fun getMovieLocal(id: Int): Result<Flow<MovieDB>> {
         return execute { moviesDao.getItem(id) }
+    }
+
+    override suspend fun updateMovieLocal(movieDB: MovieDB): Result<Int> {
+        return execute { moviesDao.update(movieDB) }
+    }
+
+    override suspend fun deleteMovieLocal(movieDB: MovieDB): Result<Int> {
+        return execute { moviesDao.delete(movieDB) }
     }
 
     override suspend fun isMovieSaved(id: Int): Result<Boolean> {

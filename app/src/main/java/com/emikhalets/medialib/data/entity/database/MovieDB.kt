@@ -24,4 +24,5 @@ data class MovieDB(
     @ColumnInfo(name = "vote_average") val voteAverage: Double,
     @ColumnInfo(name = "save_date") val saveDate: Long = Date().time,
     @ColumnInfo(name = "comment") val comment: String = "",
+    @ColumnInfo(name = "rating") val rating: Int = 0,
 )

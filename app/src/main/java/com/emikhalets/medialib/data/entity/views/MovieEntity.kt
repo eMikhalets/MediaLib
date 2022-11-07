@@ -21,6 +21,7 @@ data class MovieEntity(
     val voteAverage: Double,
     val saveDate: Long = Date().time,
     val comment: String = "",
+    val rating: Int = 0,
 ) : ViewListItem {
 
     constructor(movieDB: MovieDB) : this(
@@ -41,5 +42,6 @@ data class MovieEntity(
         voteAverage = movieDB.voteAverage,
         saveDate = movieDB.saveDate,
         comment = movieDB.comment,
+        rating = movieDB.rating,
     )
 }

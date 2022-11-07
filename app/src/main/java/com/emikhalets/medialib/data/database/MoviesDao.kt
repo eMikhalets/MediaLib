@@ -30,7 +30,7 @@ interface MoviesDao {
     fun getAllOrderByDateDesc(query: String): Flow<List<MovieDB>>
 
     @Query("SELECT * FROM movies WHERE id=:id")
-    suspend fun getItem(id: Int): MovieDB
+    fun getItem(id: Int): Flow<MovieDB>
 
     @Query("SELECT EXISTS(SELECT * FROM movies WHERE id=:id)")
     suspend fun isExist(id: Int): Boolean
