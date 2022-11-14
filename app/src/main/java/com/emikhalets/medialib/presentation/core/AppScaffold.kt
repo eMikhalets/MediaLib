@@ -1,5 +1,6 @@
 package com.emikhalets.medialib.presentation.core
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -55,30 +56,33 @@ fun AppScaffold(
         listOf(AppScreen.Movies, AppScreen.Serials, AppScreen.Books, AppScreen.Music)
     }
 
+    val isShowDrawer = AppScreen.isShowDrawer(navBackStackEntry)
     val toolbarTitle = if (title.isNullOrEmpty()) AppScreen.getTitle(navBackStackEntry) else title
-    val currentScreen = AppScreen.getScreen(navBackStackEntry)
-    val isCurrentScreenRoot = rootScreens.contains(currentScreen)
+    Log.d("TAG", "isCurrentScreenRoot: ${AppScreen.isShowDrawer(navBackStackEntry)}")
 
     Scaffold(
         scaffoldState = scaffoldState,
         topBar = {
             AppToolbar(
                 toolbarTitle,
-                isCurrentScreenRoot,
+                isShowDrawer,
                 scaffoldState.drawerState,
                 scope,
                 navController
             )
         },
-        drawerContent = {
-            AppDrawer(
-                isCurrentScreenRoot,
-                scaffoldState.drawerState,
-                scope,
-                navController,
-                navBackStackEntry,
-                rootScreens
-            )
+        drawerContent = if (isShowDrawer) {
+            {
+                AppDrawer(
+                    scaffoldState.drawerState,
+                    scope,
+                    navController,
+                    navBackStackEntry,
+                    rootScreens
+                )
+            }
+        } else {
+            null
         }
     ) {
         Box(modifier = Modifier.padding(it)) {
@@ -128,49 +132,46 @@ private fun AppToolbar(
 
 @Composable
 private fun AppDrawer(
-    isCurrentScreenRoot: Boolean,
     drawerState: DrawerState,
     scope: CoroutineScope,
     navController: NavHostController,
     navBackStackEntry: NavBackStackEntry?,
     rootScreens: List<AppScreen>,
 ) {
-    if (isCurrentScreenRoot) {
+    Text(
+        text = stringResource(R.string.app_name),
+        fontSize = 24.sp,
+        fontWeight = FontWeight.Medium,
+        modifier = Modifier.padding(16.dp)
+    )
+    Divider()
+    rootScreens.forEach { screen ->
         Text(
-            text = stringResource(R.string.app_name),
-            fontSize = 24.sp,
-            fontWeight = FontWeight.Medium,
-            modifier = Modifier.padding(16.dp)
-        )
-        Divider()
-        rootScreens.forEach { screen ->
-            Text(
-                text = stringResource(screen.titleRes),
-                fontSize = 18.sp,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(
-                        if (navBackStackEntry?.destination?.route == screen.route) {
-                            MaterialTheme.colors.primary.copy(alpha = 0.2f)
-                        } else {
-                            Color.Transparent
-                        }
-                    )
-                    .clickable {
-                        if (navBackStackEntry?.destination?.route != screen.route) {
-                            navController.navigate(screen.route) {
-                                popUpTo(navController.graph.findStartDestination().id) {
-                                    saveState = true
-                                }
-                                launchSingleTop = true
-                                restoreState = true
-                            }
-                        }
-                        scope.launch { drawerState.close() }
+            text = stringResource(screen.titleRes),
+            fontSize = 18.sp,
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(
+                    if (navBackStackEntry?.destination?.route == screen.route) {
+                        MaterialTheme.colors.primary.copy(alpha = 0.2f)
+                    } else {
+                        Color.Transparent
                     }
-                    .padding(16.dp)
-            )
-        }
+                )
+                .clickable {
+                    if (navBackStackEntry?.destination?.route != screen.route) {
+                        navController.navigate(screen.route) {
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
+                    }
+                    scope.launch { drawerState.close() }
+                }
+                .padding(16.dp)
+        )
     }
 }
 
@@ -203,7 +204,6 @@ private fun DrawerPreview() {
     AppTheme {
         Column(Modifier.fillMaxSize()) {
             AppDrawer(
-                true,
                 rememberScaffoldState().drawerState,
                 rememberCoroutineScope(),
                 rememberNavController(),

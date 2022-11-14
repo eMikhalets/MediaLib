@@ -37,6 +37,7 @@ import coil.request.ImageRequest
 import coil.transform.RoundedCornersTransformation
 import com.emikhalets.medialib.R
 import com.emikhalets.medialib.data.entity.views.MovieEntity
+import com.emikhalets.medialib.presentation.core.AddItemDialog
 import com.emikhalets.medialib.presentation.core.AppScaffold
 import com.emikhalets.medialib.presentation.core.RootScreenList
 import com.emikhalets.medialib.presentation.navToMovieDetails
@@ -50,6 +51,7 @@ fun MoviesScreen(
     viewModel: MoviesViewModel = hiltViewModel(),
 ) {
     var query by remember { mutableStateOf("") }
+    var showAddDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         viewModel.getSavedMovies(query)
@@ -59,6 +61,12 @@ fun MoviesScreen(
         navController = navController,
         query = query,
         movies = viewModel.state.movies,
+        showAddDialog = showAddDialog,
+        onAddClick = { name, year, comment ->
+            showAddDialog = false
+            viewModel.addMovie(name, year, comment)
+        },
+        onAddDialogVisible = { showAddDialog = it },
         onQueryChange = {
             query = it
             viewModel.getSavedMovies(query)
@@ -74,6 +82,9 @@ private fun MoviesScreen(
     navController: NavHostController,
     query: String,
     movies: List<MovieEntity>,
+    showAddDialog: Boolean,
+    onAddClick: (String, String, String) -> Unit,
+    onAddDialogVisible: (Boolean) -> Unit,
     onQueryChange: (String) -> Unit,
     onMovieClick: (Int) -> Unit,
 ) {
@@ -82,10 +93,18 @@ private fun MoviesScreen(
             query = query,
             list = movies,
             searchPlaceholder = stringResource(R.string.movies_query_placeholder),
+            onAddClick = { onAddDialogVisible(true) },
             onQueryChange = onQueryChange,
             onItemClick = onMovieClick
         ) { item ->
             MovieItem(item as MovieEntity, onMovieClick)
+        }
+
+        if (showAddDialog) {
+            AddItemDialog(
+                onDismiss = { onAddDialogVisible(false) },
+                onAddClick = onAddClick
+            )
         }
     }
 }
@@ -191,6 +210,9 @@ private fun ScreenPreview() {
             navController = rememberNavController(),
             query = "",
             movies = listOf(),
+            showAddDialog = true,
+            onAddClick = { _, _, _ -> },
+            onAddDialogVisible = {},
             onQueryChange = {},
             onMovieClick = {},
         )

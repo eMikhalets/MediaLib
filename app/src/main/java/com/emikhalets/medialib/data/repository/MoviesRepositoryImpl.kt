@@ -78,4 +78,8 @@ class MoviesRepositoryImpl @Inject constructor(
     override suspend fun isMovieSaved(id: Int): Result<Boolean> {
         return execute { moviesDao.isExist(id) }
     }
+
+    override suspend fun addMovieLocal(movieDB: MovieDB): Result<Long> {
+        return execute { moviesDao.insert(movieDB) ?: -1 }
+    }
 }

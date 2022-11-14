@@ -2,6 +2,7 @@ package com.emikhalets.medialib.data.entity.database
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import java.util.*
 
@@ -25,4 +26,26 @@ data class MovieDB(
     @ColumnInfo(name = "save_date") val saveDate: Long = Date().time,
     @ColumnInfo(name = "comment") val comment: String = "",
     @ColumnInfo(name = "rating") val rating: Int = 0,
-)
+) {
+
+    @Ignore
+    constructor(name: String, year: String, comment: String) : this(
+        id = 0,
+        title = name,
+        budget = 0,
+        backdrop = "",
+        genres = "",
+        imdbId = "",
+        originalTitle = "",
+        overview = "",
+        poster = "",
+        releaseDate = year,
+        revenue = 0,
+        runtime = 0,
+        status = "",
+        tagline = "",
+        voteAverage = 0.0,
+        comment = comment,
+        rating = 0,
+    )
+}

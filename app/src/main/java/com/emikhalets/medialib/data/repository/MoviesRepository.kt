@@ -25,4 +25,6 @@ interface MoviesRepository {
     suspend fun deleteMovieLocal(movieDB: MovieDB): Result<Int>
 
     suspend fun isMovieSaved(id: Int): Result<Boolean>
+
+    suspend fun addMovieLocal(movieDB: MovieDB): Result<Long>
 }

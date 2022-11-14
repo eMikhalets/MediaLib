@@ -11,9 +11,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -33,6 +35,7 @@ fun RootScreenList(
     query: String,
     list: List<ViewListItem>,
     searchPlaceholder: String,
+    onAddClick: () -> Unit,
     onQueryChange: (String) -> Unit,
     onItemClick: (Int) -> Unit,
     content: @Composable (ViewListItem) -> Unit,
@@ -49,16 +52,28 @@ fun RootScreenList(
                 )
             }
     ) {
-        OutlinedTextField(
-            value = query,
-            onValueChange = onQueryChange,
-            leadingIcon = { Icon(Icons.Rounded.Search, "search icon") },
-            placeholder = { Text(searchPlaceholder) },
-            maxLines = 1,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(4.dp)
-        )
+        Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+            OutlinedTextField(
+                value = query,
+                onValueChange = onQueryChange,
+                leadingIcon = { Icon(Icons.Rounded.Search, "search icon") },
+                placeholder = { Text(searchPlaceholder) },
+                maxLines = 1,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f)
+                    .padding(4.dp)
+            )
+            IconButton(
+                onClick = { onAddClick() }
+            ) {
+                Icon(
+                    imageVector = Icons.Rounded.Add,
+                    contentDescription = "",
+                    modifier = Modifier.padding(8.dp)
+                )
+            }
+        }
 
         if (list.isEmpty()) {
             val text = if (query.isEmpty()) R.string.app_root_list_empty

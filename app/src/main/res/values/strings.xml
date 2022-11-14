@@ -11,6 +11,12 @@
     <string name="screen_name_books">Книги</string>
     <string name="screen_name_music">Музыка</string>
 
+    <!--  Add new dialog  -->
+    <string name="add_new_title">Добавить новую запись</string>
+    <string name="add_new_name">Название</string>
+    <string name="add_new_year">Год</string>
+    <string name="add_new_comment">Комментарий</string>
+
     <!--  Movies screen  -->
     <string name="movies_query_placeholder">Название фильма</string>
     <string name="movie_local_load_error">Ошибка загрузки фильма</string>

@@ -37,14 +37,12 @@ sealed class AppScreen(val route: String, @StringRes val titleRes: Int) {
             }
         }
 
-        fun getScreen(entry: NavBackStackEntry?): AppScreen {
-            return when (entry?.destination?.route) {
-                Movies.route -> Movies
-                Serials.route -> Serials
-                Books.route -> Books
-                Music.route -> Music
-                else -> Movies
-            }
+        fun isShowDrawer(entry: NavBackStackEntry?): Boolean {
+            val route = entry?.destination?.route
+            return route == Movies.route ||
+                    route == Serials.route ||
+                    route == Books.route ||
+                    route == Music.route
         }
     }
 }

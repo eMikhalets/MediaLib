@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.emikhalets.medialib.data.entity.database.MovieDB
 import com.emikhalets.medialib.data.entity.views.MovieEntity
 import com.emikhalets.medialib.data.repository.MoviesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -37,6 +38,13 @@ class MoviesViewModel @Inject constructor(
             moviesResponse.onSuccess { movies ->
                 movies.collectLatest { state = state.setMovies(it.map { db -> MovieEntity(db) }) }
             }
+        }
+    }
+
+    fun addMovie(name: String, year: String, comment: String) {
+        viewModelScope.launch {
+            val entity = MovieDB(name, year, comment)
+            repo.addMovieLocal(entity)
         }
     }
 

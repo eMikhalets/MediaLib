@@ -6,7 +6,6 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.runtime.LaunchedEffect
 import androidx.navigation.compose.rememberNavController
-import com.emikhalets.medialib.presentation.core.AppScaffold
 import com.emikhalets.medialib.presentation.theme.AppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -26,9 +25,7 @@ class MainActivity : ComponentActivity() {
             }
 
             AppTheme {
-                AppScaffold(navController) {
-                    AppNavGraph(navController)
-                }
+                AppNavGraph(navController)
             }
         }
     }
