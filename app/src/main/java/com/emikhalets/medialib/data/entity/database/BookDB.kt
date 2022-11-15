@@ -6,21 +6,16 @@ import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import java.util.*
 
-@Entity(tableName = "movies")
-data class MovieDB(
+@Entity(tableName = "books")
+data class BookDB(
     @PrimaryKey @ColumnInfo(name = "id") val id: Int,
     @ColumnInfo(name = "title") val title: String,
-    @ColumnInfo(name = "budget") val budget: Long,
-    @ColumnInfo(name = "backdrop_path") val backdrop: String,
+    @ColumnInfo(name = "author") val author: String,
     @ColumnInfo(name = "genres") val genres: String,
-    @ColumnInfo(name = "imdb_id") val imdbId: String,
     @ColumnInfo(name = "original_title") val originalTitle: String,
     @ColumnInfo(name = "overview") val overview: String,
     @ColumnInfo(name = "poster_path") val poster: String,
     @ColumnInfo(name = "release_date") val releaseDate: String,
-    @ColumnInfo(name = "revenue") val revenue: Long,
-    @ColumnInfo(name = "runtime") val runtime: Int,
-    @ColumnInfo(name = "status") val status: String,
     @ColumnInfo(name = "tagline") val tagline: String,
     @ColumnInfo(name = "vote_average") val voteAverage: Double,
     @ColumnInfo(name = "save_date") val saveDate: Long = Date().time,
@@ -30,20 +25,15 @@ data class MovieDB(
 ) {
 
     @Ignore
-    constructor(name: String, year: String, comment: String) : this(
+    constructor(name: String, author: String, year: String, comment: String) : this(
         id = 0,
         title = name,
-        budget = 0,
-        backdrop = "",
+        author = author,
         genres = "",
-        imdbId = "",
         originalTitle = "",
         overview = "",
         poster = "",
         releaseDate = year,
-        revenue = 0,
-        runtime = 0,
-        status = "",
         tagline = "",
         voteAverage = 0.0,
         comment = comment,

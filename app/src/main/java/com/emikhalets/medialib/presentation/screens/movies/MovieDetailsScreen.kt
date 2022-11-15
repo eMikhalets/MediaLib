@@ -44,7 +44,6 @@ import com.emikhalets.medialib.data.entity.views.MovieEntity
 import com.emikhalets.medialib.presentation.core.AppScaffold
 import com.emikhalets.medialib.presentation.core.RatingBar
 import com.emikhalets.medialib.presentation.theme.AppTheme
-import com.emikhalets.medialib.utils.ImagePathBuilder
 import com.emikhalets.medialib.utils.px
 
 @Composable

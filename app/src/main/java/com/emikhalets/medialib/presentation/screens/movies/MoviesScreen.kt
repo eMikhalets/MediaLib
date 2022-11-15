@@ -42,7 +42,6 @@ import com.emikhalets.medialib.presentation.core.AppScaffold
 import com.emikhalets.medialib.presentation.core.RootScreenList
 import com.emikhalets.medialib.presentation.navToMovieDetails
 import com.emikhalets.medialib.presentation.theme.AppTheme
-import com.emikhalets.medialib.utils.ImagePathBuilder
 import com.emikhalets.medialib.utils.px
 
 @Composable
@@ -123,7 +122,7 @@ private fun MovieItem(
     ) {
         AsyncImage(
             model = ImageRequest.Builder(LocalContext.current)
-                .data(ImagePathBuilder().buildPosterPath(movie.poster))
+                .data(movie.poster)
                 .crossfade(true)
                 .transformations(RoundedCornersTransformation(8.px))
                 .error(R.drawable.ph_poster)
@@ -210,7 +209,7 @@ private fun ScreenPreview() {
             navController = rememberNavController(),
             query = "",
             movies = listOf(),
-            showAddDialog = true,
+            showAddDialog = false,
             onAddClick = { _, _, _ -> },
             onAddDialogVisible = {},
             onQueryChange = {},

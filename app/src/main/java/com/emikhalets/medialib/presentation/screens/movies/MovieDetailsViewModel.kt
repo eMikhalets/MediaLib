@@ -13,6 +13,15 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+data class MovieDetailsScreenState(
+    val movie: MovieEntity? = null,
+) {
+
+    fun setMovie(movie: MovieEntity): MovieDetailsScreenState {
+        return this.copy(movie = movie)
+    }
+}
+
 @HiltViewModel
 class MovieDetailsViewModel @Inject constructor(
     private val repo: MoviesRepository,
@@ -26,7 +35,7 @@ class MovieDetailsViewModel @Inject constructor(
     fun getSavedMovie(id: Int?) {
         id ?: return
         viewModelScope.launch {
-            val moviesResponse = repo.getMovieLocal(id)
+            val moviesResponse = repo.getItem(id)
             moviesResponse.onSuccess { flow ->
                 flow.collectLatest { movie ->
                     state = state.setMovie(MovieEntity(movie))
@@ -39,14 +48,14 @@ class MovieDetailsViewModel @Inject constructor(
     fun updateMovie() {
         val movie = movieDb ?: return
         viewModelScope.launch {
-            repo.updateMovieLocal(movie)
+            repo.updateItem(movie)
         }
     }
 
     fun deleteMovie() {
         val movie = movieDb ?: return
         viewModelScope.launch {
-            repo.deleteMovieLocal(movie)
+            repo.deleteItem(movie)
         }
     }
 }

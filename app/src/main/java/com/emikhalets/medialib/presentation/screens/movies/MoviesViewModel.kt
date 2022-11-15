@@ -16,6 +16,15 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+data class MoviesScreenState(
+    val movies: List<MovieEntity> = emptyList(),
+) {
+
+    fun setMovies(movies: List<MovieEntity>): MoviesScreenState {
+        return this.copy(movies = movies)
+    }
+}
+
 @HiltViewModel
 class MoviesViewModel @Inject constructor(
     private val repo: MoviesRepository,
@@ -30,10 +39,10 @@ class MoviesViewModel @Inject constructor(
         cancelJob(moviesJob, "Starting a new search request")
         moviesJob = viewModelScope.launch {
             val moviesResponse = if (query.isEmpty()) {
-                repo.getMoviesLocal()
+                repo.getItems()
             } else {
                 delay(750)
-                repo.getMoviesLocal(query)
+                repo.getItems(query)
             }
             moviesResponse.onSuccess { movies ->
                 movies.collectLatest { state = state.setMovies(it.map { db -> MovieEntity(db) }) }
@@ -44,7 +53,7 @@ class MoviesViewModel @Inject constructor(
     fun addMovie(name: String, year: String, comment: String) {
         viewModelScope.launch {
             val entity = MovieDB(name, year, comment)
-            repo.addMovieLocal(entity)
+            repo.insertItem(entity)
         }
     }
 
