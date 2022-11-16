@@ -2,6 +2,15 @@
     <!--  General  -->
     <string name="app_name">MediaLib</string>
     <string name="app_no_title">Без названия</string>
+    <string name="app_loading_error">Ошибка загрузки</string>
+    <string name="app_save">Сохранить</string>
+    <string name="app_delete">Удалить</string>
+    <string name="app_comment">Комментарий</string>
+    <string name="app_rating_value">Рейтинг: %s</string>
+    <string name="app_runtime_runtime_value">Время: %s</string>
+    <string name="app_date_value">Дата: %s</string>
+    <string name="app_genres_value">Жанры: %s</string>
+    <string name="app_overview">Описание</string>
     <string name="app_root_list_empty">Список пуст</string>
     <string name="app_root_list_query_empty">По данному запросу ничего не найдено</string>
 
@@ -19,20 +28,12 @@
 
     <!--  Movies screen  -->
     <string name="movies_query_placeholder">Название фильма</string>
-    <string name="movie_local_load_error">Ошибка загрузки фильма</string>
-    <string name="movie_local_save">Сохранить</string>
-    <string name="movie_local_delete">Удалить</string>
-    <string name="movie_local_comment">Комментарий</string>
-    <string name="movie_local_rating">Рейтинг: %s</string>
-    <string name="movie_local_runtime">Время: %s</string>
-    <string name="movie_local_date">Дата: %s</string>
-    <string name="movie_local_genres">Жанры: %s</string>
-    <string name="movie_local_overview">Описание</string>
     <string name="movie_local_budget">Бюджет: %s</string>
     <string name="movie_local_revenue">Доход: %s</string>
 
     <!--  Serials screen  -->
     <string name="serials_query_placeholder">Название сериала</string>
+    <string name="serials_seasons">Сезоны: %s</string>
 
     <!--  Books screen  -->
     <string name="books_query_placeholder">Название книги</string>

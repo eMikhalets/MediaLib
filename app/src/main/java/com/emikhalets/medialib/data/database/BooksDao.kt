@@ -1,12 +1,24 @@
 package com.emikhalets.medialib.data.database
 
 import androidx.room.Dao
+import androidx.room.Delete
+import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Update
 import com.emikhalets.medialib.data.entity.database.BookDB
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface BooksDao : BaseDao<BookDB> {
+interface BooksDao {
+
+    @Insert
+    suspend fun insert(item: BookDB): Long
+
+    @Update
+    suspend fun update(item: BookDB): Int
+
+    @Delete
+    suspend fun delete(item: BookDB): Int
 
     @Query("DELETE FROM books")
     suspend fun drop()

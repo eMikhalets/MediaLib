@@ -1,12 +1,12 @@
-package com.emikhalets.medialib.presentation.screens.movies
+package com.emikhalets.medialib.presentation.screens.serials
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.emikhalets.medialib.data.entity.database.MovieDB
-import com.emikhalets.medialib.data.repository.MoviesRepository
+import com.emikhalets.medialib.data.entity.database.SerialDB
+import com.emikhalets.medialib.data.repository.SerialsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Job
@@ -15,26 +15,26 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-data class MoviesScreenState(
-    val movies: List<MovieDB> = emptyList(),
+data class SerialsScreenState(
+    val serials: List<SerialDB> = emptyList(),
 ) {
 
-    fun setMovies(movies: List<MovieDB>): MoviesScreenState {
-        return this.copy(movies = movies)
+    fun setSerials(serials: List<SerialDB>): SerialsScreenState {
+        return this.copy(serials = serials)
     }
 }
 
 @HiltViewModel
-class MoviesViewModel @Inject constructor(
-    private val repo: MoviesRepository,
+class SerialsViewModel @Inject constructor(
+    private val repo: SerialsRepository,
 ) : ViewModel() {
 
-    var state by mutableStateOf(MoviesScreenState())
+    var state by mutableStateOf(SerialsScreenState())
         private set
 
     private var moviesJob: Job? = null
 
-    fun getSavedMovies(query: String) {
+    fun getSerials(query: String) {
         cancelJob(moviesJob, "Starting a new search request")
         moviesJob = viewModelScope.launch {
             val moviesResponse = if (query.isEmpty()) {
@@ -44,14 +44,14 @@ class MoviesViewModel @Inject constructor(
                 repo.getItems(query)
             }
             moviesResponse.onSuccess { movies ->
-                movies.collectLatest { state = state.setMovies(it) }
+                movies.collectLatest { state = state.setSerials(it) }
             }
         }
     }
 
-    fun addMovie(name: String, year: String, comment: String) {
+    fun addSerial(name: String, year: String, comment: String) {
         viewModelScope.launch {
-            val entity = MovieDB(name, year, comment)
+            val entity = SerialDB(name, year, comment)
             repo.insertItem(entity)
         }
     }

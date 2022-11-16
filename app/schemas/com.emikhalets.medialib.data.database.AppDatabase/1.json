@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "bf8d7ed48a021de6f7d0d691fd3afa35",
+    "identityHash": "1e5a7d17c84619e2d0e6dbf2c8dd02b5",
     "entities": [
       {
         "tableName": "movies",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `title` TEXT NOT NULL, `budget` INTEGER NOT NULL, `backdrop_path` TEXT NOT NULL, `genres` TEXT NOT NULL, `imdb_id` TEXT NOT NULL, `original_title` TEXT NOT NULL, `overview` TEXT NOT NULL, `poster_path` TEXT NOT NULL, `release_date` TEXT NOT NULL, `revenue` INTEGER NOT NULL, `runtime` INTEGER NOT NULL, `status` TEXT NOT NULL, `tagline` TEXT NOT NULL, `vote_average` REAL NOT NULL, `save_date` INTEGER NOT NULL, `comment` TEXT NOT NULL, `rating` INTEGER NOT NULL, `tags` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `title` TEXT NOT NULL, `budget` INTEGER NOT NULL, `backdrop_path` TEXT NOT NULL, `genres` TEXT NOT NULL, `imdb_id` TEXT NOT NULL, `original_title` TEXT NOT NULL, `overview` TEXT NOT NULL, `poster_path` TEXT NOT NULL, `release_date` INTEGER NOT NULL, `revenue` INTEGER NOT NULL, `runtime` INTEGER NOT NULL, `status` TEXT NOT NULL, `tagline` TEXT NOT NULL, `vote_average` REAL NOT NULL, `save_date` INTEGER NOT NULL, `comment` TEXT NOT NULL, `rating` INTEGER NOT NULL, `tags` TEXT NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -65,7 +65,7 @@
           {
             "fieldPath": "releaseDate",
             "columnName": "release_date",
-            "affinity": "TEXT",
+            "affinity": "INTEGER",
             "notNull": true
           },
           {
@@ -134,7 +134,7 @@
       },
       {
         "tableName": "serials",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `title` TEXT NOT NULL, `genres` TEXT NOT NULL, `original_title` TEXT NOT NULL, `overview` TEXT NOT NULL, `poster_path` TEXT NOT NULL, `release_date` TEXT NOT NULL, `seasons` INTEGER NOT NULL, `tagline` TEXT NOT NULL, `vote_average` REAL NOT NULL, `save_date` INTEGER NOT NULL, `comment` TEXT NOT NULL, `rating` INTEGER NOT NULL, `tags` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `title` TEXT NOT NULL, `genres` TEXT NOT NULL, `original_title` TEXT NOT NULL, `overview` TEXT NOT NULL, `poster_path` TEXT NOT NULL, `release_date` INTEGER NOT NULL, `seasons` INTEGER NOT NULL, `tagline` TEXT NOT NULL, `vote_average` REAL NOT NULL, `save_date` INTEGER NOT NULL, `comment` TEXT NOT NULL, `rating` INTEGER NOT NULL, `tags` TEXT NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -175,7 +175,7 @@
           {
             "fieldPath": "releaseDate",
             "columnName": "release_date",
-            "affinity": "TEXT",
+            "affinity": "INTEGER",
             "notNull": true
           },
           {
@@ -232,7 +232,7 @@
       },
       {
         "tableName": "books",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `title` TEXT NOT NULL, `author` TEXT NOT NULL, `genres` TEXT NOT NULL, `original_title` TEXT NOT NULL, `overview` TEXT NOT NULL, `poster_path` TEXT NOT NULL, `release_date` TEXT NOT NULL, `tagline` TEXT NOT NULL, `vote_average` REAL NOT NULL, `save_date` INTEGER NOT NULL, `comment` TEXT NOT NULL, `rating` INTEGER NOT NULL, `tags` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `title` TEXT NOT NULL, `author` TEXT NOT NULL, `genres` TEXT NOT NULL, `original_title` TEXT NOT NULL, `overview` TEXT NOT NULL, `poster_path` TEXT NOT NULL, `release_date` INTEGER NOT NULL, `tagline` TEXT NOT NULL, `vote_average` REAL NOT NULL, `save_date` INTEGER NOT NULL, `comment` TEXT NOT NULL, `rating` INTEGER NOT NULL, `tags` TEXT NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -279,7 +279,7 @@
           {
             "fieldPath": "releaseDate",
             "columnName": "release_date",
-            "affinity": "TEXT",
+            "affinity": "INTEGER",
             "notNull": true
           },
           {
@@ -330,7 +330,7 @@
       },
       {
         "tableName": "musics",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `title` TEXT NOT NULL, `author` TEXT NOT NULL, `genre` TEXT NOT NULL, `original_title` TEXT NOT NULL, `overview` TEXT NOT NULL, `poster_path` TEXT NOT NULL, `release_date` TEXT NOT NULL, `tagline` TEXT NOT NULL, `vote_average` REAL NOT NULL, `save_date` INTEGER NOT NULL, `comment` TEXT NOT NULL, `rating` INTEGER NOT NULL, `tags` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `title` TEXT NOT NULL, `author` TEXT NOT NULL, `genre` TEXT NOT NULL, `original_title` TEXT NOT NULL, `overview` TEXT NOT NULL, `poster_path` TEXT NOT NULL, `release_date` INTEGER NOT NULL, `tagline` TEXT NOT NULL, `vote_average` REAL NOT NULL, `save_date` INTEGER NOT NULL, `comment` TEXT NOT NULL, `rating` INTEGER NOT NULL, `tags` TEXT NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -377,7 +377,7 @@
           {
             "fieldPath": "releaseDate",
             "columnName": "release_date",
-            "affinity": "TEXT",
+            "affinity": "INTEGER",
             "notNull": true
           },
           {
@@ -430,7 +430,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'bf8d7ed48a021de6f7d0d691fd3afa35')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '1e5a7d17c84619e2d0e6dbf2c8dd02b5')"
     ]
   }
 }

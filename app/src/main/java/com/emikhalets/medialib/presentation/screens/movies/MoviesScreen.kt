@@ -1,48 +1,30 @@
 package com.emikhalets.medialib.presentation.screens.movies
 
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.material.Icon
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Star
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import coil.compose.AsyncImage
-import coil.request.ImageRequest
-import coil.transform.RoundedCornersTransformation
 import com.emikhalets.medialib.R
-import com.emikhalets.medialib.data.entity.views.MovieEntity
+import com.emikhalets.medialib.data.entity.database.MovieDB
 import com.emikhalets.medialib.presentation.core.AddItemDialog
 import com.emikhalets.medialib.presentation.core.AppScaffold
+import com.emikhalets.medialib.presentation.core.RootListItem
 import com.emikhalets.medialib.presentation.core.RootScreenList
 import com.emikhalets.medialib.presentation.navToMovieDetails
 import com.emikhalets.medialib.presentation.theme.AppTheme
-import com.emikhalets.medialib.utils.px
+import java.util.*
 
 @Composable
 fun MoviesScreen(
@@ -80,7 +62,7 @@ fun MoviesScreen(
 private fun MoviesScreen(
     navController: NavHostController,
     query: String,
-    movies: List<MovieEntity>,
+    movies: List<MovieDB>,
     showAddDialog: Boolean,
     onAddClick: (String, String, String) -> Unit,
     onAddDialogVisible: (Boolean) -> Unit,
@@ -96,7 +78,7 @@ private fun MoviesScreen(
             onQueryChange = onQueryChange,
             onItemClick = onMovieClick
         ) { item ->
-            MovieItem(item as MovieEntity, onMovieClick)
+            MovieItem(item as MovieDB, onMovieClick)
         }
 
         if (showAddDialog) {
@@ -110,94 +92,27 @@ private fun MoviesScreen(
 
 @Composable
 private fun MovieItem(
-    movie: MovieEntity,
+    movie: MovieDB,
     onMovieClick: (Int) -> Unit,
 ) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable { onMovieClick(movie.id) }
-            .padding(8.dp)
+    RootListItem(
+        item = movie,
+        onItemClick = onMovieClick
     ) {
-        AsyncImage(
-            model = ImageRequest.Builder(LocalContext.current)
-                .data(movie.poster)
-                .crossfade(true)
-                .transformations(RoundedCornersTransformation(8.px))
-                .error(R.drawable.ph_poster)
-                .build(),
-            contentDescription = "movie poster",
-            placeholder = painterResource(R.drawable.ph_poster),
-            contentScale = ContentScale.FillHeight,
-            modifier = Modifier
-                .height(150.dp)
-                .padding(8.dp)
-
+        Text(
+            text = stringResource(R.string.app_genres_value, movie.genres),
+            fontSize = 14.sp,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier.fillMaxWidth()
         )
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp)
-                .weight(1f)
-        ) {
-            Text(
-                text = movie.title.ifEmpty { stringResource(R.string.app_no_title) },
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Medium,
-                modifier = Modifier.fillMaxWidth()
-            )
-            if (movie.originalTitle.isNotEmpty()) {
-                Text(
-                    text = movie.originalTitle,
-                    fontSize = 14.sp,
-                    modifier = Modifier.fillMaxWidth()
-                )
-            }
-            Spacer(modifier = Modifier.height(8.dp))
-            Row {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1f)
-                ) {
-                    Text(
-                        text = stringResource(R.string.movie_local_genres, movie.genres),
-                        fontSize = 14.sp,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                    Text(
-                        text = stringResource(R.string.movie_local_date, movie.releaseDate),
-                        fontSize = 14.sp,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                    Text(
-                        text = stringResource(R.string.movie_local_runtime, movie.runtime),
-                        fontSize = 14.sp,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                }
-                Spacer(modifier = Modifier.width(4.dp))
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Icon(
-                        imageVector = Icons.Rounded.Star,
-                        contentDescription = ""
-                    )
-                    Text(
-                        text = movie.rating.toString(),
-                        fontSize = 14.sp,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                }
-            }
-        }
+        Text(
+            text = stringResource(R.string.app_runtime_runtime_value, movie.runtime),
+            fontSize = 14.sp,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier.fillMaxWidth()
+        )
     }
 }
 
@@ -223,7 +138,7 @@ private fun ScreenPreview() {
 private fun ItemPreview() {
     AppTheme {
         MovieItem(
-            movie = MovieEntity(
+            movie = MovieDB(
                 id = 0,
                 title = "Long long long long long long long long long Spider-man",
                 budget = 0,
@@ -233,7 +148,7 @@ private fun ItemPreview() {
                 originalTitle = "Original title",
                 overview = "",
                 poster = "",
-                releaseDate = "2014-05-06",
+                releaseDate = Calendar.getInstance().timeInMillis,
                 revenue = 0,
                 runtime = 122,
                 status = "",

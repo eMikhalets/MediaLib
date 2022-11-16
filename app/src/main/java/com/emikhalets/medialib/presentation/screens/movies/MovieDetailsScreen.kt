@@ -40,11 +40,12 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import coil.transform.RoundedCornersTransformation
 import com.emikhalets.medialib.R
-import com.emikhalets.medialib.data.entity.views.MovieEntity
+import com.emikhalets.medialib.data.entity.database.MovieDB
 import com.emikhalets.medialib.presentation.core.AppScaffold
 import com.emikhalets.medialib.presentation.core.RatingBar
 import com.emikhalets.medialib.presentation.theme.AppTheme
 import com.emikhalets.medialib.utils.px
+import java.util.*
 
 @Composable
 fun MovieDetailsScreen(
@@ -80,7 +81,7 @@ fun MovieDetailsScreen(
 @Composable
 private fun MovieDetailsScreen(
     navController: NavHostController,
-    movie: MovieEntity?,
+    movie: MovieDB?,
     comment: String,
     rating: Int,
     onCommentChange: (String) -> Unit,
@@ -95,7 +96,7 @@ private fun MovieDetailsScreen(
                 modifier = Modifier.fillMaxSize()
             ) {
                 Text(
-                    text = stringResource(R.string.movie_local_load_error),
+                    text = stringResource(R.string.app_loading_error),
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Medium,
                     textAlign = TextAlign.Center,
@@ -118,7 +119,7 @@ private fun MovieDetailsScreen(
 
 @Composable
 private fun MovieItem(
-    movie: MovieEntity,
+    movie: MovieDB,
     comment: String,
     rating: Int,
     onCommentChange: (String) -> Unit,
@@ -133,7 +134,7 @@ private fun MovieItem(
     ) {
         AsyncImage(
             model = ImageRequest.Builder(LocalContext.current)
-                .data(ImagePathBuilder().buildBackdropPath(movie.backdrop))
+                .data(movie.backdrop)
                 .crossfade(true)
                 .error(R.drawable.ph_backdrop)
                 .build(),
@@ -149,7 +150,7 @@ private fun MovieItem(
         ) {
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
-                    .data(ImagePathBuilder().buildPosterPath(movie.poster))
+                    .data(movie.poster)
                     .crossfade(true)
                     .transformations(RoundedCornersTransformation(8.px))
                     .error(R.drawable.ph_poster)
@@ -176,7 +177,7 @@ private fun MovieItem(
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = stringResource(R.string.movie_local_rating,
+                    text = stringResource(R.string.app_rating_value,
                         movie.voteAverage.toString()),
                     fontSize = 14.sp,
                     maxLines = 1,
@@ -185,7 +186,7 @@ private fun MovieItem(
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = stringResource(R.string.movie_local_runtime, movie.runtime.toString()),
+                    text = stringResource(R.string.app_runtime_runtime_value, movie.runtime.toString()),
                     fontSize = 14.sp,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
@@ -193,7 +194,7 @@ private fun MovieItem(
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = stringResource(R.string.movie_local_date, movie.releaseDate),
+                    text = stringResource(R.string.app_date_value, movie.releaseDate),
                     fontSize = 14.sp,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
@@ -206,7 +207,7 @@ private fun MovieItem(
                         .fillMaxWidth()
                         .weight(1f)
                 ) {
-                    Text(text = stringResource(R.string.movie_local_save))
+                    Text(text = stringResource(R.string.app_save))
                 }
                 Spacer(modifier = Modifier.height(8.dp))
                 Button(
@@ -215,7 +216,7 @@ private fun MovieItem(
                         .fillMaxWidth()
                         .weight(1f)
                 ) {
-                    Text(text = stringResource(R.string.movie_local_delete))
+                    Text(text = stringResource(R.string.app_delete))
                 }
             }
         }
@@ -239,7 +240,7 @@ private fun MovieItem(
         }
         Spacer(modifier = Modifier.height(8.dp))
         Text(
-            text = stringResource(R.string.movie_local_genres, movie.genres),
+            text = stringResource(R.string.app_genres_value, movie.genres),
             fontSize = 14.sp,
             modifier = Modifier
                 .fillMaxWidth()
@@ -248,7 +249,7 @@ private fun MovieItem(
         if (movie.overview.isNotEmpty()) {
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = stringResource(R.string.movie_local_overview),
+                text = stringResource(R.string.app_overview),
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Medium,
                 modifier = Modifier
@@ -285,7 +286,7 @@ private fun MovieItem(
         OutlinedTextField(
             value = comment,
             onValueChange = onCommentChange,
-            label = { Text(stringResource(R.string.movie_local_comment)) },
+            label = { Text(stringResource(R.string.app_comment)) },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(4.dp)
@@ -299,7 +300,7 @@ private fun ScreenPreview() {
     AppTheme {
         MovieDetailsScreen(
             navController = rememberNavController(),
-            movie = MovieEntity(
+            movie = MovieDB(
                 id = 1,
                 title = "Long long long long long long long long long Spider-man",
                 budget = 0,
@@ -309,7 +310,7 @@ private fun ScreenPreview() {
                 originalTitle = "Original title",
                 overview = "",
                 poster = "",
-                releaseDate = "2014-05-06",
+                releaseDate = Calendar.getInstance().timeInMillis,
                 revenue = 0,
                 runtime = 122,
                 status = "",

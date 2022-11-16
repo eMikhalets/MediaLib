@@ -24,6 +24,9 @@ sealed class AppScreen(val route: String, @StringRes val titleRes: Int) {
     object Music : AppScreen("music", R.string.screen_name_music)
 
     object MovieDetails : AppScreen("movie_details", R.string.screen_name_movies)
+    object SerialDetails : AppScreen("serial_details", R.string.screen_name_serials)
+    object BookDetails : AppScreen("book_details", R.string.screen_name_books)
+    object MusicDetails : AppScreen("music_details", R.string.screen_name_music)
 
     companion object {
         @Composable
@@ -48,12 +51,24 @@ sealed class AppScreen(val route: String, @StringRes val titleRes: Int) {
 }
 
 object NavRoutes {
-    val MOVIE_ROUTE = "${AppScreen.MovieDetails.route}/{${NavArgs.MOVIE_ID}}";
-    val MOVIE_ARGS = listOf(navArgument(NavArgs.MOVIE_ID) { type = NavType.IntType });
+    val MOVIE_ROUTE = "${AppScreen.MovieDetails.route}/{${NavArgs.MOVIE_ID}}"
+    val MOVIE_ARGS = listOf(navArgument(NavArgs.MOVIE_ID) { type = NavType.IntType })
+
+    val SERIAL_ROUTE = "${AppScreen.SerialDetails.route}/{${NavArgs.SERIAL_ID}}"
+    val SERIAL_ARGS = listOf(navArgument(NavArgs.SERIAL_ID) { type = NavType.IntType })
+
+    val BOOK_ROUTE = "${AppScreen.BookDetails.route}/{${NavArgs.BOOK_ID}}"
+    val BOOK_ARGS = listOf(navArgument(NavArgs.BOOK_ID) { type = NavType.IntType })
+
+    val MUSIC_ROUTE = "${AppScreen.MusicDetails.route}/{${NavArgs.MUSIC_ID}}"
+    val MUSIC_ARGS = listOf(navArgument(NavArgs.MUSIC_ID) { type = NavType.IntType })
 }
 
 object NavArgs {
-    const val MOVIE_ID = "nav_arg_movie_id";
+    const val MOVIE_ID = "nav_arg_movie_id"
+    const val SERIAL_ID = "nav_arg_serial_id"
+    const val BOOK_ID = "nav_arg_book_id"
+    const val MUSIC_ID = "nav_arg_music_id"
 }
 
 @Composable
@@ -83,9 +98,41 @@ fun AppNavGraph(navController: NavHostController) {
             )
         }
 
+        composable(NavRoutes.SERIAL_ROUTE, NavRoutes.SERIAL_ARGS) {
+//            SerialDetailsScreen(
+//                navController = navController,
+//                serialId = it.arguments?.getInt(NavArgs.SERIAL_ID) ?: -1
+//            )
+        }
+
+        composable(NavRoutes.BOOK_ROUTE, NavRoutes.BOOK_ARGS) {
+//            BookDetailsScreen(
+//                navController = navController,
+//                bookId = it.arguments?.getInt(NavArgs.BOOK_ID) ?: -1
+//            )
+        }
+
+        composable(NavRoutes.MUSIC_ROUTE, NavRoutes.MUSIC_ARGS) {
+//            MusicDetailsScreen(
+//                navController = navController,
+//                musicId = it.arguments?.getInt(NavArgs.MUSIC_ID) ?: -1
+//            )
+        }
     }
 }
 
 fun NavHostController.navToMovieDetails(id: Int) {
     navigate("${AppScreen.MovieDetails.route}/$id")
+}
+
+fun NavHostController.navToSerialDetails(id: Int) {
+    navigate("${AppScreen.SerialDetails.route}/$id")
+}
+
+fun NavHostController.navToBookDetails(id: Int) {
+    navigate("${AppScreen.BookDetails.route}/$id")
+}
+
+fun NavHostController.navToMusicDetails(id: Int) {
+    navigate("${AppScreen.MusicDetails.route}/$id")
 }
