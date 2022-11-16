@@ -22,6 +22,11 @@ fun Long.formatDate(pattern: String = "dd.MM.yyyy"): String {
     return formatter.format(this)
 }
 
+fun String.toDate(pattern: String = "dd.MM.yyyy"): String {
+    val formatter = SimpleDateFormat(pattern, Locale.getDefault())
+    return formatter.format(this)
+}
+
 val Int.px: Float
     @Composable
     get() = this * LocalContext.current.resources.displayMetrics.density

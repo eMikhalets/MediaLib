@@ -1,4 +1,4 @@
-package com.emikhalets.medialib.presentation.screens.movies
+package com.emikhalets.medialib.presentation.screens.serials
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -38,7 +38,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import coil.transform.RoundedCornersTransformation
 import com.emikhalets.medialib.R
-import com.emikhalets.medialib.data.entity.database.MovieDB
+import com.emikhalets.medialib.data.entity.database.SerialDB
 import com.emikhalets.medialib.presentation.core.AppScaffold
 import com.emikhalets.medialib.presentation.core.DeleteDialog
 import com.emikhalets.medialib.presentation.core.RatingBar
@@ -47,10 +47,10 @@ import com.emikhalets.medialib.presentation.theme.AppTheme
 import com.emikhalets.medialib.utils.px
 
 @Composable
-fun MovieDetailsScreen(
+fun SerialDetailsScreen(
     navController: NavHostController,
-    movieId: Int?,
-    viewModel: MovieDetailsViewModel = hiltViewModel(),
+    serialId: Int?,
+    viewModel: SerialDetailsViewModel = hiltViewModel(),
 ) {
     var comment by remember { mutableStateOf("") }
     var rating by remember { mutableStateOf(0) }
@@ -58,13 +58,13 @@ fun MovieDetailsScreen(
     var showDeleteDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
-        viewModel.getSavedMovie(movieId)
+        viewModel.getSerial(serialId)
     }
 
-    LaunchedEffect(viewModel.state.movie) {
-        val movie = viewModel.state.movie
-        comment = movie?.comment ?: ""
-        rating = movie?.rating ?: 0
+    LaunchedEffect(viewModel.state.serial) {
+        val serial = viewModel.state.serial
+        comment = serial?.comment ?: ""
+        rating = serial?.rating ?: 0
     }
 
     LaunchedEffect(viewModel.state.deleted) {
@@ -73,9 +73,9 @@ fun MovieDetailsScreen(
         }
     }
 
-    MovieDetailsScreen(
+    SerialDetailsScreen(
         navController = navController,
-        movie = viewModel.state.movie,
+        serial = viewModel.state.serial,
         comment = comment,
         rating = rating,
         isNeedSave = isNeedSave,
@@ -88,7 +88,7 @@ fun MovieDetailsScreen(
             isNeedSave = true
         },
         onUpdateClick = {
-            viewModel.updateMovie(comment, rating)
+            viewModel.updateSerial(comment, rating)
             isNeedSave = false
         },
         onDeleteClick = { showDeleteDialog = true },
@@ -98,7 +98,7 @@ fun MovieDetailsScreen(
         DeleteDialog(
             onDismiss = { showDeleteDialog = false },
             onDeleteClick = {
-                viewModel.deleteMovie()
+                viewModel.deleteSerial()
                 showDeleteDialog = false
             }
         )
@@ -106,9 +106,9 @@ fun MovieDetailsScreen(
 }
 
 @Composable
-private fun MovieDetailsScreen(
+private fun SerialDetailsScreen(
     navController: NavHostController,
-    movie: MovieDB?,
+    serial: SerialDB?,
     comment: String,
     rating: Int,
     isNeedSave: Boolean,
@@ -117,8 +117,8 @@ private fun MovieDetailsScreen(
     onUpdateClick: () -> Unit,
     onDeleteClick: () -> Unit,
 ) {
-    AppScaffold(navController, movie?.title) {
-        if (movie == null) {
+    AppScaffold(navController, serial?.title) {
+        if (serial == null) {
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier.fillMaxSize()
@@ -133,7 +133,7 @@ private fun MovieDetailsScreen(
             }
         } else {
             MovieItem(
-                movie = movie,
+                serial = serial,
                 comment = comment,
                 rating = rating,
                 onCommentChange = onCommentChange,
@@ -151,7 +151,7 @@ private fun MovieDetailsScreen(
 
 @Composable
 private fun MovieItem(
-    movie: MovieDB,
+    serial: SerialDB,
     comment: String,
     rating: Int,
     onCommentChange: (String) -> Unit,
@@ -170,7 +170,7 @@ private fun MovieItem(
         ) {
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
-                    .data(movie.poster)
+                    .data(serial.poster)
                     .crossfade(true)
                     .transformations(RoundedCornersTransformation(8.px))
                     .error(R.drawable.ph_poster)
@@ -190,14 +190,14 @@ private fun MovieItem(
                     .padding(end = 16.dp)
             ) {
                 Text(
-                    text = movie.title,
+                    text = serial.title,
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Medium,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp)
                 )
-                val localeTitle = movie.getLocaleTitle()
+                val localeTitle = serial.getLocaleTitle()
                 if (localeTitle.isNotEmpty()) {
                     Text(
                         text = localeTitle,
@@ -209,7 +209,7 @@ private fun MovieItem(
                 }
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text = movie.releaseYear.toString(),
+                    text = serial.releaseYear.toString(),
                     fontSize = 18.sp,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -231,7 +231,7 @@ private fun MovieItem(
                 .fillMaxWidth()
                 .padding(4.dp)
         )
-        if (movie.overview.isNotEmpty()) {
+        if (serial.overview.isNotEmpty()) {
             Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = stringResource(R.string.app_overview),
@@ -240,7 +240,7 @@ private fun MovieItem(
                 modifier = Modifier.fillMaxWidth()
             )
             Text(
-                text = movie.overview,
+                text = serial.overview,
                 fontSize = 14.sp,
                 modifier = Modifier.fillMaxWidth()
             )
@@ -248,7 +248,7 @@ private fun MovieItem(
         Spacer(modifier = Modifier.height(8.dp))
         Text(
             text = stringResource(R.string.app_rating_value,
-                movie.voteAverage.toString()),
+                serial.voteAverage.toString()),
             fontSize = 14.sp,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
@@ -256,28 +256,13 @@ private fun MovieItem(
         )
         Spacer(modifier = Modifier.height(4.dp))
         Text(
-            text = stringResource(R.string.app_runtime_runtime_value,
-                movie.runtime.toString()),
-            fontSize = 14.sp,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.fillMaxWidth()
-        )
-        Spacer(modifier = Modifier.height(4.dp))
-        Text(
-            text = stringResource(R.string.app_genres_value, movie.genres),
+            text = stringResource(R.string.app_genres_value, serial.genres),
             fontSize = 14.sp,
             modifier = Modifier.fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(4.dp))
         Text(
-            text = stringResource(R.string.movie_local_budget, movie.budget),
-            fontSize = 14.sp,
-            modifier = Modifier.fillMaxWidth()
-        )
-        Spacer(modifier = Modifier.height(4.dp))
-        Text(
-            text = stringResource(R.string.movie_local_revenue, movie.revenue),
+            text = stringResource(R.string.serials_seasons, serial.seasons),
             fontSize = 14.sp,
             modifier = Modifier.fillMaxWidth()
         )
@@ -288,14 +273,14 @@ private fun MovieItem(
 @Composable
 private fun ScreenPreview() {
     AppTheme {
-        MovieDetailsScreen(
+        SerialDetailsScreen(
             navController = rememberNavController(),
-            movie = MovieDB(
-                id = 1,
-                title = "Spider-man",
+            serial = SerialDB(
+                title = "Long Spider-man",
+                titleRu = "Человек-паук",
                 genres = "Action, Drama",
                 releaseYear = 2018,
-                runtime = 122,
+                seasons = 4,
                 overview = "overview overview overview overview overview overview overview overview overview overview"
             ),
             comment = "Test comment",

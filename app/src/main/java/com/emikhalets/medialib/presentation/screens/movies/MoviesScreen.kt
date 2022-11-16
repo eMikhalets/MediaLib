@@ -24,7 +24,6 @@ import com.emikhalets.medialib.presentation.core.RootListItem
 import com.emikhalets.medialib.presentation.core.RootScreenList
 import com.emikhalets.medialib.presentation.navToMovieDetails
 import com.emikhalets.medialib.presentation.theme.AppTheme
-import java.util.*
 
 @Composable
 fun MoviesScreen(
@@ -64,7 +63,7 @@ private fun MoviesScreen(
     query: String,
     movies: List<MovieDB>,
     showAddDialog: Boolean,
-    onAddClick: (String, String, String) -> Unit,
+    onAddClick: (String, Int, String) -> Unit,
     onAddDialogVisible: (Boolean) -> Unit,
     onQueryChange: (String) -> Unit,
     onMovieClick: (Int) -> Unit,
@@ -139,21 +138,10 @@ private fun ItemPreview() {
     AppTheme {
         MovieItem(
             movie = MovieDB(
-                id = 0,
                 title = "Long long long long long long long long long Spider-man",
-                budget = 0,
-                backdrop = "",
                 genres = "Action, Drama",
-                imdbId = "",
-                originalTitle = "Original title",
-                overview = "",
-                poster = "",
-                releaseDate = Calendar.getInstance().timeInMillis,
-                revenue = 0,
+                releaseYear = 2015,
                 runtime = 122,
-                status = "",
-                tagline = "",
-                voteAverage = 0.0,
             ),
             onMovieClick = {},
         )

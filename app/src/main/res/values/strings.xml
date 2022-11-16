@@ -1,7 +1,6 @@
 <resources>
     <!--  General  -->
     <string name="app_name">MediaLib</string>
-    <string name="app_no_title">Без названия</string>
     <string name="app_loading_error">Ошибка загрузки</string>
     <string name="app_save">Сохранить</string>
     <string name="app_delete">Удалить</string>
@@ -13,6 +12,7 @@
     <string name="app_overview">Описание</string>
     <string name="app_root_list_empty">Список пуст</string>
     <string name="app_root_list_query_empty">По данному запросу ничего не найдено</string>
+    <string name="app_cancel">Отменить</string>
 
     <!--  Screen titles  -->
     <string name="screen_name_movies">Фильмы</string>
@@ -20,11 +20,11 @@
     <string name="screen_name_books">Книги</string>
     <string name="screen_name_music">Музыка</string>
 
-    <!--  Add new dialog  -->
-    <string name="add_new_title">Добавить новую запись</string>
+    <!--  Dialog  -->
+    <string name="dialog_add_item_title">Добавить новую запись</string>
     <string name="add_new_name">Название</string>
     <string name="add_new_year">Год</string>
-    <string name="add_new_comment">Комментарий</string>
+    <string name="dialog_delete_title">Удалить запись?</string>
 
     <!--  Movies screen  -->
     <string name="movies_query_placeholder">Название фильма</string>

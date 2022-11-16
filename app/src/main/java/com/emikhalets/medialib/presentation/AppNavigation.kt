@@ -14,6 +14,7 @@ import com.emikhalets.medialib.presentation.screens.books.BooksScreen
 import com.emikhalets.medialib.presentation.screens.movies.MovieDetailsScreen
 import com.emikhalets.medialib.presentation.screens.movies.MoviesScreen
 import com.emikhalets.medialib.presentation.screens.music.MusicScreen
+import com.emikhalets.medialib.presentation.screens.serials.SerialDetailsScreen
 import com.emikhalets.medialib.presentation.screens.serials.SerialsScreen
 
 sealed class AppScreen(val route: String, @StringRes val titleRes: Int) {
@@ -99,10 +100,10 @@ fun AppNavGraph(navController: NavHostController) {
         }
 
         composable(NavRoutes.SERIAL_ROUTE, NavRoutes.SERIAL_ARGS) {
-//            SerialDetailsScreen(
-//                navController = navController,
-//                serialId = it.arguments?.getInt(NavArgs.SERIAL_ID) ?: -1
-//            )
+            SerialDetailsScreen(
+                navController = navController,
+                serialId = it.arguments?.getInt(NavArgs.SERIAL_ID) ?: -1
+            )
         }
 
         composable(NavRoutes.BOOK_ROUTE, NavRoutes.BOOK_ARGS) {

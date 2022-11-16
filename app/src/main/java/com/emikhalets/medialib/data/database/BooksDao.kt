@@ -27,7 +27,7 @@ interface BooksDao {
     fun getAllItemsFlow(): Flow<List<BookDB>>
 
     @Query("SELECT * FROM books " +
-            "WHERE title LIKE '%' || :query || '%' OR original_title LIKE '%' || :query || '%' " +
+            "WHERE title LIKE '%' || :query || '%' OR title_ru LIKE '%' || :query || '%' " +
             "ORDER BY save_date DESC")
     fun searchByTitle(query: String): Flow<List<BookDB>>
 

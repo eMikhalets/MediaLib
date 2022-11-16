@@ -26,9 +26,7 @@ interface MusicsDao {
     @Query("SELECT * FROM musics ORDER BY save_date DESC")
     fun getAllItemsFlow(): Flow<List<MusicDB>>
 
-    @Query("SELECT * FROM musics " +
-            "WHERE title LIKE '%' || :query || '%' OR original_title LIKE '%' || :query || '%' " +
-            "ORDER BY save_date DESC")
+    @Query("SELECT * FROM musics WHERE title LIKE '%' || :query || '%' ORDER BY save_date DESC")
     fun searchByTitle(query: String): Flow<List<MusicDB>>
 
     @Query("SELECT * FROM musics WHERE id=:id")

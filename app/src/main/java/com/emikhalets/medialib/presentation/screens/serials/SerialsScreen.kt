@@ -24,7 +24,6 @@ import com.emikhalets.medialib.presentation.core.RootListItem
 import com.emikhalets.medialib.presentation.core.RootScreenList
 import com.emikhalets.medialib.presentation.navToSerialDetails
 import com.emikhalets.medialib.presentation.theme.AppTheme
-import java.util.*
 
 @Composable
 fun SerialsScreen(
@@ -64,7 +63,7 @@ private fun SerialsScreen(
     query: String,
     serials: List<SerialDB>,
     showAddDialog: Boolean,
-    onAddClick: (String, String, String) -> Unit,
+    onAddClick: (String, Int, String) -> Unit,
     onAddDialogVisible: (Boolean) -> Unit,
     onQueryChange: (String) -> Unit,
     onSerialClick: (Int) -> Unit,
@@ -139,15 +138,9 @@ private fun ItemPreview() {
     AppTheme {
         SerialItem(
             serial = SerialDB(
-                id = 0,
                 title = "Long long Spider-man",
                 genres = "Action, Drama",
-                originalTitle = "Original title",
-                overview = "",
-                poster = "",
-                releaseDate = Calendar.getInstance().timeInMillis,
-                tagline = "",
-                voteAverage = 0.0,
+                releaseYear = 2015,
                 seasons = 3,
                 rating = 3
             ),

@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.Button
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.OutlinedTextField
@@ -42,7 +43,6 @@ import coil.request.ImageRequest
 import coil.transform.RoundedCornersTransformation
 import com.emikhalets.medialib.R
 import com.emikhalets.medialib.data.entity.views.ViewListItem
-import com.emikhalets.medialib.utils.formatDate
 import com.emikhalets.medialib.utils.px
 
 @Composable
@@ -160,9 +160,10 @@ fun RootListItem(
                 fontWeight = FontWeight.Medium,
                 modifier = Modifier.fillMaxWidth()
             )
-            if (item.originalTitle.isNotEmpty()) {
+            val localeTitle = item.getLocaleTitle()
+            if (localeTitle.isNotEmpty()) {
                 Text(
-                    text = item.originalTitle,
+                    text = localeTitle,
                     fontSize = 14.sp,
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -181,13 +182,52 @@ fun RootListItem(
                     Spacer(modifier = Modifier.height(4.dp))
                 }
                 Text(
-                    text = stringResource(R.string.app_date_value, item.releaseDate.formatDate()),
+                    text = stringResource(R.string.app_date_value, item.releaseYear),
                     fontSize = 14.sp,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     modifier = Modifier.fillMaxWidth()
                 )
                 content()
+            }
+        }
+    }
+}
+
+@Composable
+fun RootSaveDelete(
+    isNeedSave: Boolean,
+    onDeleteClick: () -> Unit,
+    onSaveClick: () -> Unit,
+) {
+    Box(
+        contentAlignment = Alignment.BottomCenter,
+        modifier = Modifier.fillMaxSize()
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 8.dp)
+        ) {
+            if (isNeedSave) {
+                Button(
+                    onClick = { onSaveClick() },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f)
+                ) {
+                    Text(text = stringResource(id = R.string.app_save))
+                }
+                Spacer(modifier = Modifier.width(8.dp))
+            }
+            Button(
+                onClick = { onDeleteClick() },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f)
+            ) {
+                Text(text = stringResource(id = R.string.app_delete))
             }
         }
     }

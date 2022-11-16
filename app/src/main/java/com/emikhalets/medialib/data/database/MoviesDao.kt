@@ -27,7 +27,7 @@ interface MoviesDao {
     fun getAllItemsFlow(): Flow<List<MovieDB>>
 
     @Query("SELECT * FROM movies " +
-            "WHERE title LIKE '%' || :query || '%' OR original_title LIKE '%' || :query || '%' " +
+            "WHERE title LIKE '%' || :query || '%' OR title_ru LIKE '%' || :query || '%' " +
             "ORDER BY save_date DESC")
     fun searchByTitle(query: String): Flow<List<MovieDB>>
 

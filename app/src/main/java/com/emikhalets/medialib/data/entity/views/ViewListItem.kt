@@ -5,7 +5,8 @@ interface ViewListItem {
     val id: Int
     val poster: String
     val title: String
-    val originalTitle: String
-    val releaseDate: Long
+    val releaseYear: Int
     val rating: Int
+
+    fun getLocaleTitle(): String
 }

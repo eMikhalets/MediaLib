@@ -14,10 +14,15 @@ import javax.inject.Inject
 
 data class MovieDetailsScreenState(
     val movie: MovieDB? = null,
+    val deleted: Boolean = false,
 ) {
 
     fun setMovie(movie: MovieDB): MovieDetailsScreenState {
         return this.copy(movie = movie)
+    }
+
+    fun setDeleted(): MovieDetailsScreenState {
+        return this.copy(deleted = true)
     }
 }
 
@@ -44,8 +49,11 @@ class MovieDetailsViewModel @Inject constructor(
         }
     }
 
-    fun updateMovie() {
-        val movie = movieDb ?: return
+    fun updateMovie(comment: String, rating: Int) {
+        val movie = movieDb?.copy(
+            comment = comment,
+            rating = rating
+        ) ?: return
         viewModelScope.launch {
             repo.updateItem(movie)
         }
@@ -54,7 +62,7 @@ class MovieDetailsViewModel @Inject constructor(
     fun deleteMovie() {
         val movie = movieDb ?: return
         viewModelScope.launch {
-            repo.deleteItem(movie)
+            repo.deleteItem(movie).onSuccess { state = state.setDeleted() }
         }
     }
 }

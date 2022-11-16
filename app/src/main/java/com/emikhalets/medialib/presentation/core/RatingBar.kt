@@ -1,6 +1,7 @@
 package com.emikhalets.medialib.presentation.core
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.width
@@ -20,7 +21,10 @@ fun RatingBar(
     maxRating: Int = 5,
 ) {
 
-    Row(modifier = modifier) {
+    Row(
+        horizontalArrangement = Arrangement.Center,
+        modifier = modifier
+    ) {
         repeat(maxRating) {
             val rate = it + 1
             Icon(
