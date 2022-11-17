@@ -49,10 +49,9 @@ class SerialsViewModel @Inject constructor(
         }
     }
 
-    fun addSerial(name: String, year: Int, comment: String) {
+    fun addSerial(serial: SerialDB) {
         viewModelScope.launch {
-            val entity = SerialDB(title = name, releaseYear = year, comment = comment)
-            repo.insertItem(entity)
+            repo.insertItem(serial)
         }
     }
 

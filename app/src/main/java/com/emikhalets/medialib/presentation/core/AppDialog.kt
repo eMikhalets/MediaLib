@@ -9,19 +9,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Add
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -87,53 +78,6 @@ private fun DialogLayout(label: String, padding: Dp, content: @Composable () -> 
 }
 
 @Composable
-fun AddItemDialog(
-    onDismiss: () -> Unit,
-    onAddClick: (String, Int, String) -> Unit,
-) {
-    var name by remember { mutableStateOf("") }
-    var year by remember { mutableStateOf("") }
-    var comment by remember { mutableStateOf("") }
-
-    AppDialog(
-        label = stringResource(id = R.string.dialog_add_item_title),
-        onDismiss = { onDismiss() }
-    ) {
-        Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-            OutlinedTextField(
-                value = name,
-                onValueChange = { name = it },
-                label = { Text(stringResource(id = R.string.add_new_name)) },
-                maxLines = 1,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(4.dp)
-            )
-            OutlinedTextField(
-                value = year,
-                onValueChange = { year = it },
-                label = { Text(stringResource(R.string.add_new_year)) },
-                maxLines = 1,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(4.dp)
-            )
-            OutlinedTextField(
-                value = comment,
-                onValueChange = { comment = it },
-                label = { Text(stringResource(R.string.app_comment)) },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(4.dp)
-            )
-            IconButton(onClick = { onAddClick(name, year.toInt(), comment) }) {
-                Icon(imageVector = Icons.Rounded.Add, contentDescription = "")
-            }
-        }
-    }
-}
-
-@Composable
 fun DeleteDialog(
     onDismiss: () -> Unit,
     onDeleteClick: () -> Unit,
@@ -179,17 +123,6 @@ private fun DialogPreview() {
         ) {
             Text(text = "Preview dialog text")
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun AddItemDialogPreview() {
-    AppTheme {
-        AddItemDialog(
-            onDismiss = {},
-            onAddClick = { _, _, _ -> }
-        )
     }
 }
 

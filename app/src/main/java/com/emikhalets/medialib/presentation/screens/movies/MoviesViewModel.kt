@@ -49,10 +49,9 @@ class MoviesViewModel @Inject constructor(
         }
     }
 
-    fun addMovie(name: String, year: Int, comment: String) {
+    fun addMovie(movieDB: MovieDB) {
         viewModelScope.launch {
-            val entity = MovieDB(title = name, releaseYear = year, comment = comment)
-            repo.insertItem(entity)
+            repo.insertItem(movieDB)
         }
     }
 

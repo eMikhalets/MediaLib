@@ -262,7 +262,7 @@ private fun MovieItem(
         )
         Spacer(modifier = Modifier.height(4.dp))
         Text(
-            text = stringResource(R.string.serials_seasons, serial.seasons),
+            text = stringResource(R.string.serials_seasons_value, serial.seasons),
             fontSize = 14.sp,
             modifier = Modifier.fillMaxWidth()
         )

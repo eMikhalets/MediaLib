@@ -1,24 +1,35 @@
 package com.emikhalets.medialib.presentation.screens.serials
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.emikhalets.medialib.R
 import com.emikhalets.medialib.data.entity.database.SerialDB
-import com.emikhalets.medialib.presentation.core.AddItemDialog
+import com.emikhalets.medialib.presentation.core.AppDialog
 import com.emikhalets.medialib.presentation.core.AppScaffold
 import com.emikhalets.medialib.presentation.core.RootListItem
 import com.emikhalets.medialib.presentation.core.RootScreenList
@@ -42,9 +53,9 @@ fun SerialsScreen(
         query = query,
         serials = viewModel.state.serials,
         showAddDialog = showAddDialog,
-        onAddClick = { name, year, comment ->
+        onAddClick = {
             showAddDialog = false
-            viewModel.addSerial(name, year, comment)
+            viewModel.addSerial(it)
         },
         onAddDialogVisible = { showAddDialog = it },
         onQueryChange = {
@@ -63,7 +74,7 @@ private fun SerialsScreen(
     query: String,
     serials: List<SerialDB>,
     showAddDialog: Boolean,
-    onAddClick: (String, Int, String) -> Unit,
+    onAddClick: (SerialDB) -> Unit,
     onAddDialogVisible: (Boolean) -> Unit,
     onQueryChange: (String) -> Unit,
     onSerialClick: (Int) -> Unit,
@@ -81,7 +92,7 @@ private fun SerialsScreen(
         }
 
         if (showAddDialog) {
-            AddItemDialog(
+            AddSerialDialog(
                 onDismiss = { onAddDialogVisible(false) },
                 onAddClick = onAddClick
             )
@@ -106,12 +117,104 @@ private fun SerialItem(
             modifier = Modifier.fillMaxWidth()
         )
         Text(
-            text = stringResource(R.string.serials_seasons, serial.seasons),
+            text = stringResource(R.string.serials_seasons_value, serial.seasons),
             fontSize = 14.sp,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier.fillMaxWidth()
         )
+    }
+}
+
+@Composable
+private fun AddSerialDialog(
+    onDismiss: () -> Unit,
+    onAddClick: (SerialDB) -> Unit,
+) {
+    var title by remember { mutableStateOf("") }
+    var titleRu by remember { mutableStateOf("") }
+    var year by remember { mutableStateOf("") }
+    var comment by remember { mutableStateOf("") }
+    var genres by remember { mutableStateOf("") }
+    var seasons by remember { mutableStateOf("") }
+
+    AppDialog(
+        label = stringResource(id = R.string.serials_add_title),
+        onDismiss = { onDismiss() }
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .fillMaxWidth()
+                .verticalScroll(rememberScrollState())
+        ) {
+            OutlinedTextField(
+                value = title,
+                onValueChange = { title = it },
+                label = { Text(stringResource(id = R.string.add_new_title)) },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(4.dp)
+            )
+            OutlinedTextField(
+                value = titleRu,
+                onValueChange = { titleRu = it },
+                label = { Text(stringResource(id = R.string.add_new_title_ru)) },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(4.dp)
+            )
+            OutlinedTextField(
+                value = year,
+                onValueChange = { year = it },
+                label = { Text(stringResource(R.string.add_new_year)) },
+                maxLines = 1,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(4.dp)
+            )
+            OutlinedTextField(
+                value = seasons,
+                onValueChange = { seasons = it },
+                label = { Text(stringResource(R.string.serials_seasons)) },
+                maxLines = 1,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(4.dp)
+            )
+            OutlinedTextField(
+                value = genres,
+                onValueChange = { genres = it },
+                label = { Text(stringResource(R.string.app_genres)) },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(4.dp)
+            )
+            OutlinedTextField(
+                value = comment,
+                onValueChange = { comment = it },
+                label = { Text(stringResource(R.string.app_comment)) },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(4.dp)
+            )
+            IconButton(
+                onClick = {
+                    onAddClick(
+                        SerialDB(
+                            title = title,
+                            titleRu = titleRu,
+                            releaseYear = year.toInt(),
+                            comment = comment,
+                            genres = genres,
+                            seasons = seasons.toInt()
+                        )
+                    )
+                }
+            ) {
+                Icon(imageVector = Icons.Rounded.Add, contentDescription = "")
+            }
+        }
     }
 }
 
@@ -124,7 +227,7 @@ private fun ScreenPreview() {
             query = "",
             serials = listOf(),
             showAddDialog = false,
-            onAddClick = { _, _, _ -> },
+            onAddClick = {},
             onAddDialogVisible = {},
             onQueryChange = {},
             onSerialClick = {},
@@ -145,6 +248,17 @@ private fun ItemPreview() {
                 rating = 3
             ),
             onSerialClick = {},
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun AddSerialDialogPreview() {
+    AppTheme {
+        AddSerialDialog(
+            onDismiss = {},
+            onAddClick = {}
         )
     }
 }
