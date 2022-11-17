@@ -1,12 +1,12 @@
-package com.emikhalets.medialib.presentation.screens.serials
+package com.emikhalets.medialib.presentation.screens.books
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.emikhalets.medialib.data.entity.database.SerialDB
-import com.emikhalets.medialib.data.repository.SerialsRepository
+import com.emikhalets.medialib.data.entity.database.BookDB
+import com.emikhalets.medialib.data.repository.BooksRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Job
@@ -15,28 +15,28 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-data class SerialsScreenState(
-    val serials: List<SerialDB> = emptyList(),
+data class BooksScreenState(
+    val books: List<BookDB> = emptyList(),
 ) {
 
-    fun setSerials(serials: List<SerialDB>): SerialsScreenState {
-        return this.copy(serials = serials)
+    fun setBooks(books: List<BookDB>): BooksScreenState {
+        return this.copy(books = books)
     }
 }
 
 @HiltViewModel
-class SerialsViewModel @Inject constructor(
-    private val repo: SerialsRepository,
+class BooksViewModel @Inject constructor(
+    private val repo: BooksRepository,
 ) : ViewModel() {
 
-    var state by mutableStateOf(SerialsScreenState())
+    var state by mutableStateOf(BooksScreenState())
         private set
 
-    private var serialsJob: Job? = null
+    private var booksJob: Job? = null
 
-    fun getSerials(query: String) {
-        cancelJob(serialsJob, "Starting a new search request")
-        serialsJob = viewModelScope.launch {
+    fun getBooks(query: String) {
+        cancelJob(booksJob, "Starting a new search request")
+        booksJob = viewModelScope.launch {
             val moviesResponse = if (query.isEmpty()) {
                 repo.getItems()
             } else {
@@ -44,14 +44,14 @@ class SerialsViewModel @Inject constructor(
                 repo.getItems(query)
             }
             moviesResponse.onSuccess { movies ->
-                movies.collectLatest { state = state.setSerials(it) }
+                movies.collectLatest { state = state.setBooks(it) }
             }
         }
     }
 
-    fun addSerial(serial: SerialDB) {
+    fun addBook(bookDB: BookDB) {
         viewModelScope.launch {
-            repo.insertItem(serial)
+            repo.insertItem(bookDB)
         }
     }
 

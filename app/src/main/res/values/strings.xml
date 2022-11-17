@@ -41,6 +41,9 @@
 
     <!--  Books screen  -->
     <string name="books_query_placeholder">Название книги</string>
+    <string name="book_author">Автор</string>
+    <string name="book_author_value">Автор: %s</string>
+    <string name="book_add_title">Добавить новую книгу</string>
 
     <!--  Music screen  -->
     <string name="music_query_placeholder">Название композиции</string>

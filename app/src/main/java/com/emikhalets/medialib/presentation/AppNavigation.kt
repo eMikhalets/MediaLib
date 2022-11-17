@@ -10,6 +10,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.emikhalets.medialib.R
+import com.emikhalets.medialib.presentation.screens.books.BookDetailsScreen
 import com.emikhalets.medialib.presentation.screens.books.BooksScreen
 import com.emikhalets.medialib.presentation.screens.movies.MovieDetailsScreen
 import com.emikhalets.medialib.presentation.screens.movies.MoviesScreen
@@ -107,10 +108,10 @@ fun AppNavGraph(navController: NavHostController) {
         }
 
         composable(NavRoutes.BOOK_ROUTE, NavRoutes.BOOK_ARGS) {
-//            BookDetailsScreen(
-//                navController = navController,
-//                bookId = it.arguments?.getInt(NavArgs.BOOK_ID) ?: -1
-//            )
+            BookDetailsScreen(
+                navController = navController,
+                bookId = it.arguments?.getInt(NavArgs.BOOK_ID) ?: -1
+            )
         }
 
         composable(NavRoutes.MUSIC_ROUTE, NavRoutes.MUSIC_ARGS) {

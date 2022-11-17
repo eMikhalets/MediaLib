@@ -17,7 +17,6 @@ data class BookDB(
     @ColumnInfo(name = "poster_path") override val poster: String = "",
     @ColumnInfo(name = "release_year") override val releaseYear: Int =
         Calendar.getInstance().get(Calendar.YEAR),
-    @ColumnInfo(name = "tagline") val tagline: String = "",
     @ColumnInfo(name = "vote_average") val voteAverage: Double = 0.0,
     @ColumnInfo(name = "save_date") val saveDate: Long = Date().time,
     @ColumnInfo(name = "comment") val comment: String = "",

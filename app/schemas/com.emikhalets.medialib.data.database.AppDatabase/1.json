@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "5f7226aadf2811e5e048bb806281c6ae",
+    "identityHash": "f55fef5e9eae8c79af9acb4ef41851b7",
     "entities": [
       {
         "tableName": "movies",
@@ -202,7 +202,7 @@
       },
       {
         "tableName": "books",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `title` TEXT NOT NULL, `title_ru` TEXT NOT NULL, `author` TEXT NOT NULL, `genres` TEXT NOT NULL, `overview` TEXT NOT NULL, `poster_path` TEXT NOT NULL, `release_year` INTEGER NOT NULL, `tagline` TEXT NOT NULL, `vote_average` REAL NOT NULL, `save_date` INTEGER NOT NULL, `comment` TEXT NOT NULL, `rating` INTEGER NOT NULL, `tags` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `title` TEXT NOT NULL, `title_ru` TEXT NOT NULL, `author` TEXT NOT NULL, `genres` TEXT NOT NULL, `overview` TEXT NOT NULL, `poster_path` TEXT NOT NULL, `release_year` INTEGER NOT NULL, `vote_average` REAL NOT NULL, `save_date` INTEGER NOT NULL, `comment` TEXT NOT NULL, `rating` INTEGER NOT NULL, `tags` TEXT NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -250,12 +250,6 @@
             "fieldPath": "releaseYear",
             "columnName": "release_year",
             "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "tagline",
-            "columnName": "tagline",
-            "affinity": "TEXT",
             "notNull": true
           },
           {
@@ -388,7 +382,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '5f7226aadf2811e5e048bb806281c6ae')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'f55fef5e9eae8c79af9acb4ef41851b7')"
     ]
   }
 }
