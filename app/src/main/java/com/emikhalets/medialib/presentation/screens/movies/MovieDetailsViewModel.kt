@@ -49,11 +49,8 @@ class MovieDetailsViewModel @Inject constructor(
         }
     }
 
-    fun updateMovie(comment: String, rating: Int) {
-        val movie = movieDb?.copy(
-            comment = comment,
-            rating = rating
-        ) ?: return
+    fun updateMovie(rating: Int) {
+        val movie = movieDb?.copy(rating = rating) ?: return
         viewModelScope.launch {
             repo.updateItem(movie)
         }

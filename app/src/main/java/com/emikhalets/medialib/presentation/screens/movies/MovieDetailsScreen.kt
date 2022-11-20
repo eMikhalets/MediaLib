@@ -11,7 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -34,10 +34,10 @@ import androidx.navigation.compose.rememberNavController
 import com.emikhalets.medialib.R
 import com.emikhalets.medialib.data.entity.database.MovieDB
 import com.emikhalets.medialib.presentation.core.AppAsyncImage
+import com.emikhalets.medialib.presentation.core.AppDetailsSection
 import com.emikhalets.medialib.presentation.core.AppScaffold
 import com.emikhalets.medialib.presentation.core.DeleteDialog
 import com.emikhalets.medialib.presentation.core.RatingBar
-import com.emikhalets.medialib.presentation.core.RootSaveDelete
 import com.emikhalets.medialib.presentation.theme.AppTheme
 
 @Composable
@@ -46,19 +46,10 @@ fun MovieDetailsScreen(
     movieId: Int?,
     viewModel: MovieDetailsViewModel = hiltViewModel(),
 ) {
-    var comment by remember { mutableStateOf("") }
-    var rating by remember { mutableStateOf(0) }
-    var isNeedSave by remember { mutableStateOf(false) }
     var showDeleteDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         viewModel.getSavedMovie(movieId)
-    }
-
-    LaunchedEffect(viewModel.state.movie) {
-        val movie = viewModel.state.movie
-        comment = movie?.comment ?: ""
-        rating = movie?.rating ?: 0
     }
 
     LaunchedEffect(viewModel.state.deleted) {
@@ -70,21 +61,7 @@ fun MovieDetailsScreen(
     MovieDetailsScreen(
         navController = navController,
         movie = viewModel.state.movie,
-        comment = comment,
-        rating = rating,
-        isNeedSave = isNeedSave,
-        onCommentChange = {
-            comment = it
-            isNeedSave = true
-        },
-        onRatingChange = {
-            rating = it
-            isNeedSave = true
-        },
-        onUpdateClick = {
-            viewModel.updateMovie(comment, rating)
-            isNeedSave = false
-        },
+        onRatingChange = { viewModel.updateMovie(it) },
         onDeleteClick = { showDeleteDialog = true }
     )
 
@@ -103,12 +80,7 @@ fun MovieDetailsScreen(
 private fun MovieDetailsScreen(
     navController: NavHostController,
     movie: MovieDB?,
-    comment: String,
-    rating: Int,
-    isNeedSave: Boolean,
-    onCommentChange: (String) -> Unit,
     onRatingChange: (Int) -> Unit,
-    onUpdateClick: () -> Unit,
     onDeleteClick: () -> Unit,
 ) {
     AppScaffold(navController, movie?.title) {
@@ -128,28 +100,18 @@ private fun MovieDetailsScreen(
         } else {
             MovieItem(
                 movie = movie,
-                comment = comment,
-                rating = rating,
-                onCommentChange = onCommentChange,
                 onRatingChange = onRatingChange,
+                onDeleteClick = onDeleteClick
             )
         }
-
-        RootSaveDelete(
-            isNeedSave = isNeedSave,
-            onDeleteClick = onDeleteClick,
-            onSaveClick = onUpdateClick
-        )
     }
 }
 
 @Composable
 private fun MovieItem(
     movie: MovieDB,
-    comment: String,
-    rating: Int,
-    onCommentChange: (String) -> Unit,
     onRatingChange: (Int) -> Unit,
+    onDeleteClick: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -201,53 +163,23 @@ private fun MovieItem(
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 RatingBar(
-                    rating = rating,
+                    rating = movie.rating,
                     onRatingChange = onRatingChange,
                     modifier = Modifier.fillMaxWidth()
                 )
             }
         }
-        OutlinedTextField(
-            value = comment,
-            onValueChange = onCommentChange,
-            label = { Text(stringResource(R.string.app_comment)) },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(4.dp)
-        )
-        if (movie.overview.isNotEmpty()) {
-            Spacer(modifier = Modifier.height(4.dp))
-            Text(
-                text = stringResource(R.string.app_overview),
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Medium,
-                modifier = Modifier.fillMaxWidth()
-            )
-            Text(
-                text = movie.overview,
-                fontSize = 14.sp,
-                modifier = Modifier.fillMaxWidth()
-            )
-        }
         Spacer(modifier = Modifier.height(8.dp))
-        Text(
-            text = stringResource(R.string.app_rating_value,
-                movie.voteAverage.toString()),
-            fontSize = 14.sp,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.fillMaxWidth()
+        AppDetailsSection(
+            header = stringResource(R.string.app_comment),
+            content = movie.comment
         )
-        Spacer(modifier = Modifier.height(4.dp))
-        Text(
-            text = stringResource(R.string.app_runtime_runtime_value,
-                movie.runtime.toString()),
-            fontSize = 14.sp,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.fillMaxWidth()
+        Spacer(modifier = Modifier.height(8.dp))
+        AppDetailsSection(
+            header = stringResource(R.string.app_overview),
+            content = movie.overview
         )
-        Spacer(modifier = Modifier.height(4.dp))
+        Spacer(modifier = Modifier.height(8.dp))
         Text(
             text = stringResource(R.string.app_genres_value, movie.genres),
             fontSize = 14.sp,
@@ -265,6 +197,13 @@ private fun MovieItem(
             fontSize = 14.sp,
             modifier = Modifier.fillMaxWidth()
         )
+        Spacer(modifier = Modifier.height(16.dp))
+        Button(
+            onClick = { onDeleteClick() },
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(text = stringResource(id = R.string.app_delete))
+        }
     }
 }
 
@@ -280,14 +219,11 @@ private fun ScreenPreview() {
                 genres = "Action, Drama",
                 releaseYear = 2018,
                 runtime = 122,
-                overview = "overview overview overview overview overview overview overview overview overview overview"
+                rating = 4,
+                overview = "overview overview overview overview overview overview overview overview overview overview",
+                comment = "overview overview overview overview overview overview overview overview overview overview"
             ),
-            comment = "Test comment",
-            rating = 4,
-            isNeedSave = false,
-            onCommentChange = {},
             onRatingChange = {},
-            onUpdateClick = {},
             onDeleteClick = {},
         )
     }

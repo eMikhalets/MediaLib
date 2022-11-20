@@ -274,3 +274,20 @@ fun AppAsyncImage(
             .clickable { onClick() }
     )
 }
+
+@Composable
+fun AppDetailsSection(header: String, content: String) {
+    if (content.isNotEmpty()) {
+        Text(
+            text = header,
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Medium,
+            modifier = Modifier.fillMaxWidth()
+        )
+        Text(
+            text = content,
+            fontSize = 14.sp,
+            modifier = Modifier.fillMaxWidth()
+        )
+    }
+}
