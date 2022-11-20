@@ -36,6 +36,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
@@ -246,5 +247,30 @@ fun RootScreenListItem(
             .fillMaxWidth()
             .clickable { onMovieClick(item.id) }
             .padding(8.dp)
+    )
+}
+
+@Composable
+fun AppAsyncImage(
+    data: String,
+    height: Dp,
+    modifier: Modifier = Modifier,
+    corners: Float = 8.px,
+    onClick: () -> Unit = {},
+) {
+    AsyncImage(
+        model = ImageRequest.Builder(LocalContext.current)
+            .data(data)
+            .crossfade(true)
+            .transformations(RoundedCornersTransformation(corners))
+            .error(R.drawable.ph_poster)
+            .build(),
+        contentDescription = "",
+        placeholder = painterResource(R.drawable.ph_poster),
+        contentScale = ContentScale.FillHeight,
+        modifier = modifier
+            .height(height)
+            .padding(8.dp)
+            .clickable { onClick() }
     )
 }

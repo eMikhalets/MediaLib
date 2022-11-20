@@ -14,6 +14,12 @@
     <string name="app_root_list_empty">Список пуст</string>
     <string name="app_root_list_query_empty">По данному запросу ничего не найдено</string>
     <string name="app_cancel">Отменить</string>
+    <string name="app_watched">Просмотено</string>
+    <string name="app_will_watch">Смотреть</string>
+    <string name="app_read">Прочитано</string>
+    <string name="app_will_read">Читать</string>
+    <string name="app_dropped">Дропнуто</string>
+    <string name="app_status_none">Не выбрано</string>
 
     <!--  Screen titles  -->
     <string name="screen_name_movies">Фильмы</string>

@@ -21,9 +21,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -34,17 +31,14 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import coil.compose.AsyncImage
-import coil.request.ImageRequest
-import coil.transform.RoundedCornersTransformation
 import com.emikhalets.medialib.R
 import com.emikhalets.medialib.data.entity.database.MovieDB
+import com.emikhalets.medialib.presentation.core.AppAsyncImage
 import com.emikhalets.medialib.presentation.core.AppScaffold
 import com.emikhalets.medialib.presentation.core.DeleteDialog
 import com.emikhalets.medialib.presentation.core.RatingBar
 import com.emikhalets.medialib.presentation.core.RootSaveDelete
 import com.emikhalets.medialib.presentation.theme.AppTheme
-import com.emikhalets.medialib.utils.px
 
 @Composable
 fun MovieDetailsScreen(
@@ -91,7 +85,7 @@ fun MovieDetailsScreen(
             viewModel.updateMovie(comment, rating)
             isNeedSave = false
         },
-        onDeleteClick = { showDeleteDialog = true },
+        onDeleteClick = { showDeleteDialog = true }
     )
 
     if (showDeleteDialog) {
@@ -168,19 +162,9 @@ private fun MovieItem(
                 .fillMaxWidth()
                 .height(IntrinsicSize.Min)
         ) {
-            AsyncImage(
-                model = ImageRequest.Builder(LocalContext.current)
-                    .data(movie.poster)
-                    .crossfade(true)
-                    .transformations(RoundedCornersTransformation(8.px))
-                    .error(R.drawable.ph_poster)
-                    .build(),
-                contentDescription = "",
-                placeholder = painterResource(R.drawable.ph_poster),
-                contentScale = ContentScale.FillHeight,
-                modifier = Modifier
-                    .height(150.dp)
-                    .padding(8.dp)
+            AppAsyncImage(
+                data = movie.poster,
+                height = 150.dp
             )
             Column(
                 modifier = Modifier

@@ -19,6 +19,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -31,10 +32,14 @@ import com.emikhalets.medialib.R
 import com.emikhalets.medialib.data.entity.database.BookDB
 import com.emikhalets.medialib.presentation.core.AppDialog
 import com.emikhalets.medialib.presentation.core.AppScaffold
+import com.emikhalets.medialib.presentation.core.AppSpinner
 import com.emikhalets.medialib.presentation.core.RootListItem
 import com.emikhalets.medialib.presentation.core.RootScreenList
 import com.emikhalets.medialib.presentation.navToBookDetails
 import com.emikhalets.medialib.presentation.theme.AppTheme
+import com.emikhalets.medialib.utils.enums.ItemStatus
+import com.emikhalets.medialib.utils.enums.ItemType
+import com.emikhalets.medialib.utils.enums.toString
 
 @Composable
 fun BooksScreen(
@@ -131,12 +136,18 @@ private fun AddBookDialog(
     onDismiss: () -> Unit,
     onAddClick: (BookDB) -> Unit,
 ) {
+    val context = LocalContext.current
+    val statusListValue = ItemStatus.values().toString(ItemType.BOOK)
+
     var title by remember { mutableStateOf("") }
     var titleRu by remember { mutableStateOf("") }
     var year by remember { mutableStateOf("") }
     var comment by remember { mutableStateOf("") }
     var genres by remember { mutableStateOf("") }
     var author by remember { mutableStateOf("") }
+    var status by remember { mutableStateOf(ItemStatus.NONE) }
+
+    val statusList = remember { statusListValue }
 
     AppDialog(
         label = stringResource(id = R.string.book_add_title),
@@ -197,6 +208,10 @@ private fun AddBookDialog(
                     .fillMaxWidth()
                     .padding(4.dp)
             )
+            AppSpinner(
+                list = statusList,
+                onSelect = { status = ItemStatus.getFromString(context, it, ItemType.BOOK) }
+            )
             IconButton(
                 onClick = {
                     onAddClick(
@@ -206,7 +221,8 @@ private fun AddBookDialog(
                             releaseYear = year.toInt(),
                             comment = comment,
                             genres = genres,
-                            author = author
+                            author = author,
+                            status = status
                         )
                     )
                 }

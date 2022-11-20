@@ -19,6 +19,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -31,10 +32,14 @@ import com.emikhalets.medialib.R
 import com.emikhalets.medialib.data.entity.database.SerialDB
 import com.emikhalets.medialib.presentation.core.AppDialog
 import com.emikhalets.medialib.presentation.core.AppScaffold
+import com.emikhalets.medialib.presentation.core.AppSpinner
 import com.emikhalets.medialib.presentation.core.RootListItem
 import com.emikhalets.medialib.presentation.core.RootScreenList
 import com.emikhalets.medialib.presentation.navToSerialDetails
 import com.emikhalets.medialib.presentation.theme.AppTheme
+import com.emikhalets.medialib.utils.enums.ItemStatus
+import com.emikhalets.medialib.utils.enums.ItemType
+import com.emikhalets.medialib.utils.enums.toString
 
 @Composable
 fun SerialsScreen(
@@ -131,12 +136,18 @@ private fun AddSerialDialog(
     onDismiss: () -> Unit,
     onAddClick: (SerialDB) -> Unit,
 ) {
+    val context = LocalContext.current
+    val statusListValue = ItemStatus.values().toString(ItemType.SERIAL)
+
     var title by remember { mutableStateOf("") }
     var titleRu by remember { mutableStateOf("") }
     var year by remember { mutableStateOf("") }
     var comment by remember { mutableStateOf("") }
     var genres by remember { mutableStateOf("") }
     var seasons by remember { mutableStateOf("") }
+    var status by remember { mutableStateOf(ItemStatus.NONE) }
+
+    val statusList = remember { statusListValue }
 
     AppDialog(
         label = stringResource(id = R.string.serials_add_title),
@@ -198,6 +209,10 @@ private fun AddSerialDialog(
                     .fillMaxWidth()
                     .padding(4.dp)
             )
+            AppSpinner(
+                list = statusList,
+                onSelect = { status = ItemStatus.getFromString(context, it, ItemType.SERIAL) }
+            )
             IconButton(
                 onClick = {
                     onAddClick(
@@ -207,7 +222,8 @@ private fun AddSerialDialog(
                             releaseYear = year.toInt(),
                             comment = comment,
                             genres = genres,
-                            seasons = seasons.toInt()
+                            seasons = seasons.toInt(),
+                            status = status
                         )
                     )
                 }
