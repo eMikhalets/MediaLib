@@ -49,11 +49,8 @@ class SerialDetailsViewModel @Inject constructor(
         }
     }
 
-    fun updateSerial(comment: String, rating: Int) {
-        val serial = serialDb?.copy(
-            comment = comment,
-            rating = rating
-        ) ?: return
+    fun updateSerial(rating: Int) {
+        val serial = serialDb?.copy(rating = rating) ?: return
         viewModelScope.launch {
             repo.updateItem(serial)
         }

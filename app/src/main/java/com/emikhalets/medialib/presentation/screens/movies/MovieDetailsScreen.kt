@@ -169,12 +169,10 @@ private fun MovieItem(
                 )
             }
         }
-        Spacer(modifier = Modifier.height(8.dp))
         AppDetailsSection(
             header = stringResource(R.string.app_comment),
             content = movie.comment
         )
-        Spacer(modifier = Modifier.height(8.dp))
         AppDetailsSection(
             header = stringResource(R.string.app_overview),
             content = movie.overview

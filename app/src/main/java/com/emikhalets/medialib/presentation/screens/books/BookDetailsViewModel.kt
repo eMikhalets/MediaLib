@@ -49,11 +49,8 @@ class BookDetailsViewModel @Inject constructor(
         }
     }
 
-    fun updateBook(comment: String, rating: Int) {
-        val book = bookDb?.copy(
-            comment = comment,
-            rating = rating
-        ) ?: return
+    fun updateBook(rating: Int) {
+        val book = bookDb?.copy(rating = rating) ?: return
         viewModelScope.launch {
             repo.updateItem(book)
         }

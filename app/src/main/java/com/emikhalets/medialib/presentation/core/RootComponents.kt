@@ -278,6 +278,7 @@ fun AppAsyncImage(
 @Composable
 fun AppDetailsSection(header: String, content: String) {
     if (content.isNotEmpty()) {
+        Spacer(modifier = Modifier.height(8.dp))
         Text(
             text = header,
             fontSize = 16.sp,

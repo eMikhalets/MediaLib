@@ -11,7 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -21,30 +21,23 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import coil.compose.AsyncImage
-import coil.request.ImageRequest
-import coil.transform.RoundedCornersTransformation
 import com.emikhalets.medialib.R
 import com.emikhalets.medialib.data.entity.database.BookDB
+import com.emikhalets.medialib.presentation.core.AppAsyncImage
+import com.emikhalets.medialib.presentation.core.AppDetailsSection
 import com.emikhalets.medialib.presentation.core.AppScaffold
 import com.emikhalets.medialib.presentation.core.DeleteDialog
 import com.emikhalets.medialib.presentation.core.RatingBar
-import com.emikhalets.medialib.presentation.core.RootSaveDelete
 import com.emikhalets.medialib.presentation.theme.AppTheme
-import com.emikhalets.medialib.utils.px
 
 @Composable
 fun BookDetailsScreen(
@@ -52,19 +45,10 @@ fun BookDetailsScreen(
     bookId: Int?,
     viewModel: BookDetailsViewModel = hiltViewModel(),
 ) {
-    var comment by remember { mutableStateOf("") }
-    var rating by remember { mutableStateOf(0) }
-    var isNeedSave by remember { mutableStateOf(false) }
     var showDeleteDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         viewModel.getBook(bookId)
-    }
-
-    LaunchedEffect(viewModel.state.book) {
-        val book = viewModel.state.book
-        comment = book?.comment ?: ""
-        rating = book?.rating ?: 0
     }
 
     LaunchedEffect(viewModel.state.deleted) {
@@ -76,21 +60,7 @@ fun BookDetailsScreen(
     BookDetailsScreen(
         navController = navController,
         book = viewModel.state.book,
-        comment = comment,
-        rating = rating,
-        isNeedSave = isNeedSave,
-        onCommentChange = {
-            comment = it
-            isNeedSave = true
-        },
-        onRatingChange = {
-            rating = it
-            isNeedSave = true
-        },
-        onUpdateClick = {
-            viewModel.updateBook(comment, rating)
-            isNeedSave = false
-        },
+        onRatingChange = { viewModel.updateBook(it) },
         onDeleteClick = { showDeleteDialog = true },
     )
 
@@ -109,12 +79,7 @@ fun BookDetailsScreen(
 private fun BookDetailsScreen(
     navController: NavHostController,
     book: BookDB?,
-    comment: String,
-    rating: Int,
-    isNeedSave: Boolean,
-    onCommentChange: (String) -> Unit,
     onRatingChange: (Int) -> Unit,
-    onUpdateClick: () -> Unit,
     onDeleteClick: () -> Unit,
 ) {
     AppScaffold(navController, book?.title) {
@@ -134,28 +99,18 @@ private fun BookDetailsScreen(
         } else {
             BookItem(
                 book = book,
-                comment = comment,
-                rating = rating,
-                onCommentChange = onCommentChange,
                 onRatingChange = onRatingChange,
+                onDeleteClick = onDeleteClick,
             )
         }
-
-        RootSaveDelete(
-            isNeedSave = isNeedSave,
-            onDeleteClick = onDeleteClick,
-            onSaveClick = onUpdateClick
-        )
     }
 }
 
 @Composable
 private fun BookItem(
     book: BookDB,
-    comment: String,
-    rating: Int,
-    onCommentChange: (String) -> Unit,
     onRatingChange: (Int) -> Unit,
+    onDeleteClick: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -168,19 +123,9 @@ private fun BookItem(
                 .fillMaxWidth()
                 .height(IntrinsicSize.Min)
         ) {
-            AsyncImage(
-                model = ImageRequest.Builder(LocalContext.current)
-                    .data(book.poster)
-                    .crossfade(true)
-                    .transformations(RoundedCornersTransformation(8.px))
-                    .error(R.drawable.ph_poster)
-                    .build(),
-                contentDescription = "",
-                placeholder = painterResource(R.drawable.ph_poster),
-                contentScale = ContentScale.FillHeight,
-                modifier = Modifier
-                    .height(150.dp)
-                    .padding(8.dp)
+            AppAsyncImage(
+                data = book.poster,
+                height = 150.dp
             )
             Column(
                 modifier = Modifier
@@ -225,49 +170,33 @@ private fun BookItem(
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 RatingBar(
-                    rating = rating,
+                    rating = book.rating,
                     onRatingChange = onRatingChange,
                     modifier = Modifier.fillMaxWidth()
                 )
             }
         }
-        OutlinedTextField(
-            value = comment,
-            onValueChange = onCommentChange,
-            label = { Text(stringResource(R.string.app_comment)) },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(4.dp)
+        AppDetailsSection(
+            header = stringResource(R.string.app_comment),
+            content = book.comment
         )
-        if (book.overview.isNotEmpty()) {
-            Spacer(modifier = Modifier.height(4.dp))
-            Text(
-                text = stringResource(R.string.app_overview),
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Medium,
-                modifier = Modifier.fillMaxWidth()
-            )
-            Text(
-                text = book.overview,
-                fontSize = 14.sp,
-                modifier = Modifier.fillMaxWidth()
-            )
-        }
+        AppDetailsSection(
+            header = stringResource(R.string.app_overview),
+            content = book.overview
+        )
         Spacer(modifier = Modifier.height(8.dp))
-        Text(
-            text = stringResource(R.string.app_rating_value,
-                book.voteAverage.toString()),
-            fontSize = 14.sp,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.fillMaxWidth()
-        )
-        Spacer(modifier = Modifier.height(4.dp))
         Text(
             text = stringResource(R.string.app_genres_value, book.genres),
             fontSize = 14.sp,
             modifier = Modifier.fillMaxWidth()
         )
+        Spacer(modifier = Modifier.height(16.dp))
+        Button(
+            onClick = { onDeleteClick() },
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(text = stringResource(id = R.string.app_delete))
+        }
     }
 }
 
@@ -283,14 +212,11 @@ private fun ScreenPreview() {
                 genres = "Drama",
                 releaseYear = 2018,
                 author = "Sample author",
+                comment = "Test comment overview overview overview overview overview",
+                rating = 4,
                 overview = "overview overview overview overview overview overview overview overview overview overview"
             ),
-            comment = "Test comment",
-            rating = 4,
-            isNeedSave = false,
-            onCommentChange = {},
             onRatingChange = {},
-            onUpdateClick = {},
             onDeleteClick = {},
         )
     }
