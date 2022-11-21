@@ -56,6 +56,15 @@ class SerialDetailsViewModel @Inject constructor(
         }
     }
 
+    fun updateSerial(poster: String) {
+        if (poster != serialDb?.poster) {
+            val serial = serialDb?.copy(poster = poster) ?: return
+            viewModelScope.launch {
+                repo.updateItem(serial)
+            }
+        }
+    }
+
     fun deleteSerial() {
         val serial = serialDb ?: return
         viewModelScope.launch {

@@ -36,6 +36,7 @@ import com.emikhalets.medialib.presentation.core.AppAsyncImage
 import com.emikhalets.medialib.presentation.core.AppDetailsSection
 import com.emikhalets.medialib.presentation.core.AppScaffold
 import com.emikhalets.medialib.presentation.core.DeleteDialog
+import com.emikhalets.medialib.presentation.core.PosterDialog
 import com.emikhalets.medialib.presentation.core.RatingBar
 import com.emikhalets.medialib.presentation.theme.AppTheme
 
@@ -46,6 +47,7 @@ fun SerialDetailsScreen(
     viewModel: SerialDetailsViewModel = hiltViewModel(),
 ) {
     var showDeleteDialog by remember { mutableStateOf(false) }
+    var showPosterDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         viewModel.getSerial(serialId)
@@ -62,6 +64,7 @@ fun SerialDetailsScreen(
         serial = viewModel.state.serial,
         onRatingChange = { viewModel.updateSerial(it) },
         onDeleteClick = { showDeleteDialog = true },
+        onPosterClick = { showPosterDialog = true },
     )
 
     if (showDeleteDialog) {
@@ -73,6 +76,17 @@ fun SerialDetailsScreen(
             }
         )
     }
+
+    if (showPosterDialog) {
+        PosterDialog(
+            poster = viewModel.state.serial?.poster,
+            onDismiss = { showPosterDialog = false },
+            onOkClick = {
+                viewModel.updateSerial(it)
+                showPosterDialog = false
+            }
+        )
+    }
 }
 
 @Composable
@@ -81,6 +95,7 @@ private fun SerialDetailsScreen(
     serial: SerialDB?,
     onRatingChange: (Int) -> Unit,
     onDeleteClick: () -> Unit,
+    onPosterClick: () -> Unit,
 ) {
     AppScaffold(navController, serial?.title) {
         if (serial == null) {
@@ -101,6 +116,7 @@ private fun SerialDetailsScreen(
                 serial = serial,
                 onRatingChange = onRatingChange,
                 onDeleteClick = onDeleteClick,
+                onPosterClick = onPosterClick,
             )
         }
     }
@@ -111,6 +127,7 @@ private fun MovieItem(
     serial: SerialDB,
     onRatingChange: (Int) -> Unit,
     onDeleteClick: () -> Unit,
+    onPosterClick: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -125,7 +142,8 @@ private fun MovieItem(
         ) {
             AppAsyncImage(
                 data = serial.poster,
-                height = 150.dp
+                height = 150.dp,
+                onClick = { onPosterClick() }
             )
             Column(
                 modifier = Modifier
@@ -216,6 +234,7 @@ private fun ScreenPreview() {
             ),
             onRatingChange = {},
             onDeleteClick = {},
+            onPosterClick = {},
         )
     }
 }

@@ -24,7 +24,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -37,6 +36,7 @@ import com.emikhalets.medialib.presentation.core.AppAsyncImage
 import com.emikhalets.medialib.presentation.core.AppDetailsSection
 import com.emikhalets.medialib.presentation.core.AppScaffold
 import com.emikhalets.medialib.presentation.core.DeleteDialog
+import com.emikhalets.medialib.presentation.core.PosterDialog
 import com.emikhalets.medialib.presentation.core.RatingBar
 import com.emikhalets.medialib.presentation.theme.AppTheme
 
@@ -47,6 +47,7 @@ fun MovieDetailsScreen(
     viewModel: MovieDetailsViewModel = hiltViewModel(),
 ) {
     var showDeleteDialog by remember { mutableStateOf(false) }
+    var showPosterDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         viewModel.getSavedMovie(movieId)
@@ -62,7 +63,8 @@ fun MovieDetailsScreen(
         navController = navController,
         movie = viewModel.state.movie,
         onRatingChange = { viewModel.updateMovie(it) },
-        onDeleteClick = { showDeleteDialog = true }
+        onDeleteClick = { showDeleteDialog = true },
+        onPosterClick = { showPosterDialog = true },
     )
 
     if (showDeleteDialog) {
@@ -74,6 +76,17 @@ fun MovieDetailsScreen(
             }
         )
     }
+
+    if (showPosterDialog) {
+        PosterDialog(
+            poster = viewModel.state.movie?.poster,
+            onDismiss = { showPosterDialog = false },
+            onOkClick = {
+                viewModel.updateMovie(it)
+                showPosterDialog = false
+            }
+        )
+    }
 }
 
 @Composable
@@ -82,6 +95,7 @@ private fun MovieDetailsScreen(
     movie: MovieDB?,
     onRatingChange: (Int) -> Unit,
     onDeleteClick: () -> Unit,
+    onPosterClick: () -> Unit,
 ) {
     AppScaffold(navController, movie?.title) {
         if (movie == null) {
@@ -101,7 +115,8 @@ private fun MovieDetailsScreen(
             MovieItem(
                 movie = movie,
                 onRatingChange = onRatingChange,
-                onDeleteClick = onDeleteClick
+                onDeleteClick = onDeleteClick,
+                onPosterClick = onPosterClick,
             )
         }
     }
@@ -112,6 +127,7 @@ private fun MovieItem(
     movie: MovieDB,
     onRatingChange: (Int) -> Unit,
     onDeleteClick: () -> Unit,
+    onPosterClick: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -126,7 +142,8 @@ private fun MovieItem(
         ) {
             AppAsyncImage(
                 data = movie.poster,
-                height = 150.dp
+                height = 150.dp,
+                onClick = { onPosterClick() }
             )
             Column(
                 modifier = Modifier
@@ -223,6 +240,7 @@ private fun ScreenPreview() {
             ),
             onRatingChange = {},
             onDeleteClick = {},
+            onPosterClick = {},
         )
     }
 }

@@ -56,6 +56,15 @@ class BookDetailsViewModel @Inject constructor(
         }
     }
 
+    fun updateBook(poster: String) {
+        if (poster != bookDb?.poster) {
+            val book = bookDb?.copy(poster = poster) ?: return
+            viewModelScope.launch {
+                repo.updateItem(book)
+            }
+        }
+    }
+
     fun deleteBook() {
         val book = bookDb ?: return
         viewModelScope.launch {

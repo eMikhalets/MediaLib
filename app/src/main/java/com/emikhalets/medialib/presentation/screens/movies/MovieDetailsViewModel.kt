@@ -56,6 +56,15 @@ class MovieDetailsViewModel @Inject constructor(
         }
     }
 
+    fun updateMovie(poster: String) {
+        if (poster != movieDb?.poster) {
+            val movie = movieDb?.copy(poster = poster) ?: return
+            viewModelScope.launch {
+                repo.updateItem(movie)
+            }
+        }
+    }
+
     fun deleteMovie() {
         val movie = movieDb ?: return
         viewModelScope.launch {

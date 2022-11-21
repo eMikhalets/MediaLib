@@ -36,6 +36,7 @@ import com.emikhalets.medialib.presentation.core.AppAsyncImage
 import com.emikhalets.medialib.presentation.core.AppDetailsSection
 import com.emikhalets.medialib.presentation.core.AppScaffold
 import com.emikhalets.medialib.presentation.core.DeleteDialog
+import com.emikhalets.medialib.presentation.core.PosterDialog
 import com.emikhalets.medialib.presentation.core.RatingBar
 import com.emikhalets.medialib.presentation.theme.AppTheme
 
@@ -46,6 +47,7 @@ fun BookDetailsScreen(
     viewModel: BookDetailsViewModel = hiltViewModel(),
 ) {
     var showDeleteDialog by remember { mutableStateOf(false) }
+    var showPosterDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         viewModel.getBook(bookId)
@@ -62,6 +64,7 @@ fun BookDetailsScreen(
         book = viewModel.state.book,
         onRatingChange = { viewModel.updateBook(it) },
         onDeleteClick = { showDeleteDialog = true },
+        onPosterClick = { showPosterDialog = true },
     )
 
     if (showDeleteDialog) {
@@ -73,6 +76,17 @@ fun BookDetailsScreen(
             }
         )
     }
+
+    if (showPosterDialog) {
+        PosterDialog(
+            poster = viewModel.state.book?.poster,
+            onDismiss = { showPosterDialog = false },
+            onOkClick = {
+                viewModel.updateBook(it)
+                showPosterDialog = false
+            }
+        )
+    }
 }
 
 @Composable
@@ -81,6 +95,7 @@ private fun BookDetailsScreen(
     book: BookDB?,
     onRatingChange: (Int) -> Unit,
     onDeleteClick: () -> Unit,
+    onPosterClick: () -> Unit,
 ) {
     AppScaffold(navController, book?.title) {
         if (book == null) {
@@ -101,6 +116,7 @@ private fun BookDetailsScreen(
                 book = book,
                 onRatingChange = onRatingChange,
                 onDeleteClick = onDeleteClick,
+                onPosterClick = onPosterClick,
             )
         }
     }
@@ -111,6 +127,7 @@ private fun BookItem(
     book: BookDB,
     onRatingChange: (Int) -> Unit,
     onDeleteClick: () -> Unit,
+    onPosterClick: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -125,7 +142,8 @@ private fun BookItem(
         ) {
             AppAsyncImage(
                 data = book.poster,
-                height = 150.dp
+                height = 150.dp,
+                onClick = { onPosterClick() }
             )
             Column(
                 modifier = Modifier
@@ -218,6 +236,7 @@ private fun ScreenPreview() {
             ),
             onRatingChange = {},
             onDeleteClick = {},
+            onPosterClick = {},
         )
     }
 }

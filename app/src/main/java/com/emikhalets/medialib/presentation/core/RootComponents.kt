@@ -35,6 +35,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -299,14 +300,19 @@ fun AppDetailsSection(header: String, content: String) {
 fun AppTextField(
     value: String,
     onValueChange: (String) -> Unit,
-    label: String,
+    label: String = "",
     keyboardType: KeyboardType = KeyboardType.Text,
 ) {
     OutlinedTextField(
         value = value,
         onValueChange = onValueChange,
-        label = { Text(label) },
-        keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
+        label = if (label.isNotEmpty()) {
+            { Text(label) }
+        } else null,
+        keyboardOptions = KeyboardOptions(
+            keyboardType = keyboardType,
+            capitalization = KeyboardCapitalization.Sentences
+        ),
         modifier = Modifier.fillMaxWidth()
     )
 }

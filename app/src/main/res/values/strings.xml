@@ -39,6 +39,7 @@
     <string name="add_new_title">Название</string>
     <string name="add_new_title_ru">Название на русском</string>
     <string name="dialog_delete_title">Удалить запись?</string>
+    <string name="dialog_poster_title">Ссылка на постер</string>
 
     <!--  Movies screen  -->
     <string name="movies_query_placeholder">Название фильма</string>

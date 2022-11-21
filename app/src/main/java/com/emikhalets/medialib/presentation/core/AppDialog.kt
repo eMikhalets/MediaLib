@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -13,6 +14,10 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -103,6 +108,47 @@ fun DeleteDialog(
             Spacer(modifier = Modifier.width(8.dp))
             TextButton(
                 onClick = { onDeleteClick() },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f)
+            ) {
+                Text(text = stringResource(id = R.string.app_delete))
+            }
+        }
+    }
+}
+
+@Composable
+fun PosterDialog(
+    poster: String?,
+    onDismiss: () -> Unit,
+    onOkClick: (String) -> Unit,
+) {
+    var editPoster by remember { mutableStateOf(poster ?: "") }
+
+    AppDialog(
+        label = stringResource(id = R.string.dialog_poster_title),
+        onDismiss = { onDismiss() }
+    ) {
+        AppTextField(value = editPoster, onValueChange = { editPoster = it })
+        Spacer(modifier = Modifier.height(8.dp))
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 8.dp)
+        ) {
+            TextButton(
+                onClick = { onDismiss() },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f)
+            ) {
+                Text(text = stringResource(id = R.string.app_cancel))
+            }
+            Spacer(modifier = Modifier.width(8.dp))
+            TextButton(
+                onClick = { onOkClick(editPoster) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f)
