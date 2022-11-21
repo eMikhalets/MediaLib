@@ -1,67 +1,32 @@
 package com.emikhalets.medialib.utils.enums
 
 import android.content.Context
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.res.stringResource
 import com.emikhalets.medialib.R
 
-enum class ItemStatus {
-    NONE,
-    DONE,
-    WILL_DO,
-    DROPPED;
+enum class MovieStatus(val res: Int) {
+    NONE(R.string.app_status_none),
+    WATCH(R.string.app_will_watch),
+    WATCHED(R.string.app_watched),
+    DROPPED(R.string.app_dropped);
 
     companion object {
-        fun getFromString(context: Context, value: String, itemType: ItemType): ItemStatus {
-            return when (itemType) {
-                ItemType.MOVIE, ItemType.SERIAL -> {
-                    when (value) {
-                        context.getString(R.string.app_watched) -> DONE
-                        context.getString(R.string.app_will_watch) -> WILL_DO
-                        context.getString(R.string.app_dropped) -> DROPPED
-                        else -> NONE
-                    }
-                }
-                ItemType.BOOK -> {
-                    when (value) {
-                        context.getString(R.string.app_read) -> DONE
-                        context.getString(R.string.app_will_read) -> WILL_DO
-                        context.getString(R.string.app_dropped) -> DROPPED
-                        else -> NONE
-                    }
-                }
-                else -> NONE
-            }
+        fun get(context: Context, value: String): MovieStatus {
+            val map = values().associateBy { context.getString(it.res) }
+            return map[value] ?: NONE
         }
     }
 }
 
-enum class ItemType {
-    MOVIE,
-    SERIAL,
-    BOOK,
-    MUSIC;
-}
+enum class BookStatus(val res: Int) {
+    NONE(R.string.app_status_none),
+    NEED_READ(R.string.app_dropped),
+    READ(R.string.app_dropped),
+    DROPPED(R.string.app_dropped);
 
-@Composable
-fun Array<ItemStatus>.toString(type: ItemType): List<String> {
-    return when (type) {
-        ItemType.MOVIE, ItemType.SERIAL -> {
-            listOf(
-                stringResource(R.string.app_status_none),
-                stringResource(R.string.app_watched),
-                stringResource(R.string.app_will_watch),
-                stringResource(R.string.app_dropped)
-            )
+    companion object {
+        fun get(context: Context, value: String): BookStatus {
+            val map = values().associateBy { context.getString(it.res) }
+            return map[value] ?: NONE
         }
-        ItemType.BOOK -> {
-            listOf(
-                stringResource(R.string.app_status_none),
-                stringResource(R.string.app_read),
-                stringResource(R.string.app_will_read),
-                stringResource(R.string.app_dropped)
-            )
-        }
-        else -> emptyList()
     }
 }

@@ -4,13 +4,9 @@
     <string name="app_loading_error">Ошибка загрузки</string>
     <string name="app_save">Сохранить</string>
     <string name="app_delete">Удалить</string>
-    <string name="app_comment">Комментарий</string>
     <string name="app_rating_value">Рейтинг: %s</string>
-    <string name="app_runtime_runtime_value">Время: %s</string>
     <string name="app_date_value">Дата: %s</string>
     <string name="app_genres_value">Жанры: %s</string>
-    <string name="app_genres">Жанры</string>
-    <string name="app_overview">Описание</string>
     <string name="app_root_list_empty">Список пуст</string>
     <string name="app_root_list_query_empty">По данному запросу ничего не найдено</string>
     <string name="app_cancel">Отменить</string>
@@ -21,6 +17,18 @@
     <string name="app_dropped">Дропнуто</string>
     <string name="app_status_none">Не выбрано</string>
 
+    <!--  Record elements  -->
+    <string name="app_title">Название</string>
+    <string name="app_title_ru">Русское название</string>
+    <string name="app_genres">Жанры</string>
+    <string name="app_year">Год</string>
+    <string name="app_comment">Комментарий</string>
+    <string name="app_overview">Описание</string>
+    <string name="serials_seasons">Сезоны</string>
+    <string name="app_budget">Бюджет</string>
+    <string name="app_revenue">Доход</string>
+    <string name="app_status">Статус</string>
+
     <!--  Screen titles  -->
     <string name="screen_name_movies">Фильмы</string>
     <string name="screen_name_serials">Сериалы</string>
@@ -30,7 +38,6 @@
     <!--  Dialog  -->
     <string name="add_new_title">Название</string>
     <string name="add_new_title_ru">Название на русском</string>
-    <string name="add_new_year">Год</string>
     <string name="dialog_delete_title">Удалить запись?</string>
 
     <!--  Movies screen  -->
@@ -42,7 +49,6 @@
     <!--  Serials screen  -->
     <string name="serials_query_placeholder">Название сериала</string>
     <string name="serials_seasons_value">Сезоны: %s</string>
-    <string name="serials_seasons">Сезоны</string>
     <string name="serials_add_title">Добавить новый сериал</string>
 
     <!--  Books screen  -->

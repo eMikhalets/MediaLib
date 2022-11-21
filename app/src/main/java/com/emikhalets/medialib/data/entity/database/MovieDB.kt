@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.emikhalets.medialib.data.entity.views.ViewListItem
-import com.emikhalets.medialib.utils.enums.ItemStatus
+import com.emikhalets.medialib.utils.enums.MovieStatus
 import java.util.*
 
 @Entity(tableName = "movies")
@@ -25,7 +25,7 @@ data class MovieDB(
     @ColumnInfo(name = "comment") val comment: String = "",
     @ColumnInfo(name = "rating") override val rating: Int = 0,
     @ColumnInfo(name = "tags") val tags: String = "",
-    @ColumnInfo(name = "status") val status: ItemStatus = ItemStatus.NONE,
+    @ColumnInfo(name = "status") val status: MovieStatus = MovieStatus.NONE,
 ) : ViewListItem {
 
     override fun getLocaleTitle(): String {
