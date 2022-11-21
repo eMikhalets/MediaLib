@@ -147,7 +147,6 @@ private fun ScreenPreview() {
                 title = "Spider-man",
                 genres = "Action, Drama",
                 releaseYear = 2018,
-                runtime = 122,
                 rating = 4,
                 overview = "overview overview overview overview overview overview overview overview overview overview",
                 comment = "overview overview overview overview overview overview overview overview overview overview"
