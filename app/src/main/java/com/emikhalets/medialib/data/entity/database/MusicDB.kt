@@ -2,6 +2,7 @@ package com.emikhalets.medialib.data.entity.database
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import com.emikhalets.medialib.data.entity.views.ViewListItem
 import com.emikhalets.medialib.utils.enums.MovieStatus
@@ -12,7 +13,7 @@ data class MusicDB(
     @PrimaryKey @ColumnInfo(name = "id") override val id: Int = 0,
     @ColumnInfo(name = "title") override val title: String = "",
     @ColumnInfo(name = "author") val author: String = "",
-    @ColumnInfo(name = "genre") val genre: String = "",
+    @ColumnInfo(name = "genres") override val genres: String = "",
     @ColumnInfo(name = "overview") val overview: String = "",
     @ColumnInfo(name = "poster_path") override val poster: String = "",
     @ColumnInfo(name = "release_year") override val releaseYear: Int =

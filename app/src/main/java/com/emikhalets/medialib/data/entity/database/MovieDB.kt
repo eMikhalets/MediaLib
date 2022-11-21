@@ -12,7 +12,7 @@ data class MovieDB(
     @PrimaryKey @ColumnInfo(name = "id") override val id: Int = 0,
     @ColumnInfo(name = "title") override val title: String,
     @ColumnInfo(name = "title_ru") val titleRu: String = "",
-    @ColumnInfo(name = "genres") val genres: String = "",
+    @ColumnInfo(name = "genres") override val genres: String = "",
     @ColumnInfo(name = "overview") val overview: String = "",
     @ColumnInfo(name = "poster_path") override val poster: String = "",
     @ColumnInfo(name = "release_year") override val releaseYear: Int =

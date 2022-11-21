@@ -4,7 +4,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -28,6 +27,7 @@ import androidx.compose.material.icons.rounded.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -46,6 +46,8 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import coil.transform.RoundedCornersTransformation
 import com.emikhalets.medialib.R
+import com.emikhalets.medialib.data.entity.database.BookDB
+import com.emikhalets.medialib.data.entity.database.SerialDB
 import com.emikhalets.medialib.data.entity.views.ViewListItem
 import com.emikhalets.medialib.utils.px
 
@@ -125,17 +127,13 @@ fun RootScreenList(
 }
 
 @Composable
-fun RootListItem(
-    item: ViewListItem,
-    onItemClick: (Int) -> Unit,
-    content: @Composable ColumnScope.() -> Unit,
-) {
+fun RootListItem(item: ViewListItem, onItemClick: (Int) -> Unit) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
             .clickable { onItemClick(item.id) }
-            .padding(8.dp)
+            .padding(horizontal = 8.dp, vertical = 4.dp)
     ) {
         AsyncImage(
             model = ImageRequest.Builder(LocalContext.current)
@@ -148,51 +146,56 @@ fun RootListItem(
             placeholder = painterResource(R.drawable.ph_poster),
             contentScale = ContentScale.FillHeight,
             modifier = Modifier
-                .height(120.dp)
-                .padding(8.dp)
+                .height(70.dp)
+                .padding(end = 8.dp)
 
         )
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp)
-                .weight(1f)
-        ) {
+        Column(modifier = Modifier.fillMaxWidth()) {
             Text(
                 text = item.title,
-                fontSize = 20.sp,
+                fontSize = 18.sp,
                 fontWeight = FontWeight.Medium,
                 modifier = Modifier.fillMaxWidth()
             )
-            val localeTitle = item.getLocaleTitle()
-            if (localeTitle.isNotEmpty()) {
+            if (item is BookDB) {
                 Text(
-                    text = localeTitle,
+                    text = item.author,
+                    fontSize = 14.sp,
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+            if (item is SerialDB) {
+                Text(
+                    text = stringResource(R.string.serials_seasons_value, item.seasons),
                     fontSize = 14.sp,
                     modifier = Modifier.fillMaxWidth()
                 )
             }
             Spacer(modifier = Modifier.height(4.dp))
-            Column(modifier = Modifier.fillMaxWidth()) {
-                if (item.rating > 0) {
-                    Row {
-                        repeat(item.rating) {
-                            Icon(imageVector = Icons.Default.Star,
-                                contentDescription = "",
-                                Modifier.size(12.dp))
-                            Spacer(modifier = Modifier.width(4.dp))
-                        }
-                    }
-                    Spacer(modifier = Modifier.height(4.dp))
-                }
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth()
+            ) {
                 Text(
-                    text = stringResource(R.string.app_date_value, item.releaseYear),
+                    text = "${item.releaseYear}, ${item.genres}",
                     fontSize = 14.sp,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f)
                 )
-                content()
+                Spacer(modifier = Modifier.width(8.dp))
+                if (item.rating > 0) {
+                    Row {
+                        repeat(5) {
+                            Icon(imageVector = Icons.Default.Star,
+                                contentDescription = "",
+                                tint = if (it < item.rating) Color.Black else Color.Gray,
+                                modifier = Modifier.size(14.dp))
+                        }
+                    }
+                }
             }
         }
     }

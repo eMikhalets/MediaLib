@@ -84,15 +84,7 @@ private fun MovieItem(
     RootListItem(
         item = movie,
         onItemClick = onMovieClick
-    ) {
-        Text(
-            text = stringResource(R.string.app_genres_value, movie.genres),
-            fontSize = 14.sp,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.fillMaxWidth()
-        )
-    }
+    )
 }
 
 @Preview(showBackground = true)
@@ -116,10 +108,11 @@ private fun ItemPreview() {
     AppTheme {
         MovieItem(
             movie = MovieDB(
-                title = "Long long long long long long long long long Spider-man",
-                genres = "Action, Drama",
+                title = "Long long long long Spider-man",
+                genres = "Action, Drama, Action, Drama, Action, Drama",
                 releaseYear = 2015,
                 runtime = 122,
+                rating = 4
             ),
             onMovieClick = {},
         )

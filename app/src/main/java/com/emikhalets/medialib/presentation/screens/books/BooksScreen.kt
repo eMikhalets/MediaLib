@@ -84,22 +84,7 @@ private fun BookItem(
     RootListItem(
         item = book,
         onItemClick = onBookClick
-    ) {
-        Text(
-            text = stringResource(R.string.book_author_value, book.author),
-            fontSize = 14.sp,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.fillMaxWidth()
-        )
-        Text(
-            text = stringResource(R.string.app_genres_value, book.genres),
-            fontSize = 14.sp,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.fillMaxWidth()
-        )
-    }
+    )
 }
 
 @Preview(showBackground = true)
@@ -127,6 +112,7 @@ private fun ItemPreview() {
                 genres = "Drama",
                 releaseYear = 1859,
                 author = "Sample Author",
+                rating = 3,
             ),
             onBookClick = {},
         )
