@@ -1,5 +1,6 @@
 package com.emikhalets.medialib.presentation.screens.books
 
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,7 +17,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
@@ -29,6 +33,7 @@ import com.emikhalets.medialib.data.entity.database.BookDB
 import com.emikhalets.medialib.presentation.core.AppScaffold
 import com.emikhalets.medialib.presentation.core.AppStatusSpinner
 import com.emikhalets.medialib.presentation.core.AppTextField
+import com.emikhalets.medialib.presentation.core.RatingBar
 import com.emikhalets.medialib.presentation.theme.AppTheme
 import com.emikhalets.medialib.utils.enums.BookStatus
 import com.emikhalets.medialib.utils.toSafeInt
@@ -63,21 +68,27 @@ private fun BookEditScreen(
     onSaveClick: (BookDB) -> Unit,
 ) {
     AppScaffold(navController, book?.title) {
+        val localFocusManager = LocalFocusManager.current
         var title by remember { mutableStateOf(book?.title ?: book?.title ?: "") }
         var titleRu by remember { mutableStateOf(book?.titleRu ?: "") }
         var author by remember { mutableStateOf(book?.author ?: "") }
         var genres by remember { mutableStateOf(book?.genres ?: "") }
-        var overview by remember { mutableStateOf(book?.overview ?: "") }
         var releaseYear by remember { mutableStateOf(book?.releaseYear?.toString() ?: "") }
         var comment by remember { mutableStateOf(book?.comment ?: "") }
         var status by remember { mutableStateOf(book?.status?.toString() ?: "") }
+        var rating by remember { mutableStateOf(book?.rating ?: 0) }
 
         Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .fillMaxSize()
-                .padding(8.dp)
+                .padding(horizontal = 8.dp)
                 .verticalScroll(rememberScrollState())
+                .pointerInput(Unit) {
+                    detectTapGestures(onTap = { localFocusManager.clearFocus() })
+                }
         ) {
+            Spacer(modifier = Modifier.height(8.dp))
             AppTextField(title, { title = it }, stringResource(R.string.app_title))
             Spacer(modifier = Modifier.height(8.dp))
 
@@ -90,15 +101,15 @@ private fun BookEditScreen(
             AppTextField(genres, { genres = it }, stringResource(R.string.app_genres))
             Spacer(modifier = Modifier.height(8.dp))
 
-            AppTextField(overview, { overview = it }, stringResource(R.string.app_overview))
-            Spacer(modifier = Modifier.height(8.dp))
-
             AppTextField(releaseYear, { releaseYear = it }, stringResource(R.string.app_year),
                 KeyboardType.Number)
             Spacer(modifier = Modifier.height(8.dp))
 
             AppTextField(comment, { comment = it }, stringResource(R.string.app_comment))
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(16.dp))
+
+            RatingBar(rating = rating, onRatingChange = { rating = it })
+            Spacer(modifier = Modifier.height(16.dp))
 
             AppStatusSpinner(
                 initItem = book?.status?.toString(),
@@ -115,17 +126,17 @@ private fun BookEditScreen(
                             titleRu = titleRu,
                             author = author,
                             genres = genres,
-                            overview = overview,
                             releaseYear = releaseYear.toSafeInt(),
                             comment = comment,
-                            status = BookStatus.get(status)
+                            status = BookStatus.get(status),
+                            rating = rating
                         )
                     )
-                },
-                modifier = Modifier.fillMaxWidth()
+                }
             ) {
                 Text(text = stringResource(id = R.string.app_save))
             }
+            Spacer(modifier = Modifier.height(8.dp))
         }
     }
 }

@@ -11,6 +11,7 @@
     <string name="app_root_list_query_empty">По данному запросу ничего не найдено</string>
     <string name="app_cancel">Отменить</string>
     <string name="app_watched">Просмотено</string>
+    <string name="app_no_mind">Не понял смысл</string>
     <string name="app_will_watch">Смотреть</string>
     <string name="app_read">Прочитано</string>
     <string name="app_will_read">Читать</string>
