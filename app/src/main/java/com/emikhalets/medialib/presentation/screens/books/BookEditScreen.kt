@@ -32,7 +32,9 @@ import com.emikhalets.medialib.data.entity.database.BookDB
 import com.emikhalets.medialib.presentation.core.AppBookStatusSpinner
 import com.emikhalets.medialib.presentation.core.AppScaffold
 import com.emikhalets.medialib.presentation.core.AppTextField
+import com.emikhalets.medialib.presentation.core.AppTextFieldRead
 import com.emikhalets.medialib.presentation.core.RatingBar
+import com.emikhalets.medialib.presentation.core.YearDialog
 import com.emikhalets.medialib.presentation.theme.AppTheme
 import com.emikhalets.medialib.utils.enums.ItemStatus
 import com.emikhalets.medialib.utils.toSafeInt
@@ -68,11 +70,13 @@ private fun BookEditScreen(
 ) {
     AppScaffold(navController, book?.title) {
         val localFocusManager = LocalFocusManager.current
+        var showYearDialog by remember { mutableStateOf(false) }
+
         var title by remember { mutableStateOf(book?.title ?: book?.title ?: "") }
         var titleRu by remember { mutableStateOf(book?.titleRu ?: "") }
         var author by remember { mutableStateOf(book?.author ?: "") }
         var genres by remember { mutableStateOf(book?.genres ?: "") }
-        var releaseYear by remember { mutableStateOf(book?.releaseYear?.toString() ?: "") }
+        var releaseYear by remember { mutableStateOf(book?.releaseYear ?: 0) }
         var comment by remember { mutableStateOf(book?.comment ?: "") }
         var status by remember { mutableStateOf(book?.status?.toString() ?: "") }
         var rating by remember { mutableStateOf(book?.rating ?: 0) }
@@ -100,8 +104,8 @@ private fun BookEditScreen(
             AppTextField(genres, { genres = it }, stringResource(R.string.app_genres))
             Spacer(modifier = Modifier.height(8.dp))
 
-            AppTextField(releaseYear, { releaseYear = it }, stringResource(R.string.app_year),
-                KeyboardType.Number)
+            AppTextFieldRead(releaseYear.toString(), label = stringResource(R.string.app_year),
+                onClick = { showYearDialog = true })
             Spacer(modifier = Modifier.height(8.dp))
 
             AppTextField(comment, { comment = it }, stringResource(R.string.app_comment))
@@ -125,7 +129,7 @@ private fun BookEditScreen(
                             titleRu = titleRu,
                             author = author,
                             genres = genres,
-                            releaseYear = releaseYear.toSafeInt(),
+                            releaseYear = releaseYear,
                             comment = comment,
                             status = ItemStatus.get(status),
                             rating = rating
@@ -136,6 +140,17 @@ private fun BookEditScreen(
                 Text(text = stringResource(id = R.string.app_save))
             }
             Spacer(modifier = Modifier.height(8.dp))
+        }
+
+        if (showYearDialog) {
+            YearDialog(
+                year = releaseYear,
+                onDismiss = { showYearDialog = false },
+                onOkClick = {
+                    releaseYear = it
+                    showYearDialog = false
+                }
+            )
         }
     }
 }

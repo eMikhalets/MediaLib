@@ -16,10 +16,15 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
+import androidx.compose.material.ContentAlpha
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
+import androidx.compose.material.LocalContentAlpha
+import androidx.compose.material.LocalContentColor
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
+import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.rounded.Add
@@ -331,6 +336,34 @@ fun AppTextField(
             keyboardType = keyboardType,
             capitalization = KeyboardCapitalization.Sentences
         ),
+        colors = TextFieldDefaults.outlinedTextFieldColors(
+            disabledTextColor = LocalContentColor.current.copy(LocalContentAlpha.current),
+            disabledLabelColor = MaterialTheme.colors.onSurface.copy(ContentAlpha.medium)
+        ),
         modifier = Modifier.fillMaxWidth()
+    )
+}
+
+@Composable
+fun AppTextFieldRead(
+    value: String,
+    onClick: () -> Unit,
+    label: String = "",
+) {
+    OutlinedTextField(
+        value = if (value == "0") "" else value,
+        onValueChange = {},
+        label = if (label.isNotEmpty()) {
+            { Text(label) }
+        } else null,
+        readOnly = true,
+        enabled = false,
+        colors = TextFieldDefaults.outlinedTextFieldColors(
+            disabledTextColor = LocalContentColor.current.copy(LocalContentAlpha.current),
+            disabledLabelColor = MaterialTheme.colors.onSurface.copy(ContentAlpha.medium)
+        ),
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { onClick() }
     )
 }

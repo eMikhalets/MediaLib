@@ -21,7 +21,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -32,7 +31,9 @@ import com.emikhalets.medialib.data.entity.database.MovieDB
 import com.emikhalets.medialib.presentation.core.AppScaffold
 import com.emikhalets.medialib.presentation.core.AppStatusSpinner
 import com.emikhalets.medialib.presentation.core.AppTextField
+import com.emikhalets.medialib.presentation.core.AppTextFieldRead
 import com.emikhalets.medialib.presentation.core.RatingBar
+import com.emikhalets.medialib.presentation.core.YearDialog
 import com.emikhalets.medialib.presentation.theme.AppTheme
 import com.emikhalets.medialib.utils.enums.ItemStatus
 import com.emikhalets.medialib.utils.toSafeInt
@@ -68,10 +69,12 @@ private fun MovieEditsScreen(
 ) {
     AppScaffold(navController, movie?.title) {
         val localFocusManager = LocalFocusManager.current
+        var showYearDialog by remember { mutableStateOf(false) }
+
         var title by remember { mutableStateOf(movie?.title ?: movie?.title ?: "") }
         var titleRu by remember { mutableStateOf(movie?.titleRu ?: "") }
         var genres by remember { mutableStateOf(movie?.genres ?: "") }
-        var releaseYear by remember { mutableStateOf(movie?.releaseYear?.toString() ?: "") }
+        var releaseYear by remember { mutableStateOf(movie?.releaseYear ?: 0) }
         var comment by remember { mutableStateOf(movie?.comment ?: "") }
         var status by remember { mutableStateOf(movie?.status?.toString() ?: "") }
         var rating by remember { mutableStateOf(movie?.rating ?: 0) }
@@ -96,8 +99,8 @@ private fun MovieEditsScreen(
             AppTextField(genres, { genres = it }, stringResource(R.string.app_genres))
             Spacer(modifier = Modifier.height(8.dp))
 
-            AppTextField(releaseYear, { releaseYear = it }, stringResource(R.string.app_year),
-                KeyboardType.Number)
+            AppTextFieldRead(releaseYear.toString(), label = stringResource(R.string.app_year),
+                onClick = { showYearDialog = true })
             Spacer(modifier = Modifier.height(8.dp))
 
             AppTextField(comment, { comment = it }, stringResource(R.string.app_comment))
@@ -120,7 +123,7 @@ private fun MovieEditsScreen(
                             title = title,
                             titleRu = titleRu,
                             genres = genres,
-                            releaseYear = releaseYear.toSafeInt(),
+                            releaseYear = releaseYear,
                             comment = comment,
                             status = ItemStatus.get(status),
                             rating = rating
@@ -131,6 +134,17 @@ private fun MovieEditsScreen(
                 Text(text = stringResource(id = R.string.app_save))
             }
             Spacer(modifier = Modifier.height(8.dp))
+        }
+
+        if (showYearDialog) {
+            YearDialog(
+                year = releaseYear,
+                onDismiss = { showYearDialog = false },
+                onOkClick = {
+                    releaseYear = it
+                    showYearDialog = false
+                }
+            )
         }
     }
 }

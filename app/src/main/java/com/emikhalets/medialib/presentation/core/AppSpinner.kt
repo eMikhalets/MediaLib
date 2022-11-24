@@ -41,6 +41,7 @@ fun AppStatusSpinner(
             value = selectedItem,
             onValueChange = {},
             readOnly = true,
+            enabled = false,
             trailingIcon = {
                 if (expanded) {
                     Icon(imageVector = Icons.Default.KeyboardArrowUp, contentDescription = "")
@@ -90,6 +91,7 @@ fun AppBookStatusSpinner(
             value = selectedItem,
             onValueChange = {},
             readOnly = true,
+            enabled = false,
             trailingIcon = {
                 if (expanded) {
                     Icon(imageVector = Icons.Default.KeyboardArrowUp, contentDescription = "")

@@ -1,5 +1,6 @@
 package com.emikhalets.medialib.presentation.core
 
+import android.widget.DatePicker
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -21,6 +22,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -28,10 +30,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.emikhalets.medialib.R
 import com.emikhalets.medialib.presentation.theme.AppTheme
+import java.util.*
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -154,6 +158,43 @@ fun PosterDialog(
                     .weight(1f)
             ) {
                 Text(text = stringResource(id = R.string.app_delete))
+            }
+        }
+    }
+}
+
+@Composable
+fun YearDialog(
+    year: Int,
+    onDismiss: () -> Unit,
+    onOkClick: (Int) -> Unit,
+) {
+    var yearValue by remember {
+        mutableStateOf(if (year == 0) Calendar.getInstance().get(Calendar.YEAR) else year)
+    }
+
+    AppDialog(onDismiss = onDismiss) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            val customView = DatePicker(LocalContext.current, null, R.style.DatePickerSpinnerStyle)
+            customView.spinnersShown = true
+            customView.calendarViewShown = false
+            AndroidView(
+                factory = {
+                    customView.init(yearValue + 1, 0, 0) { _, _, _, _ -> }
+                    customView
+                },
+                update = { view ->
+                    view.setOnDateChangedListener { _, year, _, _ ->
+                        yearValue = year
+                    }
+                }
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            TextButton(
+                onClick = { onOkClick(yearValue) },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(text = stringResource(id = R.string.app_save))
             }
         }
     }
