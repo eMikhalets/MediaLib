@@ -4,7 +4,6 @@ import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -35,7 +34,7 @@ import com.emikhalets.medialib.presentation.core.AppStatusSpinner
 import com.emikhalets.medialib.presentation.core.AppTextField
 import com.emikhalets.medialib.presentation.core.RatingBar
 import com.emikhalets.medialib.presentation.theme.AppTheme
-import com.emikhalets.medialib.utils.enums.MovieStatus
+import com.emikhalets.medialib.utils.enums.ItemStatus
 import com.emikhalets.medialib.utils.toSafeInt
 
 @Composable
@@ -123,7 +122,7 @@ private fun MovieEditsScreen(
                             genres = genres,
                             releaseYear = releaseYear.toSafeInt(),
                             comment = comment,
-                            status = MovieStatus.get(status),
+                            status = ItemStatus.get(status),
                             rating = rating
                         )
                     )

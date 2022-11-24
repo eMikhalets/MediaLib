@@ -20,22 +20,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import com.emikhalets.medialib.R
-import com.emikhalets.medialib.utils.enums.BookStatus
-import com.emikhalets.medialib.utils.enums.MovieStatus
+import com.emikhalets.medialib.utils.enums.ItemStatus
 
 @Composable
 fun AppStatusSpinner(
     initItem: String? = null,
-    onSelect: (MovieStatus) -> Unit,
+    onSelect: (ItemStatus) -> Unit,
 ) {
     val context = LocalContext.current
-    val list = remember {
-        MovieStatus.values().toList().map {
-            if (it == MovieStatus.NONE) context.getString(R.string.app_status_none)
-            else context.getString(it.res)
-        }
-    }
+    val list = remember { ItemStatus.statusList(context) }
     var expanded by remember { mutableStateOf(false) }
     var selectedItem by remember { mutableStateOf(initItem ?: list.first()) }
 
@@ -69,7 +62,7 @@ fun AppStatusSpinner(
                     onClick = {
                         selectedItem = item
                         expanded = false
-                        onSelect(MovieStatus.get(context, item))
+                        onSelect(ItemStatus.get(context, item))
                     },
                     content = { Text(text = item) }
                 )
@@ -81,15 +74,10 @@ fun AppStatusSpinner(
 @Composable
 fun AppBookStatusSpinner(
     initItem: String? = null,
-    onSelect: (BookStatus) -> Unit,
+    onSelect: (ItemStatus) -> Unit,
 ) {
     val context = LocalContext.current
-    val list = remember {
-        BookStatus.values().toList().map {
-            if (it == BookStatus.NONE) context.getString(R.string.app_status_none)
-            else context.getString(it.res)
-        }
-    }
+    val list = remember { ItemStatus.statusBookList(context) }
     var expanded by remember { mutableStateOf(false) }
     var selectedItem by remember { mutableStateOf(initItem ?: list.first()) }
 
@@ -123,7 +111,7 @@ fun AppBookStatusSpinner(
                     onClick = {
                         selectedItem = item
                         expanded = false
-                        onSelect(BookStatus.get(context, item))
+                        onSelect(ItemStatus.get(context, item))
                     },
                     content = { Text(text = item) }
                 )

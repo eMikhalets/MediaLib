@@ -19,6 +19,7 @@ import com.emikhalets.medialib.presentation.core.RootScreenList
 import com.emikhalets.medialib.presentation.navToMovieDetails
 import com.emikhalets.medialib.presentation.navToMovieEdit
 import com.emikhalets.medialib.presentation.theme.AppTheme
+import com.emikhalets.medialib.utils.enums.ItemStatus
 
 @Composable
 fun MoviesScreen(
@@ -106,7 +107,8 @@ private fun ItemPreview() {
                 title = "Long long long long Spider-man",
                 genres = "Action, Drama, Action, Drama, Action, Drama",
                 releaseYear = 2015,
-                rating = 4
+                rating = 4,
+                status = ItemStatus.WATCH
             ),
             onMovieClick = {},
         )

@@ -9,7 +9,7 @@ import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.emikhalets.medialib.R
 
-enum class MovieStatus(val res: Int, val icon: ImageVector?) {
+enum class ItemStatus(val res: Int, val icon: ImageVector?) {
     NONE(R.string.app_status_none, null),
     WATCH(R.string.app_will_watch, Icons.Default.Bookmark),
     WATCHED(R.string.app_watched, Icons.Default.Visibility),
@@ -18,34 +18,30 @@ enum class MovieStatus(val res: Int, val icon: ImageVector?) {
 
     companion object {
 
-        fun get(context: Context, value: String): MovieStatus {
+        fun get(context: Context, value: String): ItemStatus {
             val map = values().associateBy { context.getString(it.res) }
             return map[value] ?: NONE
         }
 
-        fun get(status: String): MovieStatus {
+        fun get(status: String): ItemStatus {
             val map = values().associateBy { it.toString() }
             return map[status] ?: NONE
         }
-    }
-}
 
-enum class BookStatus(val res: Int) {
-    NONE(R.string.app_status_none),
-    NEED_READ(R.string.app_dropped),
-    READ(R.string.app_dropped),
-    DROPPED(R.string.app_dropped);
-
-    companion object {
-
-        fun get(context: Context, value: String): BookStatus {
-            val map = values().associateBy { context.getString(it.res) }
-            return map[value] ?: NONE
+        fun statusList(context: Context): List<String> {
+            return values().toList().map { context.getString(it.res) }
         }
 
-        fun get(status: String): BookStatus {
-            val map = values().associateBy { it.toString() }
-            return map[status] ?: NONE
+        fun statusBookList(context: Context): List<String> {
+            return values().toList().map { context.getString(it.stringForBooks()) }
+        }
+
+        private fun ItemStatus.stringForBooks(): Int {
+            return when (this) {
+                WATCH -> R.string.app_read
+                WATCHED -> R.string.app_will_read
+                else -> this.res
+            }
         }
     }
 }

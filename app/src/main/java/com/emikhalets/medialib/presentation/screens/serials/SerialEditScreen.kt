@@ -34,7 +34,7 @@ import com.emikhalets.medialib.presentation.core.AppStatusSpinner
 import com.emikhalets.medialib.presentation.core.AppTextField
 import com.emikhalets.medialib.presentation.core.RatingBar
 import com.emikhalets.medialib.presentation.theme.AppTheme
-import com.emikhalets.medialib.utils.enums.MovieStatus
+import com.emikhalets.medialib.utils.enums.ItemStatus
 import com.emikhalets.medialib.utils.toSafeInt
 
 @Composable
@@ -128,7 +128,7 @@ private fun MovieEditsScreen(
                             releaseYear = releaseYear.toSafeInt(),
                             seasons = seasons.toSafeInt(),
                             comment = comment,
-                            status = MovieStatus.get(status),
+                            status = ItemStatus.get(status),
                             rating = rating
                         )
                     )

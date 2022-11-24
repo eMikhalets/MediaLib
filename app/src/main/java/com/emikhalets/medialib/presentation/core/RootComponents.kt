@@ -49,6 +49,7 @@ import com.emikhalets.medialib.R
 import com.emikhalets.medialib.data.entity.database.BookDB
 import com.emikhalets.medialib.data.entity.database.SerialDB
 import com.emikhalets.medialib.data.entity.support.ViewListItem
+import com.emikhalets.medialib.utils.enums.ItemStatus
 import com.emikhalets.medialib.utils.px
 
 @Composable
@@ -151,12 +152,22 @@ fun RootListItem(item: ViewListItem, onItemClick: (Int) -> Unit) {
 
         )
         Column(modifier = Modifier.fillMaxWidth()) {
-            Text(
-                text = item.title,
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Medium,
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.fillMaxWidth()
-            )
+            ) {
+                Text(
+                    text = item.title,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Medium,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f)
+                )
+                if (item.status != ItemStatus.NONE && item.status.icon != null) {
+                    Icon(imageVector = item.status.icon!!, contentDescription = "")
+                }
+            }
             if (item is BookDB) {
                 Text(
                     text = item.author,
