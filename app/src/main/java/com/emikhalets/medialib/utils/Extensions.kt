@@ -30,3 +30,22 @@ fun String.toDate(pattern: String = "dd.MM.yyyy"): String {
 val Int.px: Float
     @Composable
     get() = this * LocalContext.current.resources.displayMetrics.density
+
+inline fun String?.ifNullOrEmpty(defaultValue: () -> String): String =
+    if (isNullOrEmpty()) defaultValue() else this
+
+fun String.toSafeInt(): Int {
+    return try {
+        this.toInt()
+    } catch (ex: NumberFormatException) {
+        0
+    }
+}
+
+fun String.toSafeLong(): Long {
+    return try {
+        this.toLong()
+    } catch (ex: NumberFormatException) {
+        0L
+    }
+}

@@ -21,9 +21,10 @@ import com.emikhalets.medialib.data.entity.database.SerialDB
         MusicDB::class,
     ],
     autoMigrations = [
-        AutoMigration(from = 1, to = 2, spec = MigrationFrom1To2::class)
+        AutoMigration(from = 1, to = 2, spec = MigrationFrom1To2::class),
+        AutoMigration(from = 2, to = 3),
     ],
-    version = 2,
+    version = 3,
     exportSchema = true
 )
 abstract class AppDatabase : RoomDatabase() {

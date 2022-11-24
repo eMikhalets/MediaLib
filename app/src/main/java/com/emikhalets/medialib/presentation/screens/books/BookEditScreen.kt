@@ -31,6 +31,7 @@ import com.emikhalets.medialib.presentation.core.AppStatusSpinner
 import com.emikhalets.medialib.presentation.core.AppTextField
 import com.emikhalets.medialib.presentation.theme.AppTheme
 import com.emikhalets.medialib.utils.enums.BookStatus
+import com.emikhalets.medialib.utils.toSafeInt
 
 @Composable
 fun BookEditScreen(
@@ -115,9 +116,9 @@ private fun BookEditScreen(
                             author = author,
                             genres = genres,
                             overview = overview,
-                            releaseYear = releaseYear.toInt(),
+                            releaseYear = releaseYear.toSafeInt(),
                             comment = comment,
-                            status = BookStatus.valueOf(status)
+                            status = BookStatus.get(status)
                         )
                     )
                 },

@@ -1,18 +1,13 @@
 package com.emikhalets.medialib.presentation.screens.movies
 
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
@@ -111,7 +106,6 @@ private fun ItemPreview() {
                 title = "Long long long long Spider-man",
                 genres = "Action, Drama, Action, Drama, Action, Drama",
                 releaseYear = 2015,
-                runtime = 122,
                 rating = 4
             ),
             onMovieClick = {},

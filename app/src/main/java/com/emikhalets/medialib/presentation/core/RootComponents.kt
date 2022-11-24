@@ -48,7 +48,7 @@ import coil.transform.RoundedCornersTransformation
 import com.emikhalets.medialib.R
 import com.emikhalets.medialib.data.entity.database.BookDB
 import com.emikhalets.medialib.data.entity.database.SerialDB
-import com.emikhalets.medialib.data.entity.views.ViewListItem
+import com.emikhalets.medialib.data.entity.support.ViewListItem
 import com.emikhalets.medialib.utils.px
 
 @Composable
@@ -176,8 +176,12 @@ fun RootListItem(item: ViewListItem, onItemClick: (Int) -> Unit) {
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.fillMaxWidth()
             ) {
+                val info = buildString {
+                    append(item.releaseYear.toString())
+                    if (item.genres.isNotEmpty()) append(", ${item.genres}")
+                }
                 Text(
-                    text = "${item.releaseYear}, ${item.genres}",
+                    text = info,
                     fontSize = 14.sp,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,

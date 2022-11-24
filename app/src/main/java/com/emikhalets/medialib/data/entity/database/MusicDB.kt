@@ -2,15 +2,14 @@ package com.emikhalets.medialib.data.entity.database
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
-import androidx.room.Ignore
 import androidx.room.PrimaryKey
-import com.emikhalets.medialib.data.entity.views.ViewListItem
+import com.emikhalets.medialib.data.entity.support.ViewListItem
 import com.emikhalets.medialib.utils.enums.MovieStatus
 import java.util.*
 
 @Entity(tableName = "musics")
 data class MusicDB(
-    @PrimaryKey @ColumnInfo(name = "id") override val id: Int = 0,
+    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") override val id: Int = 0,
     @ColumnInfo(name = "title") override val title: String = "",
     @ColumnInfo(name = "author") val author: String = "",
     @ColumnInfo(name = "genres") override val genres: String = "",

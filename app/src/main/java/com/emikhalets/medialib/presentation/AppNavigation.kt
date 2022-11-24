@@ -167,7 +167,7 @@ fun NavHostController.navToMovieDetails(id: Int) {
 }
 
 fun NavHostController.navToMovieEdit(id: Int?) {
-    navigate("${AppScreen.MovieEdit.route}/$id")
+    navigate("${AppScreen.MovieEdit.route}/${id ?: 0}")
 }
 
 fun NavHostController.navToSerialDetails(id: Int) {
@@ -175,7 +175,7 @@ fun NavHostController.navToSerialDetails(id: Int) {
 }
 
 fun NavHostController.navToSerialEdit(id: Int?) {
-    navigate("${AppScreen.SerialEdit.route}/$id")
+    navigate("${AppScreen.SerialEdit.route}/${id ?: 0}")
 }
 
 fun NavHostController.navToBookDetails(id: Int) {
@@ -183,7 +183,7 @@ fun NavHostController.navToBookDetails(id: Int) {
 }
 
 fun NavHostController.navToBookEdit(id: Int?) {
-    navigate("${AppScreen.BookEdit.route}/$id")
+    navigate("${AppScreen.BookEdit.route}/${id ?: 0}")
 }
 
 fun NavHostController.navToMusicDetails(id: Int) {

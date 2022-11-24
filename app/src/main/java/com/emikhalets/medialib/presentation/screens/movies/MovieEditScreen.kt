@@ -31,6 +31,8 @@ import com.emikhalets.medialib.presentation.core.AppStatusSpinner
 import com.emikhalets.medialib.presentation.core.AppTextField
 import com.emikhalets.medialib.presentation.theme.AppTheme
 import com.emikhalets.medialib.utils.enums.MovieStatus
+import com.emikhalets.medialib.utils.toSafeInt
+import com.emikhalets.medialib.utils.toSafeLong
 
 @Composable
 fun MovieEditsScreen(
@@ -120,11 +122,11 @@ private fun MovieEditsScreen(
                             titleRu = titleRu,
                             genres = genres,
                             overview = overview,
-                            releaseYear = releaseYear.toInt(),
-                            budget = budget.toLong(),
-                            revenue = revenue.toLong(),
+                            releaseYear = releaseYear.toSafeInt(),
+                            budget = budget.toSafeLong(),
+                            revenue = revenue.toSafeLong(),
                             comment = comment,
-                            status = MovieStatus.valueOf(status)
+                            status = MovieStatus.get(status)
                         )
                     )
                 },

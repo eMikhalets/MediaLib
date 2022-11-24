@@ -36,7 +36,7 @@ class MovieEditViewModel @Inject constructor(
 
 
     fun getMovie(id: Int?) {
-        id ?: return
+        if (id == null || id == 0) return
         viewModelScope.launch {
             val moviesResponse = repo.getItem(id)
             moviesResponse.onSuccess { flow ->

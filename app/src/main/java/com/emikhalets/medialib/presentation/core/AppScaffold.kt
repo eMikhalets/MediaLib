@@ -1,11 +1,8 @@
 package com.emikhalets.medialib.presentation.core
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Divider
@@ -28,17 +25,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
 import com.emikhalets.medialib.R
+import com.emikhalets.medialib.data.entity.support.MenuIconEntity
 import com.emikhalets.medialib.presentation.AppScreen
-import com.emikhalets.medialib.presentation.theme.AppTheme
+import com.emikhalets.medialib.utils.ifNullOrEmpty
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -46,6 +42,7 @@ import kotlinx.coroutines.launch
 fun AppScaffold(
     navController: NavHostController,
     title: String? = "",
+    actions: List<MenuIconEntity> = emptyList(),
     content: @Composable () -> Unit,
 ) {
     val scope = rememberCoroutineScope()
@@ -57,8 +54,7 @@ fun AppScaffold(
     }
 
     val isShowDrawer = AppScreen.isShowDrawer(navBackStackEntry)
-    val toolbarTitle = if (title.isNullOrEmpty()) AppScreen.getTitle(navBackStackEntry) else title
-    Log.d("TAG", "isCurrentScreenRoot: ${AppScreen.isShowDrawer(navBackStackEntry)}")
+    val toolbarTitle = title.ifNullOrEmpty { AppScreen.getTitle(navBackStackEntry) }
 
     Scaffold(
         scaffoldState = scaffoldState,
@@ -68,7 +64,8 @@ fun AppScaffold(
                 isShowDrawer,
                 scaffoldState.drawerState,
                 scope,
-                navController
+                navController,
+                actions
             )
         },
         drawerContent = if (isShowDrawer) {
@@ -98,6 +95,7 @@ private fun AppToolbar(
     drawerState: DrawerState,
     scope: CoroutineScope,
     navController: NavHostController,
+    actions: List<MenuIconEntity>,
 ) {
     TopAppBar(
         title = {
@@ -124,6 +122,17 @@ private fun AppToolbar(
                     modifier = Modifier
                         .clickable { navController.popBackStack() }
                         .padding(20.dp, 16.dp)
+                )
+            }
+        },
+        actions = {
+            actions.forEach { menuItem ->
+                Icon(
+                    imageVector = menuItem.icon,
+                    contentDescription = "",
+                    modifier = Modifier
+                        .clickable { menuItem.onClick() }
+                        .padding(10.dp, 16.dp)
                 )
             }
         }
@@ -172,44 +181,5 @@ private fun AppDrawer(
                 }
                 .padding(16.dp)
         )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun ScaffoldPreview() {
-    AppTheme {
-        AppScaffold(rememberNavController()) {
-            Box(modifier = Modifier.fillMaxSize())
-        }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun ToolbarPreview() {
-    AppTheme {
-        AppToolbar(
-            "Test title",
-            false,
-            rememberScaffoldState().drawerState,
-            rememberCoroutineScope(),
-            rememberNavController())
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun DrawerPreview() {
-    AppTheme {
-        Column(Modifier.fillMaxSize()) {
-            AppDrawer(
-                rememberScaffoldState().drawerState,
-                rememberCoroutineScope(),
-                rememberNavController(),
-                rememberNavController().currentBackStackEntryAsState().value,
-                listOf(AppScreen.Movies, AppScreen.Serials, AppScreen.Books, AppScreen.Music),
-            )
-        }
     }
 }

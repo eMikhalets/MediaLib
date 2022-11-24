@@ -31,6 +31,7 @@ import com.emikhalets.medialib.presentation.core.AppStatusSpinner
 import com.emikhalets.medialib.presentation.core.AppTextField
 import com.emikhalets.medialib.presentation.theme.AppTheme
 import com.emikhalets.medialib.utils.enums.MovieStatus
+import com.emikhalets.medialib.utils.toSafeInt
 
 @Composable
 fun MovieEditsScreen(
@@ -115,10 +116,10 @@ private fun MovieEditsScreen(
                             titleRu = titleRu,
                             genres = genres,
                             overview = overview,
-                            releaseYear = releaseYear.toInt(),
-                            seasons = seasons.toInt(),
+                            releaseYear = releaseYear.toSafeInt(),
+                            seasons = seasons.toSafeInt(),
                             comment = comment,
-                            status = MovieStatus.valueOf(status)
+                            status = MovieStatus.get(status)
                         )
                     )
                 },

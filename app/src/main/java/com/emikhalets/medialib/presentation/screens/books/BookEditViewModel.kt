@@ -36,7 +36,7 @@ class BookEditViewModel @Inject constructor(
 
 
     fun getBook(id: Int?) {
-        id ?: return
+        if (id == null || id == 0) return
         viewModelScope.launch {
             repo.getItem(id).onSuccess { flow ->
                 flow.collectLatest { book -> state = state.setBook(book) }

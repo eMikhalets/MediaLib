@@ -13,6 +13,9 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Delete
+import androidx.compose.material.icons.rounded.Edit
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -32,12 +35,15 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.emikhalets.medialib.R
 import com.emikhalets.medialib.data.entity.database.SerialDB
+import com.emikhalets.medialib.data.entity.support.MenuIconEntity
 import com.emikhalets.medialib.presentation.core.AppAsyncImage
 import com.emikhalets.medialib.presentation.core.AppDetailsSection
 import com.emikhalets.medialib.presentation.core.AppScaffold
 import com.emikhalets.medialib.presentation.core.DeleteDialog
 import com.emikhalets.medialib.presentation.core.PosterDialog
 import com.emikhalets.medialib.presentation.core.RatingBar
+import com.emikhalets.medialib.presentation.navToMovieEdit
+import com.emikhalets.medialib.presentation.navToSerialEdit
 import com.emikhalets.medialib.presentation.theme.AppTheme
 
 @Composable
@@ -65,6 +71,7 @@ fun SerialDetailsScreen(
         onRatingChange = { viewModel.updateSerial(it) },
         onDeleteClick = { showDeleteDialog = true },
         onPosterClick = { showPosterDialog = true },
+        onEditClick = { navController.navToSerialEdit(serialId) },
     )
 
     if (showDeleteDialog) {
@@ -96,8 +103,16 @@ private fun SerialDetailsScreen(
     onRatingChange: (Int) -> Unit,
     onDeleteClick: () -> Unit,
     onPosterClick: () -> Unit,
+    onEditClick: () -> Unit,
 ) {
-    AppScaffold(navController, serial?.title) {
+    AppScaffold(
+        navController = navController,
+        title = serial?.title,
+        actions = listOf(
+            MenuIconEntity(Icons.Rounded.Edit) { onEditClick() },
+            MenuIconEntity(Icons.Rounded.Delete) { onDeleteClick() }
+        )
+    ) {
         if (serial == null) {
             Box(
                 contentAlignment = Alignment.Center,
@@ -115,7 +130,6 @@ private fun SerialDetailsScreen(
             MovieItem(
                 serial = serial,
                 onRatingChange = onRatingChange,
-                onDeleteClick = onDeleteClick,
                 onPosterClick = onPosterClick,
             )
         }
@@ -126,7 +140,6 @@ private fun SerialDetailsScreen(
 private fun MovieItem(
     serial: SerialDB,
     onRatingChange: (Int) -> Unit,
-    onDeleteClick: () -> Unit,
     onPosterClick: () -> Unit,
 ) {
     Column(
@@ -206,13 +219,6 @@ private fun MovieItem(
             fontSize = 14.sp,
             modifier = Modifier.fillMaxWidth()
         )
-        Spacer(modifier = Modifier.height(16.dp))
-        Button(
-            onClick = { onDeleteClick() },
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text(text = stringResource(id = R.string.app_delete))
-        }
     }
 }
 
@@ -235,6 +241,7 @@ private fun ScreenPreview() {
             onRatingChange = {},
             onDeleteClick = {},
             onPosterClick = {},
+            onEditClick = {},
         )
     }
 }

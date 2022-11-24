@@ -1,4 +1,4 @@
-package com.emikhalets.medialib.data.entity.views
+package com.emikhalets.medialib.data.entity.support
 
 interface ViewListItem {
 
