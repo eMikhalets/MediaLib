@@ -39,7 +39,7 @@ class SerialEditViewModel @Inject constructor(
         if (id == null || id == 0) return
         viewModelScope.launch {
             repo.getItem(id).onSuccess { flow ->
-                flow.collectLatest { serial -> state = state.setSerial(serial) }
+                flow.collectLatest { serial -> serial?.let { state = state.setSerial(serial) } }
             }
         }
     }

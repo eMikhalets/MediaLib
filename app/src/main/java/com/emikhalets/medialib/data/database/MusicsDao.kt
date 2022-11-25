@@ -30,5 +30,5 @@ interface MusicsDao {
     fun searchByTitle(query: String): Flow<List<MusicDB>>
 
     @Query("SELECT * FROM musics WHERE id=:id")
-    fun getItem(id: Int): Flow<MusicDB>
+    fun getItem(id: Int): Flow<MusicDB?>
 }

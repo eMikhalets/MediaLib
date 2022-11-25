@@ -71,7 +71,7 @@ fun SerialDetailsScreen(
         onRatingChange = { viewModel.updateSerial(it) },
         onDeleteClick = { showDeleteDialog = true },
         onPosterClick = { showPosterDialog = true },
-        onEditClick = { navController.navToSerialEdit(serialId) },
+        onEditClick = { navController.navToSerialEdit(viewModel.state.serial?.id) },
     )
 
     if (showDeleteDialog) {

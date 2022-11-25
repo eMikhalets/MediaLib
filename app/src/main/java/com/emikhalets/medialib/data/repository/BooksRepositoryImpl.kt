@@ -22,7 +22,7 @@ class BooksRepositoryImpl @Inject constructor(
         return execute { booksDao.delete(item) }
     }
 
-    override suspend fun getItem(id: Int): Result<Flow<BookDB>> {
+    override suspend fun getItem(id: Int): Result<Flow<BookDB?>> {
         return execute { booksDao.getItem(id) }
     }
 

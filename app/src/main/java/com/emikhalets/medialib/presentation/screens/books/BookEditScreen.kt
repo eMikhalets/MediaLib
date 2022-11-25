@@ -21,7 +21,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -37,7 +36,6 @@ import com.emikhalets.medialib.presentation.core.RatingBar
 import com.emikhalets.medialib.presentation.core.YearDialog
 import com.emikhalets.medialib.presentation.theme.AppTheme
 import com.emikhalets.medialib.utils.enums.ItemStatus
-import com.emikhalets.medialib.utils.toSafeInt
 
 @Composable
 fun BookEditScreen(
@@ -57,6 +55,7 @@ fun BookEditScreen(
 
     BookEditScreen(
         navController = navController,
+        bookId = bookId,
         book = viewModel.state.book,
         onSaveClick = { viewModel.saveBook(it) }
     )
@@ -65,14 +64,16 @@ fun BookEditScreen(
 @Composable
 private fun BookEditScreen(
     navController: NavHostController,
+    bookId: Int?,
     book: BookDB?,
     onSaveClick: (BookDB) -> Unit,
 ) {
+    if ((bookId ?: 0) > 0 && book == null) return
     AppScaffold(navController, book?.title) {
         val localFocusManager = LocalFocusManager.current
         var showYearDialog by remember { mutableStateOf(false) }
 
-        var title by remember { mutableStateOf(book?.title ?: book?.title ?: "") }
+        var title by remember { mutableStateOf(book?.title ?: "") }
         var titleRu by remember { mutableStateOf(book?.titleRu ?: "") }
         var author by remember { mutableStateOf(book?.author ?: "") }
         var genres by remember { mutableStateOf(book?.genres ?: "") }
@@ -161,6 +162,7 @@ private fun ScreenPreview() {
     AppTheme {
         BookEditScreen(
             navController = rememberNavController(),
+            bookId = 1,
             book = BookDB(
                 id = 1,
                 title = "Spider-man",

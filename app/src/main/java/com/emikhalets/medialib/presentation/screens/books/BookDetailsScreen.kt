@@ -71,7 +71,7 @@ fun BookDetailsScreen(
         onRatingChange = { viewModel.updateBook(it) },
         onDeleteClick = { showDeleteDialog = true },
         onPosterClick = { showPosterDialog = true },
-        onEditClick = { navController.navToBookEdit(bookId) },
+        onEditClick = { navController.navToBookEdit(viewModel.state.book?.id) },
     )
 
     if (showDeleteDialog) {

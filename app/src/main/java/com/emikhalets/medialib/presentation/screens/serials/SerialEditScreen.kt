@@ -57,6 +57,7 @@ fun MovieEditsScreen(
 
     MovieEditsScreen(
         navController = navController,
+        serialId = serialId,
         serial = viewModel.state.serial,
         onSaveClick = { viewModel.saveSerial(it) }
     )
@@ -65,14 +66,16 @@ fun MovieEditsScreen(
 @Composable
 private fun MovieEditsScreen(
     navController: NavHostController,
+    serialId: Int?,
     serial: SerialDB?,
     onSaveClick: (SerialDB) -> Unit,
 ) {
+    if ((serialId ?: 0) > 0 && serial == null) return
     AppScaffold(navController, serial?.title) {
         val localFocusManager = LocalFocusManager.current
         var showYearDialog by remember { mutableStateOf(false) }
 
-        var title by remember { mutableStateOf(serial?.title ?: serial?.title ?: "") }
+        var title by remember { mutableStateOf(serial?.title ?: "") }
         var titleRu by remember { mutableStateOf(serial?.titleRu ?: "") }
         var genres by remember { mutableStateOf(serial?.genres ?: "") }
         var releaseYear by remember { mutableStateOf(serial?.releaseYear ?: 0) }
@@ -162,6 +165,7 @@ private fun ScreenPreview() {
     AppTheme {
         MovieEditsScreen(
             navController = rememberNavController(),
+            serialId = 3,
             serial = SerialDB(
                 id = 1,
                 title = "Spider-man",

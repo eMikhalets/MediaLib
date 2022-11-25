@@ -42,7 +42,7 @@ class MovieDetailsViewModel @Inject constructor(
             val moviesResponse = repo.getItem(id)
             moviesResponse.onSuccess { flow ->
                 flow.collectLatest { movie ->
-                    state = state.setMovie(movie)
+                    movie?.let { state = state.setMovie(movie) }
                     movieDb = movie
                 }
             }

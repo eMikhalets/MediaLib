@@ -8,5 +8,5 @@ interface MoviesRepository{
     suspend fun insertItem(item: MovieDB): Result<Long>
     suspend fun updateItem(item: MovieDB): Result<Int>
     suspend fun deleteItem(item: MovieDB): Result<Int>
-    suspend fun getItem(id: Int): Result<Flow<MovieDB>>
+    suspend fun getItem(id: Int): Result<Flow<MovieDB?>>
     suspend fun getItems(query: String = ""): Result<Flow<List<MovieDB>>>}

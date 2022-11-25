@@ -1,5 +1,6 @@
 package com.emikhalets.medialib.presentation.screens.movies
 
+import android.util.Log
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -36,7 +37,6 @@ import com.emikhalets.medialib.presentation.core.RatingBar
 import com.emikhalets.medialib.presentation.core.YearDialog
 import com.emikhalets.medialib.presentation.theme.AppTheme
 import com.emikhalets.medialib.utils.enums.ItemStatus
-import com.emikhalets.medialib.utils.toSafeInt
 
 @Composable
 fun MovieEditsScreen(
@@ -56,6 +56,7 @@ fun MovieEditsScreen(
 
     MovieEditsScreen(
         navController = navController,
+        movieId = movieId,
         movie = viewModel.state.movie,
         onSaveClick = { viewModel.saveMovie(it) }
     )
@@ -64,14 +65,16 @@ fun MovieEditsScreen(
 @Composable
 private fun MovieEditsScreen(
     navController: NavHostController,
+    movieId: Int?,
     movie: MovieDB?,
     onSaveClick: (MovieDB) -> Unit,
 ) {
+    if ((movieId ?: 0) > 0 && movie == null) return
     AppScaffold(navController, movie?.title) {
         val localFocusManager = LocalFocusManager.current
         var showYearDialog by remember { mutableStateOf(false) }
 
-        var title by remember { mutableStateOf(movie?.title ?: movie?.title ?: "") }
+        var title by remember { mutableStateOf(movie?.title ?: "") }
         var titleRu by remember { mutableStateOf(movie?.titleRu ?: "") }
         var genres by remember { mutableStateOf(movie?.genres ?: "") }
         var releaseYear by remember { mutableStateOf(movie?.releaseYear ?: 0) }
@@ -89,6 +92,7 @@ private fun MovieEditsScreen(
                     detectTapGestures(onTap = { localFocusManager.clearFocus() })
                 }
         ) {
+            Log.d("MovieEditsScreen", "title: $title")
             Spacer(modifier = Modifier.height(8.dp))
             AppTextField(title, { title = it }, stringResource(R.string.app_title))
             Spacer(modifier = Modifier.height(8.dp))
@@ -155,6 +159,7 @@ private fun ScreenPreview() {
     AppTheme {
         MovieEditsScreen(
             navController = rememberNavController(),
+            movieId = 2,
             movie = MovieDB(
                 id = 1,
                 title = "Spider-man",

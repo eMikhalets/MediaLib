@@ -32,5 +32,5 @@ interface SerialsDao {
     fun searchByTitle(query: String): Flow<List<SerialDB>>
 
     @Query("SELECT * FROM serials WHERE id=:id")
-    fun getItem(id: Int): Flow<SerialDB>
+    fun getItem(id: Int): Flow<SerialDB?>
 }

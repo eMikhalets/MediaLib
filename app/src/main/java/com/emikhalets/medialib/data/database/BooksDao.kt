@@ -32,5 +32,5 @@ interface BooksDao {
     fun searchByTitle(query: String): Flow<List<BookDB>>
 
     @Query("SELECT * FROM books WHERE id=:id")
-    fun getItem(id: Int): Flow<BookDB>
+    fun getItem(id: Int): Flow<BookDB?>
 }

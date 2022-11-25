@@ -42,7 +42,7 @@ class SerialDetailsViewModel @Inject constructor(
             val moviesResponse = repo.getItem(id)
             moviesResponse.onSuccess { flow ->
                 flow.collectLatest { serial ->
-                    state = state.setSerial(serial)
+                    serial?.let { state = state.setSerial(serial) }
                     serialDb = serial
                 }
             }

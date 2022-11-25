@@ -40,7 +40,7 @@ class MovieEditViewModel @Inject constructor(
         viewModelScope.launch {
             val moviesResponse = repo.getItem(id)
             moviesResponse.onSuccess { flow ->
-                flow.collectLatest { movie -> state = state.setMovie(movie) }
+                flow.collectLatest { movie -> movie?.let { state = state.setMovie(movie) } }
             }
         }
     }

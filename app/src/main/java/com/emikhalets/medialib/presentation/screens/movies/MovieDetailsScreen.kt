@@ -1,5 +1,6 @@
 package com.emikhalets.medialib.presentation.screens.movies
 
+import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -69,7 +70,10 @@ fun MovieDetailsScreen(
         onRatingChange = { viewModel.updateMovie(it) },
         onDeleteClick = { showDeleteDialog = true },
         onPosterClick = { showPosterDialog = true },
-        onEditClick = { navController.navToMovieEdit(movieId) },
+        onEditClick = {
+            Log.d("MovieDetailsScreen", "id: ${viewModel.state.movie?.id}")
+            navController.navToMovieEdit(viewModel.state.movie?.id)
+        },
     )
 
     if (showDeleteDialog) {

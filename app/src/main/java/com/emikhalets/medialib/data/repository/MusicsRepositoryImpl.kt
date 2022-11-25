@@ -22,7 +22,7 @@ class MusicsRepositoryImpl @Inject constructor(
         return execute { musicsDao.delete(item) }
     }
 
-    override suspend fun getItem(id: Int): Result<Flow<MusicDB>> {
+    override suspend fun getItem(id: Int): Result<Flow<MusicDB?>> {
         return execute { musicsDao.getItem(id) }
     }
 

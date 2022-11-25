@@ -22,7 +22,7 @@ class SerialsRepositoryImpl @Inject constructor(
         return execute { serialsDao.delete(item) }
     }
 
-    override suspend fun getItem(id: Int): Result<Flow<SerialDB>> {
+    override suspend fun getItem(id: Int): Result<Flow<SerialDB?>> {
         return execute { serialsDao.getItem(id) }
     }
 

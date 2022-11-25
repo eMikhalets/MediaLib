@@ -22,7 +22,7 @@ class MoviesRepositoryImpl @Inject constructor(
         return execute { moviesDao.delete(item) }
     }
 
-    override suspend fun getItem(id: Int): Result<Flow<MovieDB>> {
+    override suspend fun getItem(id: Int): Result<Flow<MovieDB?>> {
         return execute { moviesDao.getItem(id) }
     }
 

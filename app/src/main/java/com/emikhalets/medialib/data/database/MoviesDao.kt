@@ -32,5 +32,5 @@ interface MoviesDao {
     fun searchByTitle(query: String): Flow<List<MovieDB>>
 
     @Query("SELECT * FROM movies WHERE id=:id")
-    fun getItem(id: Int): Flow<MovieDB>
+    fun getItem(id: Int): Flow<MovieDB?>
 }

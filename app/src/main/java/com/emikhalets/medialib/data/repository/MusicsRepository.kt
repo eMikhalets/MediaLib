@@ -8,6 +8,6 @@ interface MusicsRepository {
     suspend fun insertItem(item: MusicDB): Result<Long>
     suspend fun updateItem(item: MusicDB): Result<Int>
     suspend fun deleteItem(item: MusicDB): Result<Int>
-    suspend fun getItem(id: Int): Result<Flow<MusicDB>>
+    suspend fun getItem(id: Int): Result<Flow<MusicDB?>>
     suspend fun getItems(query: String = ""): Result<Flow<List<MusicDB>>>
 }

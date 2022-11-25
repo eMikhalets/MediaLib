@@ -39,7 +39,7 @@ class BookEditViewModel @Inject constructor(
         if (id == null || id == 0) return
         viewModelScope.launch {
             repo.getItem(id).onSuccess { flow ->
-                flow.collectLatest { book -> state = state.setBook(book) }
+                flow.collectLatest { book -> book?.let { state = state.setBook(book) } }
             }
         }
     }
