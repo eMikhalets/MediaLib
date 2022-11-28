@@ -67,7 +67,7 @@ private fun MovieEditsScreen(
     navController: NavHostController,
     movieId: Int?,
     movie: MovieDB?,
-    onSaveClick: (MovieDB) -> Unit,
+    onSaveClick: (MovieDB?) -> Unit,
 ) {
     if ((movieId ?: 0) > 0 && movie == null) return
     AppScaffold(navController, movie?.title) {
@@ -122,8 +122,8 @@ private fun MovieEditsScreen(
             Button(
                 onClick = {
                     onSaveClick(
-                        MovieDB(
-                            id = movie?.id ?: 0,
+                        movie?.copy(
+                            id = movie.id ?: 0,
                             title = title,
                             titleRu = titleRu,
                             genres = genres,

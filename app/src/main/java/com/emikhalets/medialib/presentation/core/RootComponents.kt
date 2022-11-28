@@ -156,7 +156,7 @@ fun RootListItem(item: ViewListItem, onItemClick: (Int) -> Unit) {
             placeholder = painterResource(R.drawable.ph_poster),
             contentScale = ContentScale.FillHeight,
             modifier = Modifier
-                .height(70.dp)
+                .size(70.dp, 95.dp)
                 .padding(end = 8.dp)
 
         )

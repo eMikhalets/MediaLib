@@ -2,12 +2,15 @@ package com.emikhalets.medialib.data.repository
 
 import com.emikhalets.medialib.data.database.MoviesDao
 import com.emikhalets.medialib.data.entity.database.MovieDB
+import com.emikhalets.medialib.data.entity.network.MovieResponse
+import com.emikhalets.medialib.data.network.MoviesApi
 import com.emikhalets.medialib.utils.execute
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class MoviesRepositoryImpl @Inject constructor(
     private val moviesDao: MoviesDao,
+    private val moviesApi: MoviesApi,
 ) : MoviesRepository {
 
     override suspend fun insertItem(item: MovieDB): Result<Long> {
@@ -34,5 +37,9 @@ class MoviesRepositoryImpl @Inject constructor(
                 moviesDao.searchByTitle(query)
             }
         }
+    }
+
+    override suspend fun searchMovie(id: String): Result<MovieResponse> {
+        return execute { moviesApi.getMovieDetails(id) }
     }
 }

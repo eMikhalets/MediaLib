@@ -1,6 +1,5 @@
 package com.emikhalets.medialib.presentation.screens.search
 
-import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -14,7 +13,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -31,19 +29,22 @@ fun SearchMoviesScreen(
     navController: NavHostController,
     viewModel: SearchMovieViewModel = hiltViewModel(),
 ) {
-    val context = LocalContext.current
     var url by remember { mutableStateOf("") }
+    var saveClickable by remember { mutableStateOf(true) }
 
-    LaunchedEffect(viewModel.state.imdbId) {
-        // TODO: invoke omdb request
-        Toast.makeText(context, viewModel.state.imdbId, Toast.LENGTH_SHORT).show()
+    LaunchedEffect(viewModel.state.saved) {
+        if (viewModel.state.saved) navController.popBackStack()
     }
 
     SearchMoviesScreen(
         navController = navController,
         url = url,
+        saveClickable = saveClickable,
         onUrlChange = { url = it },
-        onParseId = { viewModel.parseUrl(it) },
+        onParseId = {
+            saveClickable = false
+            viewModel.parseUrl(it)
+        },
     )
 }
 
@@ -51,6 +52,7 @@ fun SearchMoviesScreen(
 private fun SearchMoviesScreen(
     navController: NavHostController,
     url: String,
+    saveClickable: Boolean,
     onUrlChange: (String) -> Unit,
     onParseId: (String) -> Unit,
 ) {
@@ -67,10 +69,10 @@ private fun SearchMoviesScreen(
                     .weight(1f)
             )
             Button(
-                onClick = { onParseId(url) },
+                onClick = { if (saveClickable) onParseId(url) },
                 modifier = Modifier.padding(16.dp)
             ) {
-                Text(text = stringResource(R.string.app_parse))
+                Text(text = stringResource(R.string.app_save))
             }
         }
     }
@@ -83,6 +85,7 @@ private fun ScreenPreview() {
         SearchMoviesScreen(
             navController = rememberNavController(),
             url = stringResource(R.string.webview_imdb_link),
+            saveClickable = true,
             onUrlChange = {},
             onParseId = {},
         )

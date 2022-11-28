@@ -3,8 +3,10 @@ package com.emikhalets.medialib.data.entity.database
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.emikhalets.medialib.data.entity.network.MovieResponse
 import com.emikhalets.medialib.data.entity.support.ViewListItem
 import com.emikhalets.medialib.utils.enums.ItemStatus
+import com.emikhalets.medialib.utils.toSafeInt
 import java.util.*
 
 @Entity(tableName = "movies")
@@ -30,6 +32,19 @@ data class MovieDB(
         return when (Locale.getDefault().language) {
             "ru" -> titleRu
             else -> title
+        }
+    }
+
+    companion object {
+
+        fun fromMoviesResponse(response: MovieResponse): MovieDB {
+            return MovieDB(
+                id = 0,
+                title = response.title ?: "",
+                releaseYear = response.year?.toSafeInt() ?: 0,
+                genres = response.genre ?: "",
+                poster = response.poster ?: "",
+            )
         }
     }
 }

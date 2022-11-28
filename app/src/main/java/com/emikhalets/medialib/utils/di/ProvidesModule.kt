@@ -6,11 +6,15 @@ import com.emikhalets.medialib.data.database.BooksDao
 import com.emikhalets.medialib.data.database.MoviesDao
 import com.emikhalets.medialib.data.database.MusicsDao
 import com.emikhalets.medialib.data.database.SerialsDao
+import com.emikhalets.medialib.data.network.MoviesApi
+import com.emikhalets.medialib.data.network.RetrofitFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import retrofit2.Retrofit
+import retrofit2.create
 import javax.inject.Singleton
 
 @Module
@@ -19,13 +23,13 @@ object ProvidesModule {
 
     // Network
 
-//    @Provides
-//    @Singleton
-//    fun providesTmdbRetrofit(prefs: AppPrefs): Retrofit = RetrofitFactory(prefs).retrofit
+    @Provides
+    @Singleton
+    fun providesRetrofit(): Retrofit = RetrofitFactory().retrofit
 
-//    @Provides
-//    @Singleton
-//    fun providesMoviesApi(retrofit: Retrofit): MoviesApi = retrofit.create()
+    @Provides
+    @Singleton
+    fun providesMoviesApi(retrofit: Retrofit): MoviesApi = retrofit.create()
 
     // Database
 

@@ -45,8 +45,9 @@ class MovieEditViewModel @Inject constructor(
         }
     }
 
-    fun saveMovie(movie: MovieDB) {
+    fun saveMovie(movie: MovieDB?) {
         viewModelScope.launch {
+            movie ?: return@launch
             if (movie.id == 0) {
                 repo.insertItem(movie).onSuccess { state = state.setSaved() }
             } else {
