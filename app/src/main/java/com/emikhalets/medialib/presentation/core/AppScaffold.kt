@@ -50,7 +50,13 @@ fun AppScaffold(
     val navBackStackEntry by navController.currentBackStackEntryAsState()
 
     val rootScreens = remember {
-        listOf(AppScreen.Movies, AppScreen.Serials, AppScreen.Books, AppScreen.Music)
+        listOf(
+            AppScreen.Movies,
+            AppScreen.Serials,
+            AppScreen.Books,
+            AppScreen.Music,
+            AppScreen.SearchMovies
+        )
     }
 
     val isShowDrawer = AppScreen.isShowDrawer(navBackStackEntry)

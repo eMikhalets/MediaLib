@@ -1,5 +1,8 @@
 package com.emikhalets.medialib.presentation.core
 
+import android.annotation.SuppressLint
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
@@ -47,6 +50,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import coil.transform.RoundedCornersTransformation
@@ -366,4 +370,28 @@ fun AppTextFieldRead(
             .fillMaxWidth()
             .clickable { onClick() }
     )
+}
+
+@SuppressLint("SetJavaScriptEnabled")
+@Composable
+fun Webview(
+    url: String,
+    onPageLoaded: (String) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val context = LocalContext.current
+    Box(modifier = modifier) {
+        AndroidView(factory = {
+            WebView(context).apply {
+                webViewClient = object : WebViewClient() {
+                    override fun onPageFinished(view: WebView, url: String) {
+                        super.onPageFinished(view, url)
+                        onPageLoaded(url)
+                    }
+                }
+                settings.javaScriptEnabled = true
+                loadUrl(url)
+            }
+        })
+    }
 }

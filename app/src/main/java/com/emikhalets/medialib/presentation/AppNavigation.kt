@@ -17,8 +17,8 @@ import com.emikhalets.medialib.presentation.screens.movies.MovieDetailsScreen
 import com.emikhalets.medialib.presentation.screens.movies.MovieEditsScreen
 import com.emikhalets.medialib.presentation.screens.movies.MoviesScreen
 import com.emikhalets.medialib.presentation.screens.music.MusicScreen
+import com.emikhalets.medialib.presentation.screens.search.SearchMoviesScreen
 import com.emikhalets.medialib.presentation.screens.serials.SerialDetailsScreen
-import com.emikhalets.medialib.presentation.screens.serials.SerialsScreen
 
 sealed class AppScreen(val route: String, @StringRes val titleRes: Int) {
 
@@ -26,6 +26,7 @@ sealed class AppScreen(val route: String, @StringRes val titleRes: Int) {
     object Serials : AppScreen("serials", R.string.screen_name_serials)
     object Books : AppScreen("books", R.string.screen_name_books)
     object Music : AppScreen("music", R.string.screen_name_music)
+    object SearchMovies : AppScreen("search_movies", R.string.search_movies_title)
 
     object MovieEdit : AppScreen("movie_edit", R.string.screen_name_movies)
     object SerialEdit : AppScreen("serial_edit", R.string.screen_name_serials)
@@ -45,6 +46,7 @@ sealed class AppScreen(val route: String, @StringRes val titleRes: Int) {
                 Serials.route -> stringResource(Serials.titleRes)
                 Books.route -> stringResource(Books.titleRes)
                 Music.route -> stringResource(Music.titleRes)
+                SearchMovies.route -> stringResource(SearchMovies.titleRes)
                 else -> ""
             }
         }
@@ -54,7 +56,8 @@ sealed class AppScreen(val route: String, @StringRes val titleRes: Int) {
             return route == Movies.route ||
                     route == Serials.route ||
                     route == Books.route ||
-                    route == Music.route
+                    route == Music.route ||
+                    route == SearchMovies.route
         }
     }
 }
@@ -93,7 +96,7 @@ fun AppNavGraph(navController: NavHostController) {
         }
 
         composable(AppScreen.Serials.route) {
-            SerialsScreen(navController)
+            SearchMoviesScreen(navController)
         }
 
         composable(AppScreen.Books.route) {
@@ -102,6 +105,10 @@ fun AppNavGraph(navController: NavHostController) {
 
         composable(AppScreen.Music.route) {
             MusicScreen(navController)
+        }
+
+        composable(AppScreen.SearchMovies.route) {
+            SearchMoviesScreen(navController)
         }
 
         composable(NavRoutes.MOVIE_ROUTE, NavRoutes.MOVIE_ARGS) {

@@ -3,6 +3,7 @@
     <string name="app_name">MediaLib</string>
     <string name="app_loading_error">Ошибка загрузки</string>
     <string name="app_save">Сохранить</string>
+    <string name="app_parse">Парсить</string>
     <string name="app_delete">Удалить</string>
     <string name="app_rating_value">Рейтинг: %s</string>
     <string name="app_date_value">Дата: %s</string>
@@ -17,6 +18,10 @@
     <string name="app_will_read">Читать</string>
     <string name="app_dropped">Дропнуто</string>
     <string name="app_status_none">Не выбрано</string>
+
+    <!--  Search  -->
+    <string name="webview_imdb_link">https://www.imdb.com/</string>
+    <string name="search_movies_title">Поиск фильмов</string>
 
     <!--  Record elements  -->
     <string name="app_title">Название</string>
