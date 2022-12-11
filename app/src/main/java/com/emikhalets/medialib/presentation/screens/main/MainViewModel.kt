@@ -5,7 +5,9 @@ import androidx.lifecycle.viewModelScope
 import com.emikhalets.medialib.data.entity.database.BookDB
 import com.emikhalets.medialib.data.entity.database.MovieDB
 import com.emikhalets.medialib.data.entity.database.SerialDB
+import com.emikhalets.medialib.data.entity.support.ViewListItem
 import com.emikhalets.medialib.data.repository.DatabaseRepository
+import com.emikhalets.medialib.utils.enums.ItemType
 import com.emikhalets.medialib.utils.launchDefault
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CancellationException
@@ -26,7 +28,7 @@ class MainViewModel @Inject constructor(
     private val _state = MutableStateFlow(State())
     val state get() = _state.asStateFlow()
 
-    private var moviesJob: Job? = null
+    private var searchJob: Job? = null
 
     fun getMainData() {
         launchDefault {
@@ -42,25 +44,35 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun getMainData(query: String) {
-//        cancelJob(moviesJob, "Starting a new search request")
-//        moviesJob = viewModelScope.launch {
-//            val moviesResponse = if (query.isEmpty()) {
-//                repo.getItems()
-//            } else {
-//                delay(750)
-//                repo.getItems(query)
-//            }
-//            moviesResponse.onSuccess { movies ->
-//                movies.collectLatest { state = state.setMovies(it) }
-//            }
-//        }
+    fun searchItems(query: String, type: ItemType) {
+        cancelJob(searchJob, "Starting a new search request")
+        searchJob = launchDefault {
+            delay(750)
+            when (type) {
+                ItemType.MOVIE -> searchMovies(query)
+                ItemType.SERIAL -> searchSerials(query)
+                ItemType.BOOK -> searchBooks(query)
+                ItemType.MUSIC -> searchMovies(query) // TODO: change to music searching
+            }
+        }
     }
 
-    fun addMovie(movieDB: MovieDB) {
-//        viewModelScope.launch {
-//            repo.insertItem(movieDB)
-//        }
+    private suspend fun searchMovies(query: String) {
+        databaseRepo.getMovies(query).onSuccess { movies ->
+            movies.collectLatest { list -> _state.update { it.setMovies(list) } }
+        }
+    }
+
+    private suspend fun searchSerials(query: String) {
+        databaseRepo.getSerials(query).onSuccess { serials ->
+            serials.collectLatest { list -> _state.update { it.setSerials(list) } }
+        }
+    }
+
+    private suspend fun searchBooks(query: String) {
+        databaseRepo.getBooks(query).onSuccess { books ->
+            books.collectLatest { list -> _state.update { it.setBooks(list) } }
+        }
     }
 
     @Suppress("SameParameterValue")

@@ -101,7 +101,7 @@ fun MainScreen(
         },
         onQueryChange = { newQuery ->
             query = newQuery
-            viewModel.getMainData(query)
+            viewModel.searchItems(query, itemType)
         },
         onItemTypeChange = { newItemType ->
             itemType = newItemType

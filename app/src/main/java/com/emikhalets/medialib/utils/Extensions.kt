@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
@@ -54,10 +55,10 @@ fun String.toSafeLong(): Long {
     }
 }
 
-fun ViewModel.launchDefault(content: suspend CoroutineScope.() -> Unit) {
-    viewModelScope.launch(Dispatchers.Default) { content() }
+fun ViewModel.launchDefault(content: suspend CoroutineScope.() -> Unit): Job {
+    return viewModelScope.launch(Dispatchers.Default) { content() }
 }
 
-fun ViewModel.launchIo(content: suspend CoroutineScope.() -> Unit) {
-    viewModelScope.launch(Dispatchers.IO) { content() }
+fun ViewModel.launchIo(content: suspend CoroutineScope.() -> Unit): Job {
+    return viewModelScope.launch(Dispatchers.IO) { content() }
 }
