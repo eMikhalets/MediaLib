@@ -7,9 +7,11 @@ interface ViewListItem {
     val id: Int
     val poster: String
     val title: String
+    val titleRu: String
     val releaseYear: Int
     val rating: Int
     val genres: String
+    val comment: String
     val status: ItemStatus
 
     fun getLocaleTitle(): String

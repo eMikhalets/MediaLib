@@ -95,24 +95,24 @@ private fun MovieEditsScreen(
                 }
         ) {
             Spacer(modifier = Modifier.height(8.dp))
-            AppTextField(title, { title = it }, stringResource(R.string.app_title))
+//            AppTextField(title, { title = it }, stringResource(R.string.app_title))
             Spacer(modifier = Modifier.height(8.dp))
 
-            AppTextField(titleRu, { titleRu = it }, stringResource(R.string.app_title_ru))
+//            AppTextField(titleRu, { titleRu = it }, stringResource(R.string.app_title_ru))
             Spacer(modifier = Modifier.height(8.dp))
 
-            AppTextField(genres, { genres = it }, stringResource(R.string.app_genres))
+//            AppTextField(genres, { genres = it }, stringResource(R.string.app_genres))
             Spacer(modifier = Modifier.height(8.dp))
 
             AppTextFieldRead(releaseYear.toString(), label = stringResource(R.string.app_year),
                 onClick = { showYearDialog = true })
             Spacer(modifier = Modifier.height(8.dp))
 
-            AppTextField(seasons, { seasons = it }, stringResource(R.string.serials_seasons),
-                KeyboardType.Number)
+//            AppTextField(seasons, { seasons = it }, stringResource(R.string.serials_seasons),
+//                KeyboardType.Number)
             Spacer(modifier = Modifier.height(8.dp))
 
-            AppTextField(comment, { comment = it }, stringResource(R.string.app_comment))
+//            AppTextField(comment, { comment = it }, stringResource(R.string.app_comment))
             Spacer(modifier = Modifier.height(16.dp))
 
             RatingBar(rating = rating, onRatingChange = { rating = it })

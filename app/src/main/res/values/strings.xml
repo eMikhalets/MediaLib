@@ -21,6 +21,14 @@
 
     <string name="search_query">Search query</string>
     <string name="empty_list">Empty list</string>
+    <string name="title">Title</string>
+    <string name="title_ru">Title russian</string>
+    <string name="author">Author</string>
+    <string name="seasons">Seasons</string>
+    <string name="genres">Genres</string>
+    <string name="year">Year</string>
+    <string name="comment">Comment</string>
+    <string name="save">Save</string>
 
     <!--  Search  -->
     <string name="webview_imdb_link">https://www.imdb.com/</string>

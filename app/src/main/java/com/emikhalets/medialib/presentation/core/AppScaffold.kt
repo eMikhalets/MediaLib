@@ -36,11 +36,11 @@ fun AppScaffold(
     val navBackStackEntry by navController.currentBackStackEntryAsState()
 
     val rootScreens = remember { listOf(AppScreen.Main, AppScreen.Search) }
-    val isShowDrawer = AppScreen.isShowDrawer(navBackStackEntry)
+    val isRootScreen = AppScreen.isRootScreen(navBackStackEntry)
 
     Scaffold(
         scaffoldState = scaffoldState,
-        topBar = { AppToolbar(title, isShowDrawer, navController, actions) },
+        topBar = { AppToolbar(title, isRootScreen, navController, actions) },
         bottomBar = { AppBottomBar(navController, rootScreens) },
         content = { Box(modifier = Modifier.padding(it)) { content() } }
     )

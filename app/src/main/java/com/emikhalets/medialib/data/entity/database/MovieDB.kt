@@ -13,7 +13,7 @@ import java.util.*
 data class MovieDB(
     @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") override val id: Int = 0,
     @ColumnInfo(name = "title") override val title: String,
-    @ColumnInfo(name = "title_ru") val titleRu: String = "",
+    @ColumnInfo(name = "title_ru") override val titleRu: String = "",
     @ColumnInfo(name = "genres") override val genres: String = "",
     @ColumnInfo(name = "overview") val overview: String = "",
     @ColumnInfo(name = "poster_path") override val poster: String = "",
@@ -22,7 +22,7 @@ data class MovieDB(
     @ColumnInfo(name = "budget") val budget: Long = 0,
     @ColumnInfo(name = "revenue") val revenue: Long = 0,
     @ColumnInfo(name = "save_date") val saveDate: Long = Date().time,
-    @ColumnInfo(name = "comment") val comment: String = "",
+    @ColumnInfo(name = "comment") override val comment: String = "",
     @ColumnInfo(name = "rating") override val rating: Int = 0,
     @ColumnInfo(name = "tags") val tags: String = "",
     @ColumnInfo(name = "status") override val status: ItemStatus = ItemStatus.NONE,

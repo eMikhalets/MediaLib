@@ -324,31 +324,6 @@ fun AppDetailsSection(header: String, content: String) {
 }
 
 @Composable
-fun AppTextField(
-    value: String,
-    onValueChange: (String) -> Unit,
-    label: String = "",
-    keyboardType: KeyboardType = KeyboardType.Text,
-) {
-    OutlinedTextField(
-        value = value,
-        onValueChange = onValueChange,
-        label = if (label.isNotEmpty()) {
-            { Text(label) }
-        } else null,
-        keyboardOptions = KeyboardOptions(
-            keyboardType = keyboardType,
-            capitalization = KeyboardCapitalization.Sentences
-        ),
-        colors = TextFieldDefaults.outlinedTextFieldColors(
-            disabledTextColor = LocalContentColor.current.copy(LocalContentAlpha.current),
-            disabledLabelColor = MaterialTheme.colors.onSurface.copy(ContentAlpha.medium)
-        ),
-        modifier = Modifier.fillMaxWidth()
-    )
-}
-
-@Composable
 fun AppTextFieldRead(
     value: String,
     onClick: () -> Unit,

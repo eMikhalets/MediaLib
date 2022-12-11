@@ -23,8 +23,9 @@ import com.emikhalets.medialib.data.entity.database.SerialDB
     autoMigrations = [
         AutoMigration(from = 1, to = 2, spec = MigrationFrom1To2::class),
         AutoMigration(from = 2, to = 3),
+        AutoMigration(from = 3, to = 4),
     ],
-    version = 3,
+    version = 4,
     exportSchema = true
 )
 abstract class AppDatabase : RoomDatabase() {
