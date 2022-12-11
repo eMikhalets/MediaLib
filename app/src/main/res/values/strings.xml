@@ -19,9 +19,17 @@
     <string name="app_dropped">Дропнуто</string>
     <string name="app_status_none">Не выбрано</string>
 
+    <string name="search_query">Search query</string>
+    <string name="empty_list">Empty list</string>
+
     <!--  Search  -->
     <string name="webview_imdb_link">https://www.imdb.com/</string>
     <string name="search_movies_title">Поиск фильмов</string>
+
+    <!--  Pager tabs  -->
+    <string name="pager_tab_movies">Movies</string>
+    <string name="pager_tab_serials">Serials</string>
+    <string name="pager_tab_books">Books</string>
 
     <!--  Record elements  -->
     <string name="app_title">Название</string>
@@ -36,6 +44,10 @@
     <string name="app_status">Статус</string>
 
     <!--  Screen titles  -->
+    <string name="screen_name_main">Main</string>
+    <string name="screen_name_search">Search</string>
+    <string name="screen_name_details">Details</string>
+    <string name="screen_name_edit">Edit</string>
     <string name="screen_name_movies">Фильмы</string>
     <string name="screen_name_serials">Сериалы</string>
     <string name="screen_name_books">Книги</string>

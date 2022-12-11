@@ -2,8 +2,12 @@ package com.emikhalets.medialib.utils
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.*
@@ -48,4 +52,12 @@ fun String.toSafeLong(): Long {
     } catch (ex: NumberFormatException) {
         0L
     }
+}
+
+fun ViewModel.launchDefault(content: suspend CoroutineScope.() -> Unit) {
+    viewModelScope.launch(Dispatchers.Default) { content() }
+}
+
+fun ViewModel.launchIo(content: suspend CoroutineScope.() -> Unit) {
+    viewModelScope.launch(Dispatchers.IO) { content() }
 }
