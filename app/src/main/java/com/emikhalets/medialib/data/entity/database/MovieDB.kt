@@ -15,7 +15,7 @@ data class MovieDB(
     @ColumnInfo(name = "title") override val title: String,
     @ColumnInfo(name = "title_ru") override val titleRu: String = "",
     @ColumnInfo(name = "genres") override val genres: String = "",
-    @ColumnInfo(name = "overview") val overview: String = "",
+    @ColumnInfo(name = "overview") override val overview: String = "",
     @ColumnInfo(name = "poster_path") override val poster: String = "",
     @ColumnInfo(name = "release_year") override val releaseYear: Int =
         Calendar.getInstance().get(Calendar.YEAR),

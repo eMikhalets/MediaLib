@@ -67,6 +67,8 @@ import com.emikhalets.medialib.data.entity.support.ViewListItem
 import com.emikhalets.medialib.presentation.core.AppIcon
 import com.emikhalets.medialib.presentation.core.AppScaffold
 import com.emikhalets.medialib.presentation.core.AppTextField
+import com.emikhalets.medialib.presentation.navToItemDetails
+import com.emikhalets.medialib.presentation.navToItemEdit
 import com.emikhalets.medialib.presentation.theme.AppTheme
 import com.emikhalets.medialib.utils.enums.ItemStatus
 import com.emikhalets.medialib.utils.enums.ItemType
@@ -97,7 +99,7 @@ fun MainScreen(
         serials = state.serials,
         books = state.books,
         onAddClick = {
-//            navController.navToMovieEdit(null)
+            navController.navToItemEdit(null, itemType)
         },
         onQueryChange = { newQuery ->
             query = newQuery
@@ -107,7 +109,7 @@ fun MainScreen(
             itemType = newItemType
         },
         onItemClick = {
-//            navController.navToMovieDetails(it)
+            navController.navToItemDetails(it, itemType)
         }
     )
 }

@@ -13,6 +13,7 @@ interface ViewListItem {
     val genres: String
     val comment: String
     val status: ItemStatus
+    val overview: String
 
     fun getLocaleTitle(): String
 }

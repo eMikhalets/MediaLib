@@ -1,4 +1,4 @@
-package com.emikhalets.medialib.presentation.screens.books
+package com.emikhalets.medialib.presentation.screens.details
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,13 +11,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.Edit
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -35,50 +35,54 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.emikhalets.medialib.R
 import com.emikhalets.medialib.data.entity.database.BookDB
+import com.emikhalets.medialib.data.entity.database.MovieDB
+import com.emikhalets.medialib.data.entity.database.SerialDB
 import com.emikhalets.medialib.data.entity.support.MenuIconEntity
+import com.emikhalets.medialib.data.entity.support.ViewListItem
 import com.emikhalets.medialib.presentation.core.AppAsyncImage
 import com.emikhalets.medialib.presentation.core.AppDetailsSection
 import com.emikhalets.medialib.presentation.core.AppScaffold
 import com.emikhalets.medialib.presentation.core.DeleteDialog
 import com.emikhalets.medialib.presentation.core.PosterDialog
 import com.emikhalets.medialib.presentation.core.RatingBar
-import com.emikhalets.medialib.presentation.navToBookEdit
-import com.emikhalets.medialib.presentation.navToMovieEdit
+import com.emikhalets.medialib.presentation.navToItemEdit
 import com.emikhalets.medialib.presentation.theme.AppTheme
+import com.emikhalets.medialib.utils.enums.ItemType
 
 @Composable
-fun BookDetailsScreen(
+fun DetailsScreen(
     navController: NavHostController,
-    bookId: Int?,
-    viewModel: BookDetailsViewModel = hiltViewModel(),
+    itemId: Int?,
+    itemType: ItemType,
+    viewModel: DetailsViewModel = hiltViewModel(),
 ) {
+    val state by viewModel.state.collectAsState()
+
     var showDeleteDialog by remember { mutableStateOf(false) }
     var showPosterDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
-        viewModel.getBook(bookId)
+        viewModel.getItem(itemId, itemType)
     }
 
-    LaunchedEffect(viewModel.state.deleted) {
-        if (viewModel.state.deleted) {
-            navController.popBackStack()
-        }
+    LaunchedEffect(state.deleted) {
+        if (state.deleted) navController.popBackStack()
     }
 
-    BookDetailsScreen(
+    DetailsScreen(
         navController = navController,
-        book = viewModel.state.book,
-        onRatingChange = { viewModel.updateBook(it) },
+        item = state.item,
+        onRatingChange = { viewModel.updateItem(it, itemType) },
         onDeleteClick = { showDeleteDialog = true },
         onPosterClick = { showPosterDialog = true },
-        onEditClick = { navController.navToBookEdit(viewModel.state.book?.id) },
+        onEditClick = { navController.navToItemEdit(state.item?.id, itemType) },
     )
 
     if (showDeleteDialog) {
         DeleteDialog(
             onDismiss = { showDeleteDialog = false },
             onDeleteClick = {
-                viewModel.deleteBook()
+                viewModel.deleteItem(itemType)
                 showDeleteDialog = false
             }
         )
@@ -86,10 +90,10 @@ fun BookDetailsScreen(
 
     if (showPosterDialog) {
         PosterDialog(
-            poster = viewModel.state.book?.poster,
+            poster = state.item?.poster,
             onDismiss = { showPosterDialog = false },
             onOkClick = {
-                viewModel.updateBook(it)
+                viewModel.updateItem(it, itemType)
                 showPosterDialog = false
             }
         )
@@ -97,9 +101,9 @@ fun BookDetailsScreen(
 }
 
 @Composable
-private fun BookDetailsScreen(
+private fun DetailsScreen(
     navController: NavHostController,
-    book: BookDB?,
+    item: ViewListItem?,
     onRatingChange: (Int) -> Unit,
     onDeleteClick: () -> Unit,
     onPosterClick: () -> Unit,
@@ -107,13 +111,13 @@ private fun BookDetailsScreen(
 ) {
     AppScaffold(
         navController = navController,
-        title = book?.title,
+        title = item?.title,
         actions = listOf(
             MenuIconEntity(Icons.Rounded.Edit) { onEditClick() },
             MenuIconEntity(Icons.Rounded.Delete) { onDeleteClick() }
         )
     ) {
-        if (book == null) {
+        if (item == null) {
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier.fillMaxSize()
@@ -127,8 +131,8 @@ private fun BookDetailsScreen(
                 )
             }
         } else {
-            BookItem(
-                book = book,
+            ItemLayout(
+                item = item,
                 onRatingChange = onRatingChange,
                 onPosterClick = onPosterClick,
             )
@@ -137,8 +141,8 @@ private fun BookDetailsScreen(
 }
 
 @Composable
-private fun BookItem(
-    book: BookDB,
+private fun ItemLayout(
+    item: ViewListItem,
     onRatingChange: (Int) -> Unit,
     onPosterClick: () -> Unit,
 ) {
@@ -154,7 +158,7 @@ private fun BookItem(
                 .height(IntrinsicSize.Min)
         ) {
             AppAsyncImage(
-                data = book.poster,
+                data = item.poster,
                 height = 150.dp,
                 onClick = { onPosterClick() }
             )
@@ -166,14 +170,14 @@ private fun BookItem(
                     .padding(end = 16.dp)
             ) {
                 Text(
-                    text = book.title,
+                    text = item.title,
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Medium,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp)
                 )
-                val localeTitle = book.getLocaleTitle()
+                val localeTitle = item.getLocaleTitle()
                 if (localeTitle.isNotEmpty()) {
                     Text(
                         text = localeTitle,
@@ -183,17 +187,19 @@ private fun BookItem(
                             .padding(horizontal = 16.dp)
                     )
                 }
-                Spacer(modifier = Modifier.height(4.dp))
-                Text(
-                    text = book.author,
-                    fontSize = 18.sp,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp)
-                )
+                if (item is BookDB) {
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(
+                        text = item.author,
+                        fontSize = 18.sp,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp)
+                    )
+                }
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text = book.releaseYear.toString(),
+                    text = item.releaseYear.toString(),
                     fontSize = 18.sp,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -201,7 +207,7 @@ private fun BookItem(
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 RatingBar(
-                    rating = book.rating,
+                    rating = item.rating,
                     onRatingChange = onRatingChange,
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -209,18 +215,45 @@ private fun BookItem(
         }
         AppDetailsSection(
             header = stringResource(R.string.app_comment),
-            content = book.comment
-        )
-        AppDetailsSection(
-            header = stringResource(R.string.app_overview),
-            content = book.overview
+            content = item.comment
         )
         Spacer(modifier = Modifier.height(8.dp))
         Text(
-            text = stringResource(R.string.app_genres_value, book.genres),
+            text = stringResource(R.string.app_genres_value, item.genres),
             fontSize = 14.sp,
             modifier = Modifier.fillMaxWidth()
         )
+        Spacer(modifier = Modifier.height(4.dp))
+        AppDetailsSection(
+            header = stringResource(R.string.app_overview),
+            content = item.overview
+        )
+
+        if (item is MovieDB) {
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(
+                text = stringResource(R.string.movie_local_budget, item.budget),
+                fontSize = 14.sp,
+                modifier = Modifier.fillMaxWidth()
+            )
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(
+                text = stringResource(R.string.movie_local_revenue, item.revenue),
+                fontSize = 14.sp,
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
+
+        if (item is SerialDB) {
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(
+                text = stringResource(R.string.serials_seasons_value, item.seasons),
+                fontSize = 14.sp,
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
+
+        Spacer(modifier = Modifier.height(4.dp))
     }
 }
 
@@ -228,17 +261,16 @@ private fun BookItem(
 @Composable
 private fun ScreenPreview() {
     AppTheme {
-        BookDetailsScreen(
+        DetailsScreen(
             navController = rememberNavController(),
-            book = BookDB(
+            item = MovieDB(
+                id = 1,
                 title = "Spider-man",
-                titleRu = "Spider-man rus",
-                genres = "Drama",
+                genres = "Action, Drama",
                 releaseYear = 2018,
-                author = "Sample author",
-                comment = "Test comment overview overview overview overview overview",
                 rating = 4,
-                overview = "overview overview overview overview overview overview overview overview overview overview"
+                overview = "overview overview overview overview overview overview overview overview overview overview",
+                comment = "overview overview overview overview overview overview overview overview overview overview"
             ),
             onRatingChange = {},
             onDeleteClick = {},

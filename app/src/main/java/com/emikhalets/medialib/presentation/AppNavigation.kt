@@ -14,7 +14,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.emikhalets.medialib.R
-import com.emikhalets.medialib.presentation.screens.books.BooksScreen
+import com.emikhalets.medialib.presentation.screens.details.DetailsScreen
 import com.emikhalets.medialib.presentation.screens.edit.EditScreen
 import com.emikhalets.medialib.presentation.screens.main.MainScreen
 import com.emikhalets.medialib.presentation.screens.search.SearchMoviesScreen
@@ -83,8 +83,19 @@ fun AppNavGraph(navController: NavHostController) {
             SearchMoviesScreen(navController)
         }
 
-        composable(AppScreen.Details.route) {
-            BooksScreen(navController)
+        composable(
+            route = "${AppScreen.Details.route}/{${NavArgs.ITEM_ID}}/{${NavArgs.ITEM_TYPE}}",
+            arguments = listOf(
+                navArgument(NavArgs.ITEM_ID) { type = NavType.IntType },
+                navArgument(NavArgs.ITEM_TYPE) { type = NavType.EnumType(ItemType::class.java) }
+            )) {
+            val id = it.arguments?.getInt(NavArgs.ITEM_ID)
+            val type = it.arguments?.getParcelable(NavArgs.ITEM_TYPE, ItemType::class.java)
+            DetailsScreen(
+                navController = navController,
+                itemId = id,
+                itemType = type ?: ItemType.MOVIE,
+            )
         }
 
         composable(
@@ -103,24 +114,6 @@ fun AppNavGraph(navController: NavHostController) {
             )
         }
     }
-}
-
-fun NavHostController.navToMovieDetails(id: Int) {
-}
-
-fun NavHostController.navToMovieEdit(id: Int?) {
-}
-
-fun NavHostController.navToSerialDetails(id: Int) {
-}
-
-fun NavHostController.navToSerialEdit(id: Int?) {
-}
-
-fun NavHostController.navToBookDetails(id: Int) {
-}
-
-fun NavHostController.navToBookEdit(id: Int?) {
 }
 
 fun NavHostController.navToItemDetails(id: Int, itemType: ItemType) {

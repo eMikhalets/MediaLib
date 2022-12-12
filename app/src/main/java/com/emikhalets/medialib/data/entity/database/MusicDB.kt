@@ -14,7 +14,7 @@ data class MusicDB(
     @ColumnInfo(name = "title_ru", defaultValue = "") override val titleRu: String = "",
     @ColumnInfo(name = "author") val author: String = "",
     @ColumnInfo(name = "genres") override val genres: String = "",
-    @ColumnInfo(name = "overview") val overview: String = "",
+    @ColumnInfo(name = "overview") override val overview: String = "",
     @ColumnInfo(name = "poster_path") override val poster: String = "",
     @ColumnInfo(name = "release_year") override val releaseYear: Int =
         Calendar.getInstance().get(Calendar.YEAR),
