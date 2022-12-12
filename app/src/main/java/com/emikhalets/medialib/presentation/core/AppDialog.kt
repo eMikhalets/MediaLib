@@ -107,7 +107,7 @@ fun DeleteDialog(
                     .fillMaxWidth()
                     .weight(1f)
             ) {
-                Text(text = stringResource(id = R.string.app_cancel))
+                Text(text = stringResource(id = R.string.cancel))
             }
             Spacer(modifier = Modifier.width(8.dp))
             TextButton(
@@ -116,7 +116,7 @@ fun DeleteDialog(
                     .fillMaxWidth()
                     .weight(1f)
             ) {
-                Text(text = stringResource(id = R.string.app_delete))
+                Text(text = stringResource(id = R.string.delete))
             }
         }
     }
@@ -148,7 +148,7 @@ fun PosterDialog(
                     .fillMaxWidth()
                     .weight(1f)
             ) {
-                Text(text = stringResource(id = R.string.app_cancel))
+                Text(text = stringResource(id = R.string.cancel))
             }
             Spacer(modifier = Modifier.width(8.dp))
             TextButton(
@@ -157,7 +157,7 @@ fun PosterDialog(
                     .fillMaxWidth()
                     .weight(1f)
             ) {
-                Text(text = stringResource(id = R.string.app_delete))
+                Text(text = stringResource(id = R.string.delete))
             }
         }
     }
@@ -194,7 +194,7 @@ fun YearDialog(
                 onClick = { onOkClick(yearValue) },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text(text = stringResource(id = R.string.app_save))
+                Text(text = stringResource(id = R.string.save))
             }
         }
     }

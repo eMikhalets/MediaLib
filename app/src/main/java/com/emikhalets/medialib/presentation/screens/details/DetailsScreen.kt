@@ -75,7 +75,7 @@ fun DetailsScreen(
         onRatingChange = { viewModel.updateItem(it, itemType) },
         onDeleteClick = { showDeleteDialog = true },
         onPosterClick = { showPosterDialog = true },
-        onEditClick = { navController.navToItemEdit(state.item?.id, itemType) },
+        onEditClick = { navController.navToItemEdit(state.item?.id ?: 0, itemType) },
     )
 
     if (showDeleteDialog) {
@@ -123,7 +123,7 @@ private fun DetailsScreen(
                 modifier = Modifier.fillMaxSize()
             ) {
                 Text(
-                    text = stringResource(R.string.app_loading_error),
+                    text = stringResource(R.string.loading_error),
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Medium,
                     textAlign = TextAlign.Center,
@@ -214,31 +214,31 @@ private fun ItemLayout(
             }
         }
         AppDetailsSection(
-            header = stringResource(R.string.app_comment),
+            header = stringResource(R.string.comment),
             content = item.comment
         )
         Spacer(modifier = Modifier.height(8.dp))
         Text(
-            text = stringResource(R.string.app_genres_value, item.genres),
+            text = stringResource(R.string.genres_value, item.genres),
             fontSize = 14.sp,
             modifier = Modifier.fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(4.dp))
         AppDetailsSection(
-            header = stringResource(R.string.app_overview),
+            header = stringResource(R.string.overview),
             content = item.overview
         )
 
         if (item is MovieDB) {
             Spacer(modifier = Modifier.height(4.dp))
             Text(
-                text = stringResource(R.string.movie_local_budget, item.budget),
+                text = stringResource(R.string.budget_value, item.budget),
                 fontSize = 14.sp,
                 modifier = Modifier.fillMaxWidth()
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
-                text = stringResource(R.string.movie_local_revenue, item.revenue),
+                text = stringResource(R.string.revenue_value, item.revenue),
                 fontSize = 14.sp,
                 modifier = Modifier.fillMaxWidth()
             )
@@ -247,7 +247,7 @@ private fun ItemLayout(
         if (item is SerialDB) {
             Spacer(modifier = Modifier.height(4.dp))
             Text(
-                text = stringResource(R.string.serials_seasons_value, item.seasons),
+                text = stringResource(R.string.seasons_value, item.seasons),
                 fontSize = 14.sp,
                 modifier = Modifier.fillMaxWidth()
             )

@@ -17,8 +17,10 @@ import com.emikhalets.medialib.R
 import com.emikhalets.medialib.presentation.screens.details.DetailsScreen
 import com.emikhalets.medialib.presentation.screens.edit.EditScreen
 import com.emikhalets.medialib.presentation.screens.main.MainScreen
-import com.emikhalets.medialib.presentation.screens.search.SearchMoviesScreen
+import com.emikhalets.medialib.presentation.screens.search.SearchMainScreen
+import com.emikhalets.medialib.presentation.screens.search.SearchWebviewScreen
 import com.emikhalets.medialib.utils.enums.ItemType
+import com.emikhalets.medialib.utils.enums.SearchType
 
 sealed class AppScreen(
     val route: String,
@@ -36,6 +38,11 @@ sealed class AppScreen(
         route = "search",
         titleRes = R.string.screen_name_search,
         icon = Icons.Rounded.Search
+    )
+
+    object SearchWebView : AppScreen(
+        route = "search_webview/{${NavArgs.SEARCH_TYPE}}",
+        titleRes = R.string.screen_name_search,
     )
 
     object Details : AppScreen(
@@ -69,6 +76,7 @@ sealed class AppScreen(
 object NavArgs {
     const val ITEM_ID = "nav_arg_item_id"
     const val ITEM_TYPE = "nav_arg_item_type"
+    const val SEARCH_TYPE = "nav_arg_search_type"
 }
 
 @Composable
@@ -80,46 +88,60 @@ fun AppNavGraph(navController: NavHostController) {
         }
 
         composable(AppScreen.Search.route) {
-            SearchMoviesScreen(navController)
+            SearchMainScreen(navController)
         }
 
         composable(
-            route = "${AppScreen.Details.route}/{${NavArgs.ITEM_ID}}/{${NavArgs.ITEM_TYPE}}",
+            route = AppScreen.SearchWebView.route,
+            arguments = listOf(navArgument(NavArgs.SEARCH_TYPE) { type = NavType.StringType })) {
+            val type = it.arguments?.getString(NavArgs.SEARCH_TYPE)
+            SearchWebviewScreen(
+                navController = navController,
+                type = SearchType.valueOf(type ?: SearchType.MOVIE.toString())
+            )
+        }
+
+        composable(
+            route = AppScreen.Details.route,
             arguments = listOf(
                 navArgument(NavArgs.ITEM_ID) { type = NavType.IntType },
-                navArgument(NavArgs.ITEM_TYPE) { type = NavType.EnumType(ItemType::class.java) }
+                navArgument(NavArgs.ITEM_TYPE) { type = NavType.StringType }
             )) {
             val id = it.arguments?.getInt(NavArgs.ITEM_ID)
-            val type = it.arguments?.getParcelable(NavArgs.ITEM_TYPE, ItemType::class.java)
+            val type = it.arguments?.getString(NavArgs.ITEM_TYPE)
             DetailsScreen(
                 navController = navController,
                 itemId = id,
-                itemType = type ?: ItemType.MOVIE,
+                itemType = ItemType.valueOf(type ?: ItemType.MOVIE.toString())
             )
         }
 
         composable(
-            route = "${AppScreen.Edit.route}/{${NavArgs.ITEM_ID}}/{${NavArgs.ITEM_TYPE}}",
+            route = AppScreen.Edit.route,
             arguments = listOf(
                 navArgument(NavArgs.ITEM_ID) { type = NavType.IntType },
-                navArgument(NavArgs.ITEM_TYPE) { type = NavType.EnumType(ItemType::class.java) }
+                navArgument(NavArgs.ITEM_TYPE) { type = NavType.StringType }
             )
         ) {
             val id = it.arguments?.getInt(NavArgs.ITEM_ID)
-            val type = it.arguments?.getParcelable(NavArgs.ITEM_TYPE, ItemType::class.java)
+            val type = it.arguments?.getString(NavArgs.ITEM_TYPE)
             EditScreen(
                 navController = navController,
-                itemId = id,
-                itemType = type ?: ItemType.MOVIE,
+                itemId = id ?: 0,
+                itemType = ItemType.valueOf(type ?: ItemType.MOVIE.toString())
             )
         }
     }
 }
 
 fun NavHostController.navToItemDetails(id: Int, itemType: ItemType) {
-    navigate("${AppScreen.Edit.route}/$id/$itemType")
+    navigate("details/$id/$itemType")
 }
 
-fun NavHostController.navToItemEdit(id: Int?, itemType: ItemType) {
-    navigate("${AppScreen.Edit.route}/$id/$itemType")
+fun NavHostController.navToItemEdit(id: Int, itemType: ItemType) {
+    navigate("edit/$id/$itemType")
+}
+
+fun NavHostController.navToSearching(searchType: SearchType) {
+    navigate("search_webview/$searchType")
 }

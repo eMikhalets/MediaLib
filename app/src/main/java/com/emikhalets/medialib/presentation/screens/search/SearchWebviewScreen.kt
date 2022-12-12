@@ -1,5 +1,6 @@
 package com.emikhalets.medialib.presentation.screens.search
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -7,12 +8,14 @@ import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -23,27 +26,33 @@ import com.emikhalets.medialib.R
 import com.emikhalets.medialib.presentation.core.AppScaffold
 import com.emikhalets.medialib.presentation.core.Webview
 import com.emikhalets.medialib.presentation.theme.AppTheme
+import com.emikhalets.medialib.utils.enums.SearchType
 
 @Composable
-fun SearchMoviesScreen(
+fun SearchWebviewScreen(
     navController: NavHostController,
-    viewModel: SearchMovieViewModel = hiltViewModel(),
+    type: SearchType,
+    viewModel: SearchWebviewViewModel = hiltViewModel(),
 ) {
-    var url by remember { mutableStateOf("") }
+    val context = LocalContext.current
+    val state by viewModel.state.collectAsState()
     var saveClickable by remember { mutableStateOf(true) }
 
-    LaunchedEffect(viewModel.state.saved) {
-        if (viewModel.state.saved) navController.popBackStack()
+    LaunchedEffect(state.saved) {
+        if (state.saved) navController.popBackStack()
+    }
+
+    LaunchedEffect(state.errorCounter) {
+        if (state.errorCounter == 0) return@LaunchedEffect
+        Toast.makeText(context, state.error, Toast.LENGTH_SHORT).show()
     }
 
     SearchMoviesScreen(
         navController = navController,
-        url = url,
-        saveClickable = saveClickable,
-        onUrlChange = { url = it },
+        link = stringResource(type.urlRes),
         onParseId = {
             saveClickable = false
-            viewModel.parseUrl(it)
+            viewModel.parseUrl(it, type)
         },
     )
 }
@@ -51,28 +60,28 @@ fun SearchMoviesScreen(
 @Composable
 private fun SearchMoviesScreen(
     navController: NavHostController,
-    url: String,
-    saveClickable: Boolean,
-    onUrlChange: (String) -> Unit,
+    link: String,
     onParseId: (String) -> Unit,
 ) {
+    var url by remember { mutableStateOf("") }
+
     AppScaffold(navController) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.fillMaxSize()
         ) {
             Webview(
-                url = stringResource(R.string.webview_imdb_link),
-                onPageLoaded = { onUrlChange(it) },
+                url = link,
+                onPageLoaded = { url = it },
                 modifier = Modifier
                     .fillMaxSize()
                     .weight(1f)
             )
             Button(
-                onClick = { if (saveClickable) onParseId(url) },
+                onClick = { onParseId(url) },
                 modifier = Modifier.padding(16.dp)
             ) {
-                Text(text = stringResource(R.string.app_save))
+                Text(text = stringResource(R.string.save))
             }
         }
     }
@@ -84,10 +93,8 @@ private fun ScreenPreview() {
     AppTheme {
         SearchMoviesScreen(
             navController = rememberNavController(),
-            url = stringResource(R.string.webview_imdb_link),
-            saveClickable = true,
-            onUrlChange = {},
-            onParseId = {},
+            link = stringResource(R.string.webview_imdb_link),
+            onParseId = {}
         )
     }
 }

@@ -10,11 +10,11 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import com.emikhalets.medialib.R
 
 enum class ItemStatus(val res: Int, val icon: ImageVector?) {
-    NONE(R.string.app_status_none, null),
-    WATCH(R.string.app_will_watch, Icons.Default.Bookmark),
-    WATCHED(R.string.app_watched, Icons.Default.Visibility),
-    NO_MIND(R.string.app_no_mind, Icons.Default.QuestionMark),
-    DROPPED(R.string.app_dropped, Icons.Default.Close);
+    NONE(R.string.item_status_none, null),
+    WATCH(R.string.item_status_will_watch, Icons.Default.Bookmark),
+    WATCHED(R.string.item_status_watched, Icons.Default.Visibility),
+    NO_MIND(R.string.item_status_no_mind, Icons.Default.QuestionMark),
+    DROPPED(R.string.item_status_dropped, Icons.Default.Close);
 
     companion object {
 
@@ -38,8 +38,8 @@ enum class ItemStatus(val res: Int, val icon: ImageVector?) {
 
         private fun ItemStatus.stringForBooks(): Int {
             return when (this) {
-                WATCH -> R.string.app_read
-                WATCHED -> R.string.app_will_read
+                WATCH -> R.string.item_status_read
+                WATCHED -> R.string.item_status_will_read
                 else -> this.res
             }
         }

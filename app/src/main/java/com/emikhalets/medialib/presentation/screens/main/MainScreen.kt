@@ -99,7 +99,7 @@ fun MainScreen(
         serials = state.serials,
         books = state.books,
         onAddClick = {
-            navController.navToItemEdit(null, itemType)
+            navController.navToItemEdit(0, itemType)
         },
         onQueryChange = { newQuery ->
             query = newQuery
@@ -309,7 +309,7 @@ private fun ListItem(item: ViewListItem, onItemClick: (Int) -> Unit) {
             }
             if (item is SerialDB) {
                 Text(
-                    text = stringResource(R.string.serials_seasons_value, item.seasons),
+                    text = stringResource(R.string.seasons_value, item.seasons),
                     fontSize = 14.sp,
                     modifier = Modifier.fillMaxWidth()
                 )

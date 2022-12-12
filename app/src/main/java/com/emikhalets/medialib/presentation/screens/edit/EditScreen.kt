@@ -46,7 +46,7 @@ import com.emikhalets.medialib.utils.toSafeInt
 @Composable
 fun EditScreen(
     navController: NavHostController,
-    itemId: Int?,
+    itemId: Int,
     itemType: ItemType,
     viewModel: EditViewModel = hiltViewModel(),
 ) {
@@ -68,12 +68,12 @@ fun EditScreen(
 @Composable
 private fun EditScreen(
     navController: NavHostController,
-    itemId: Int?,
+    itemId: Int,
     itemType: ItemType,
     item: ViewListItem?,
     onSaveClick: (ViewListItem?) -> Unit,
 ) {
-    if (itemId != null && item == null) return
+    if (itemId > 0 && item == null) return
 
     val localFocusManager = LocalFocusManager.current
     var showYearDialog by remember { mutableStateOf(false) }

@@ -13,13 +13,17 @@ fun AppIcon(
     imageVector: ImageVector?,
     modifier: Modifier = Modifier,
     tint: Color = MaterialTheme.colors.onPrimary,
-    onClick: () -> Unit = {},
+    onClick: (() -> Unit)? = null,
 ) {
     imageVector ?: return
     Icon(
         imageVector = imageVector,
         contentDescription = null,
         tint = tint,
-        modifier = modifier.clickable { onClick() }
+        modifier = if (onClick == null) {
+            modifier
+        } else {
+            modifier.clickable { onClick() }
+        }
     )
 }
