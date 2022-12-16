@@ -31,6 +31,8 @@
     <string name="comment">Comment</string>
     <string name="overview">Overview</string>
 
+    <string name="error_internal_error">Internal error</string>
+
     <!--  Search  -->
     <string name="webview_imdb_link">https://www.imdb.com/</string>
     <string name="search_movies">Search movies and serials</string>

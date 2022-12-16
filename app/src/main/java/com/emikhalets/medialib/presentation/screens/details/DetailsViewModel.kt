@@ -20,33 +20,44 @@ class DetailsViewModel @Inject constructor(
     private val databaseRepo: DatabaseRepository,
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow(State())
+    private val _state = MutableStateFlow<DetailsState>(DetailsState.Loading)
     val state get() = _state.asStateFlow()
 
     private var item: ViewListItem? = null
 
     fun getItem(id: Int?, type: ItemType) {
-        id ?: return
+        if (id == null) {
+            _state.update { DetailsState.ItemEmpty }
+            return
+        }
+
         launchDefault {
+            _state.update { DetailsState.Loading }
             val response = when (type) {
                 ItemType.MOVIE -> databaseRepo.getMovieFlow(id)
                 ItemType.SERIAL -> databaseRepo.getSerialFlow(id)
                 ItemType.BOOK -> databaseRepo.getBookFlow(id)
                 ItemType.MUSIC -> databaseRepo.getMovieFlow(id) // TODO: change to music request
             }
-            response.onSuccess { flow ->
-                flow.collectLatest { item ->
-                    item?.let { _state.update { it.setItem(item) } }
-                    this@DetailsViewModel.item = item
+            response
+                .onSuccess { flow ->
+                    flow.collectLatest { item ->
+                        item?.let { _state.update { DetailsState.Item(item) } }
+                        this@DetailsViewModel.item = item
+                    }
                 }
-            }
+                .onFailure { exception ->
+                    _state.update { DetailsState.Error(exception.message) }
+                }
         }
     }
 
     fun updateItem(rating: Int, type: ItemType) {
         item ?: return
+
         launchDefault {
-            when (type) {
+            _state.update { DetailsState.Loading }
+            val response = when (type) {
                 ItemType.MOVIE -> {
                     val copy = (item as MovieDB).copy(rating = rating)
                     databaseRepo.updateItem(copy)
@@ -65,60 +76,61 @@ class DetailsViewModel @Inject constructor(
                     databaseRepo.updateItem(copy)
                 }
             }
+            response.onFailure { exception ->
+                _state.update { DetailsState.Error(exception.message) }
+            }
         }
     }
 
     fun updateItem(poster: String, type: ItemType) {
         item ?: return
-        if (poster != item?.poster) {
-            launchDefault {
-                when (type) {
-                    ItemType.MOVIE -> {
-                        val copy = (item as MovieDB).copy(poster = poster)
-                        databaseRepo.updateItem(copy)
-                    }
-                    ItemType.SERIAL -> {
-                        val copy = (item as SerialDB).copy(poster = poster)
-                        databaseRepo.updateItem(copy)
-                    }
-                    ItemType.BOOK -> {
-                        val copy = (item as BookDB).copy(poster = poster)
-                        databaseRepo.updateItem(copy)
-                    }
-                    ItemType.MUSIC -> {
-                        // TODO: change to music entity
-                        val copy = (item as MovieDB).copy(poster = poster)
-                        databaseRepo.updateItem(copy)
-                    }
+        if (poster != item?.poster) return
+
+        launchDefault {
+            _state.update { DetailsState.Loading }
+            val response = when (type) {
+                ItemType.MOVIE -> {
+                    val copy = (item as MovieDB).copy(poster = poster)
+                    databaseRepo.updateItem(copy)
                 }
+                ItemType.SERIAL -> {
+                    val copy = (item as SerialDB).copy(poster = poster)
+                    databaseRepo.updateItem(copy)
+                }
+                ItemType.BOOK -> {
+                    val copy = (item as BookDB).copy(poster = poster)
+                    databaseRepo.updateItem(copy)
+                }
+                ItemType.MUSIC -> {
+                    // TODO: change to music entity
+                    val copy = (item as MovieDB).copy(poster = poster)
+                    databaseRepo.updateItem(copy)
+                }
+            }
+            response.onFailure { exception ->
+                _state.update { DetailsState.Error(exception.message) }
             }
         }
     }
 
     fun deleteItem(type: ItemType) {
         item ?: return
+
         launchDefault {
+            _state.update { DetailsState.Loading }
             val response = when (type) {
                 ItemType.MOVIE -> databaseRepo.deleteItem(item as MovieDB)
                 ItemType.SERIAL -> databaseRepo.deleteItem(item as SerialDB)
                 ItemType.BOOK -> databaseRepo.deleteItem(item as BookDB)
                 ItemType.MUSIC -> databaseRepo.deleteItem(item as MovieDB) // TODO: change to music entity
             }
-            response.onSuccess { _state.update { it.setDeleted() } }
-        }
-    }
-
-    data class State(
-        val item: ViewListItem? = null,
-        val deleted: Boolean = false,
-    ) {
-
-        fun setItem(item: ViewListItem?): State {
-            return this.copy(item = item)
-        }
-
-        fun setDeleted(): State {
-            return this.copy(deleted = true)
+            response
+                .onSuccess {
+                    _state.update { DetailsState.ItemDeleted }
+                }
+                .onFailure { exception ->
+                    _state.update { DetailsState.Error(exception.message) }
+                }
         }
     }
 }
