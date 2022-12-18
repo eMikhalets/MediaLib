@@ -36,8 +36,7 @@ data class MovieDB(
     }
 
     companion object {
-
-        fun fromMoviesResponse(response: MovieResponse): MovieDB {
+        fun fromResponse(response: MovieResponse): MovieDB {
             return MovieDB(
                 id = 0,
                 title = response.title ?: "",

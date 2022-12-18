@@ -80,7 +80,7 @@ private fun AppToolbar(
             actions.forEach { menuItem ->
                 AppIcon(
                     imageVector = menuItem.icon,
-                    onClick = { navController.popBackStack() },
+                    onClick = { menuItem.onClick() },
                     modifier = Modifier.padding(10.dp, 16.dp)
                 )
             }

@@ -2,7 +2,6 @@ package com.emikhalets.medialib.presentation.screens.main
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -23,7 +22,6 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Tab
 import androidx.compose.material.TabRow
 import androidx.compose.material.TabRowDefaults
-import androidx.compose.material.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
@@ -41,10 +39,8 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -75,6 +71,7 @@ import com.emikhalets.medialib.utils.enums.ItemType
 import com.emikhalets.medialib.utils.px
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
+import com.google.accompanist.pager.pagerTabIndicatorOffset
 import com.google.accompanist.pager.rememberPagerState
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -127,9 +124,8 @@ private fun MainScreen(
     onItemTypeChange: (ItemType) -> Unit,
     onItemClick: (Int) -> Unit,
 ) {
-    val localFocusManager = LocalFocusManager.current
     val scope = rememberCoroutineScope()
-    val pagerState = rememberPagerState(0)
+    val pagerState = rememberPagerState()
     val pages = listOf(
         stringResource(id = R.string.pager_tab_movies),
         stringResource(id = R.string.pager_tab_serials),
@@ -143,17 +139,7 @@ private fun MainScreen(
     }
 
     AppScaffold(navController) {
-
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .pointerInput(Unit) {
-                    detectTapGestures(
-                        onPress = { localFocusManager.clearFocus() },
-                        onTap = { localFocusManager.clearFocus() }
-                    )
-                }
-        ) {
+        Column(modifier = Modifier.fillMaxSize()) {
             SearchBox(
                 query = query,
                 onQueryChange = onQueryChange,
@@ -164,7 +150,7 @@ private fun MainScreen(
                 selectedTabIndex = pagerState.currentPage,
                 indicator = { tabPositions ->
                     TabRowDefaults.Indicator(
-                        modifier = Modifier.tabIndicatorOffset(tabPositions[pagerState.currentPage])
+                        modifier = Modifier.pagerTabIndicatorOffset(pagerState, tabPositions)
                     )
                 }
             ) {
@@ -177,7 +163,7 @@ private fun MainScreen(
                 }
             }
 
-            HorizontalPager(count = 3) { page ->
+            HorizontalPager(count = 3, state = pagerState) { page ->
                 val list = when (page) {
                     1 -> serials
                     2 -> books

@@ -36,10 +36,15 @@ fun SearchWebviewScreen(
 ) {
     val context = LocalContext.current
     val state by viewModel.state.collectAsState()
-    var saveClickable by remember { mutableStateOf(true) }
+
+    var saveEnabled by remember { mutableStateOf(false) }
 
     LaunchedEffect(state.saved) {
         if (state.saved) navController.popBackStack()
+    }
+
+    LaunchedEffect(state.idParsed) {
+        saveEnabled = state.idParsed != null
     }
 
     LaunchedEffect(state.errorCounter) {
@@ -50,10 +55,9 @@ fun SearchWebviewScreen(
     SearchMoviesScreen(
         navController = navController,
         link = stringResource(type.urlRes),
-        onParseId = {
-            saveClickable = false
-            viewModel.parseUrl(it, type)
-        },
+        saveEnabled = saveEnabled,
+        onUrlLoaded = { viewModel.parseUrl(it, type) },
+        onSaveClicked = { viewModel.searchItem(type) }
     )
 }
 
@@ -61,9 +65,10 @@ fun SearchWebviewScreen(
 private fun SearchMoviesScreen(
     navController: NavHostController,
     link: String,
-    onParseId: (String) -> Unit,
+    saveEnabled: Boolean,
+    onUrlLoaded: (String) -> Unit,
+    onSaveClicked: () -> Unit,
 ) {
-    var url by remember { mutableStateOf("") }
 
     AppScaffold(navController) {
         Column(
@@ -72,13 +77,14 @@ private fun SearchMoviesScreen(
         ) {
             Webview(
                 url = link,
-                onPageLoaded = { url = it },
+                onPageLoaded = { onUrlLoaded(it) },
                 modifier = Modifier
                     .fillMaxSize()
                     .weight(1f)
             )
             Button(
-                onClick = { onParseId(url) },
+                enabled = saveEnabled,
+                onClick = { onSaveClicked() },
                 modifier = Modifier.padding(16.dp)
             ) {
                 Text(text = stringResource(R.string.save))
@@ -93,8 +99,10 @@ private fun ScreenPreview() {
     AppTheme {
         SearchMoviesScreen(
             navController = rememberNavController(),
+            saveEnabled = false,
             link = stringResource(R.string.webview_imdb_link),
-            onParseId = {}
+            onUrlLoaded = {},
+            onSaveClicked = {}
         )
     }
 }

@@ -56,6 +56,10 @@ fun EditScreen(
         viewModel.getItemData(itemId, itemType)
     }
 
+    LaunchedEffect(state.saved) {
+        if (state.saved) navController.popBackStack()
+    }
+
     EditScreen(
         navController = navController,
         itemId = itemId,
@@ -80,11 +84,11 @@ private fun EditScreen(
 
     var title by remember { mutableStateOf(item?.title ?: "") }
     var titleRu by remember { mutableStateOf(item?.titleRu ?: "") }
-    var author by remember { mutableStateOf((item as BookDB?)?.author ?: "") }
+    var author by remember { mutableStateOf((item as? BookDB)?.author ?: "") }
     var genres by remember { mutableStateOf(item?.genres ?: "") }
     var releaseYear by remember { mutableStateOf(item?.releaseYear ?: 0) }
     var comment by remember { mutableStateOf(item?.comment ?: "") }
-    var seasons by remember { mutableStateOf((item as SerialDB?)?.seasons?.toString() ?: "") }
+    var seasons by remember { mutableStateOf((item as? SerialDB)?.seasons?.toString() ?: "") }
     var status by remember { mutableStateOf(item?.status?.toString() ?: "") }
     var rating by remember { mutableStateOf(item?.rating ?: 0) }
 

@@ -32,14 +32,20 @@ class MainViewModel @Inject constructor(
 
     fun getMainData() {
         launchDefault {
-            databaseRepo.getMovies().onSuccess { movies ->
-                movies.collectLatest { list -> _state.update { it.setMovies(list) } }
+            launch {
+                databaseRepo.getMovies().onSuccess { movies ->
+                    movies.collectLatest { list -> _state.update { it.setMovies(list) } }
+                }
             }
-            databaseRepo.getSerials().onSuccess { serials ->
-                serials.collectLatest { list -> _state.update { it.setSerials(list) } }
+            launch {
+                databaseRepo.getSerials().onSuccess { serials ->
+                    serials.collectLatest { list -> _state.update { it.setSerials(list) } }
+                }
             }
-            databaseRepo.getBooks().onSuccess { books ->
-                books.collectLatest { list -> _state.update { it.setBooks(list) } }
+            launch {
+                databaseRepo.getBooks().onSuccess { books ->
+                    books.collectLatest { list -> _state.update { it.setBooks(list) } }
+                }
             }
         }
     }

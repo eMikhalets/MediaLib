@@ -49,7 +49,7 @@ fun AppTextField(
             disabledTextColor = LocalContentColor.current.copy(LocalContentAlpha.current),
             disabledLabelColor = MaterialTheme.colors.onSurface.copy(ContentAlpha.medium)
         ),
-        modifier = modifier
+        modifier = modifier.fillMaxWidth()
     )
 }
 

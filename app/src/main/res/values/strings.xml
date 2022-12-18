@@ -35,7 +35,8 @@
 
     <!--  Search  -->
     <string name="webview_imdb_link">https://www.imdb.com/</string>
-    <string name="search_movies">Search movies and serials</string>
+    <string name="search_movies">Search movies</string>
+    <string name="search_serials">Search serials</string>
     <string name="search_books">Search books</string>
 
     <!--  Pager tabs  -->

@@ -71,7 +71,8 @@ fun DetailsScreen(
         title = title,
         actions = listOf(
             MenuIconEntity(Icons.Rounded.Edit) {
-                navController.navToItemEdit((state as? DetailsState.Item)?.item?.id ?: 0, itemType)
+                val id = (state as? DetailsState.Item)?.item?.id
+                if (id != null) navController.navToItemEdit(id, itemType)
             },
             MenuIconEntity(Icons.Rounded.Delete) {
                 showDeleteDialog = true
@@ -79,6 +80,7 @@ fun DetailsScreen(
         )
     ) {
         when (state) {
+
             is DetailsState.Item -> {
                 val uiState = state as DetailsState.Item
                 title = uiState.item?.title ?: stringResource(R.string.screen_name_details)
@@ -102,8 +104,8 @@ fun DetailsScreen(
         DeleteDialog(
             onDismiss = { showDeleteDialog = false },
             onDeleteClick = {
-                viewModel.deleteItem(itemType)
                 showDeleteDialog = false
+                viewModel.deleteItem(itemType)
             }
         )
     }
@@ -114,8 +116,8 @@ fun DetailsScreen(
             poster = uiState?.item?.poster,
             onDismiss = { showPosterDialog = false },
             onOkClick = {
-                viewModel.updateItem(it, itemType)
                 showPosterDialog = false
+                viewModel.updateItem(it, itemType)
             }
         )
     }

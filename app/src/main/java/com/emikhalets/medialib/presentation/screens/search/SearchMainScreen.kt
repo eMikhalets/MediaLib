@@ -31,6 +31,11 @@ fun SearchMainScreen(
             )
 
             AppButton(
+                text = stringResource(id = R.string.search_serials),
+                onClick = { navController.navToSearching(SearchType.SERIAL) }
+            )
+
+            AppButton(
                 text = stringResource(id = R.string.search_books),
 //            onClick = { navController.navToSearching(context.getString(R.string.webview_imdb_link)) }
             )
