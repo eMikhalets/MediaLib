@@ -1,6 +1,6 @@
 package com.emikhalets.medialib.data.repository
 
-import com.emikhalets.medialib.data.entity.network.MovieResponse
+import com.emikhalets.medialib.data.network.MovieResponse
 import com.emikhalets.medialib.data.network.MoviesApi
 import com.emikhalets.medialib.utils.execute
 import javax.inject.Inject

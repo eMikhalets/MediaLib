@@ -10,7 +10,6 @@ import androidx.room.RoomDatabase
 import androidx.room.migration.AutoMigrationSpec
 import com.emikhalets.medialib.data.entity.database.BookDB
 import com.emikhalets.medialib.data.entity.database.MovieDB
-import com.emikhalets.medialib.data.entity.database.MusicDB
 import com.emikhalets.medialib.data.entity.database.SerialDB
 
 @Database(

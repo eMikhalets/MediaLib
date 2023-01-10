@@ -3,7 +3,7 @@ package com.emikhalets.medialib.presentation.screens.search
 import androidx.lifecycle.ViewModel
 import com.emikhalets.medialib.data.entity.database.MovieDB
 import com.emikhalets.medialib.data.entity.database.SerialDB
-import com.emikhalets.medialib.data.entity.network.MovieResponse
+import com.emikhalets.medialib.data.network.MovieResponse
 import com.emikhalets.medialib.data.repository.DatabaseRepository
 import com.emikhalets.medialib.data.repository.NetworkRepository
 import com.emikhalets.medialib.utils.enums.SearchType

@@ -1,4 +1,4 @@
-package com.emikhalets.medialib.data.entity.network
+package com.emikhalets.medialib.data.network
 
 import com.google.gson.annotations.SerializedName
 

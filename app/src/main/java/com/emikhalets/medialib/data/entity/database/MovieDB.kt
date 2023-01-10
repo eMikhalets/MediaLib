@@ -3,7 +3,7 @@ package com.emikhalets.medialib.data.entity.database
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.emikhalets.medialib.data.entity.network.MovieResponse
+import com.emikhalets.medialib.data.network.MovieResponse
 import com.emikhalets.medialib.data.entity.support.ViewListItem
 import com.emikhalets.medialib.utils.enums.ItemStatus
 import com.emikhalets.medialib.utils.toSafeInt
