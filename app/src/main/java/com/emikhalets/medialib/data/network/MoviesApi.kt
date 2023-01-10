@@ -8,5 +8,5 @@ interface MoviesApi {
     @GET(RetrofitFactory.MOVIES_BASE_URL)
     suspend fun getMovieDetails(
         @Query("i") id: String,
-    ): MovieResponse
+    ): MovieRemoteEntity
 }

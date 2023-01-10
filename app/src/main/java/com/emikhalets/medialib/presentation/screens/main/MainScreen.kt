@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Tab
@@ -56,10 +55,8 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import coil.transform.RoundedCornersTransformation
 import com.emikhalets.medialib.R
-import com.emikhalets.medialib.data.entity.database.BookDB
-import com.emikhalets.medialib.data.entity.database.MovieDB
-import com.emikhalets.medialib.data.entity.database.SerialDB
-import com.emikhalets.medialib.data.entity.support.ViewListItem
+import com.emikhalets.medialib.data.database.movies.MovieDbEntity
+import com.emikhalets.medialib.data.database.serials.SerialDbEntity
 import com.emikhalets.medialib.presentation.core.AppIcon
 import com.emikhalets.medialib.presentation.core.AppScaffold
 import com.emikhalets.medialib.presentation.core.AppTextField
@@ -116,8 +113,8 @@ fun MainScreen(
 private fun MainScreen(
     navController: NavHostController,
     query: String,
-    movies: List<MovieDB>,
-    serials: List<SerialDB>,
+    movies: List<MovieDbEntity>,
+    serials: List<SerialDbEntity>,
     books: List<BookDB>,
     onAddClick: () -> Unit,
     onQueryChange: (String) -> Unit,
@@ -293,7 +290,7 @@ private fun ListItem(item: ViewListItem, onItemClick: (Int) -> Unit) {
                     modifier = Modifier.fillMaxWidth()
                 )
             }
-            if (item is SerialDB) {
+            if (item is SerialDbEntity) {
                 Text(
                     text = stringResource(R.string.seasons_value, item.seasons),
                     fontSize = 14.sp,
@@ -357,7 +354,7 @@ private fun ScreenPreview() {
 private fun MovieItemPreview() {
     AppTheme {
         ListItem(
-            item = MovieDB(
+            item = MovieDbEntity(
                 title = "Movie name",
                 genres = "Action, Drama, Action, Drama, Action, Drama",
                 releaseYear = 2015,
@@ -374,7 +371,7 @@ private fun MovieItemPreview() {
 private fun SerialItemPreview() {
     AppTheme {
         ListItem(
-            item = SerialDB(
+            item = SerialDbEntity(
                 title = "Serial name",
                 genres = "Action, Drama",
                 releaseYear = 2015,

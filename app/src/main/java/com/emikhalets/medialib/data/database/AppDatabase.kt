@@ -1,58 +1,42 @@
 package com.emikhalets.medialib.data.database
 
 import android.content.Context
-import androidx.room.AutoMigration
 import androidx.room.Database
-import androidx.room.DeleteColumn
-import androidx.room.RenameColumn
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import androidx.room.migration.AutoMigrationSpec
-import com.emikhalets.medialib.data.entity.database.BookDB
-import com.emikhalets.medialib.data.entity.database.MovieDB
-import com.emikhalets.medialib.data.entity.database.SerialDB
+import com.emikhalets.medialib.data.database.genres.GenreDbEntity
+import com.emikhalets.medialib.data.database.genres.GenresDao
+import com.emikhalets.medialib.data.database.movies.MovieDbEntity
+import com.emikhalets.medialib.data.database.movies.MoviesDao
+import com.emikhalets.medialib.data.database.serials.SerialDbEntity
+import com.emikhalets.medialib.data.database.serials.SerialsDao
 
 @Database(
     entities = [
-        MovieDB::class,
-        SerialDB::class,
-        BookDB::class,
-        MusicDB::class,
+        MovieDbEntity::class,
+        SerialDbEntity::class,
+        GenreDbEntity::class,
     ],
-    autoMigrations = [
-        AutoMigration(from = 1, to = 2, spec = MigrationFrom1To2::class),
-        AutoMigration(from = 2, to = 3),
-        AutoMigration(from = 3, to = 4),
-    ],
-    version = 4,
+    autoMigrations = [],
+    version = 1,
     exportSchema = true
 )
 abstract class AppDatabase : RoomDatabase() {
 
     abstract val moviesDao: MoviesDao
     abstract val serialsDao: SerialsDao
-    abstract val booksDao: BooksDao
-    abstract val musicsDao: MusicsDao
+    abstract val genresDao: GenresDao
 
     companion object {
 
         @Volatile
         private var instance: AppDatabase? = null
 
-        fun get(context: Context) = instance ?: synchronized(this) {
+        fun getInstance(context: Context) = instance ?: synchronized(this) {
             instance ?: buildDatabase(context).also { instance = it }
         }
 
         private fun buildDatabase(context: Context) =
-            Room.databaseBuilder(context, AppDatabase::class.java, "MediaLibDB").build()
+            Room.databaseBuilder(context, AppDatabase::class.java, "MediaLib.db").build()
     }
 }
-
-@DeleteColumn.Entries(
-    DeleteColumn(tableName = "books", columnName = "vote_average"),
-    DeleteColumn(tableName = "movies", columnName = "vote_average"),
-    DeleteColumn(tableName = "movies", columnName = "runtime"),
-    DeleteColumn(tableName = "serials", columnName = "vote_average")
-)
-@RenameColumn(tableName = "musics", fromColumnName = "genre", toColumnName = "genres")
-private class MigrationFrom1To2 : AutoMigrationSpec

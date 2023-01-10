@@ -2,7 +2,7 @@ package com.emikhalets.medialib.data.network
 
 import com.google.gson.annotations.SerializedName
 
-data class MovieResponse(
+data class MovieRemoteEntity(
     @SerializedName("Title") val title: String? = null,
     @SerializedName("Year") val year: String? = null,
     @SerializedName("Runtime") val runtime: String? = null,

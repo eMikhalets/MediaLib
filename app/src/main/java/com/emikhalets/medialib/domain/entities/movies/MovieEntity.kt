@@ -1,7 +1,7 @@
 package com.emikhalets.medialib.domain.entities.movies
 
 data class MovieEntity(
-    val id: Int,
+    val id: Long,
     val title: String,
     val titleRu: String,
     val overview: String,

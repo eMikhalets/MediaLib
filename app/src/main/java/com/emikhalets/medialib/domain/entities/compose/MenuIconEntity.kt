@@ -1,4 +1,4 @@
-package com.emikhalets.medialib.data.entity.support
+package com.emikhalets.medialib.domain.entities.compose
 
 import androidx.compose.ui.graphics.vector.ImageVector
 

@@ -1,11 +1,9 @@
 package com.emikhalets.medialib.presentation.screens.edit
 
 import androidx.lifecycle.ViewModel
-import com.emikhalets.medialib.data.entity.database.BookDB
-import com.emikhalets.medialib.data.entity.database.MovieDB
-import com.emikhalets.medialib.data.entity.database.SerialDB
-import com.emikhalets.medialib.data.entity.support.ViewListItem
-import com.emikhalets.medialib.data.repository.DatabaseRepository
+import com.emikhalets.medialib.data.database.movies.MovieDbEntity
+import com.emikhalets.medialib.data.database.serials.SerialDbEntity
+import com.emikhalets.medialib.data.repository.DatabaseRepositoryImpl
 import com.emikhalets.medialib.utils.enums.ItemType
 import com.emikhalets.medialib.utils.launchDefault
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class EditViewModel @Inject constructor(
-    private val databaseRepo: DatabaseRepository,
+    private val databaseRepo: DatabaseRepositoryImpl,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(State())
@@ -42,22 +40,22 @@ class EditViewModel @Inject constructor(
         item ?: return
         launchDefault {
             when (type) {
-                ItemType.MOVIE -> saveItem(item as MovieDB)
-                ItemType.SERIAL -> saveItem(item as SerialDB)
+                ItemType.MOVIE -> saveItem(item as MovieDbEntity)
+                ItemType.SERIAL -> saveItem(item as SerialDbEntity)
                 ItemType.BOOK -> saveItem(item as BookDB)
-                ItemType.MUSIC -> saveItem(item as MovieDB) // TODO: change to music entity
+                ItemType.MUSIC -> saveItem(item as MovieDbEntity) // TODO: change to music entity
             }
         }
     }
 
-    private suspend fun saveItem(item: MovieDB) {
+    private suspend fun saveItem(item: MovieDbEntity) {
         val response = if (item.id == 0) databaseRepo.insertItem(item)
         else databaseRepo.updateItem(item)
 
         response.onSuccess { _state.update { it.setSaved() } }
     }
 
-    private suspend fun saveItem(item: SerialDB) {
+    private suspend fun saveItem(item: SerialDbEntity) {
         val response = if (item.id == 0) databaseRepo.insertItem(item)
         else databaseRepo.updateItem(item)
 

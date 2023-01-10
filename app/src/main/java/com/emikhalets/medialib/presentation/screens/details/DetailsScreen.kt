@@ -31,11 +31,9 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.emikhalets.medialib.R
-import com.emikhalets.medialib.data.entity.database.BookDB
-import com.emikhalets.medialib.data.entity.database.MovieDB
-import com.emikhalets.medialib.data.entity.database.SerialDB
-import com.emikhalets.medialib.data.entity.support.MenuIconEntity
-import com.emikhalets.medialib.data.entity.support.ViewListItem
+import com.emikhalets.medialib.data.database.movies.MovieDbEntity
+import com.emikhalets.medialib.data.database.serials.SerialDbEntity
+import com.emikhalets.medialib.domain.entities.compose.MenuIconEntity
 import com.emikhalets.medialib.presentation.core.AppAsyncImage
 import com.emikhalets.medialib.presentation.core.AppDetailsSection
 import com.emikhalets.medialib.presentation.core.AppLoader
@@ -215,7 +213,7 @@ private fun DetailsScreen(
                 content = item.overview
             )
 
-            if (item is MovieDB) {
+            if (item is MovieDbEntity) {
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = stringResource(R.string.budget_value, item.budget),
@@ -230,7 +228,7 @@ private fun DetailsScreen(
                 )
             }
 
-            if (item is SerialDB) {
+            if (item is SerialDbEntity) {
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = stringResource(R.string.seasons_value, item.seasons),
@@ -249,7 +247,7 @@ private fun DetailsScreen(
 private fun ScreenPreview() {
     AppTheme {
         DetailsScreen(
-            item = MovieDB(
+            item = MovieDbEntity(
                 id = 1,
                 title = "Spider-man",
                 genres = "Action, Drama",

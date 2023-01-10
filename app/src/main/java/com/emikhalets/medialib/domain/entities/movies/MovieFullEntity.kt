@@ -1,6 +1,6 @@
 package com.emikhalets.medialib.domain.entities.movies
 
-import com.emikhalets.medialib.domain.entities.GenreEntity
+import com.emikhalets.medialib.domain.entities.genres.GenreEntity
 
 data class MovieFullEntity(
     val movieEntity: MovieEntity,

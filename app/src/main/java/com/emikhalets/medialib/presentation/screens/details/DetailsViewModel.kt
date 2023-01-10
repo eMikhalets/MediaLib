@@ -1,11 +1,9 @@
 package com.emikhalets.medialib.presentation.screens.details
 
 import androidx.lifecycle.ViewModel
-import com.emikhalets.medialib.data.entity.database.BookDB
-import com.emikhalets.medialib.data.entity.database.MovieDB
-import com.emikhalets.medialib.data.entity.database.SerialDB
-import com.emikhalets.medialib.data.entity.support.ViewListItem
-import com.emikhalets.medialib.data.repository.DatabaseRepository
+import com.emikhalets.medialib.data.database.movies.MovieDbEntity
+import com.emikhalets.medialib.data.database.serials.SerialDbEntity
+import com.emikhalets.medialib.data.repository.DatabaseRepositoryImpl
 import com.emikhalets.medialib.utils.enums.ItemType
 import com.emikhalets.medialib.utils.launchDefault
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DetailsViewModel @Inject constructor(
-    private val databaseRepo: DatabaseRepository,
+    private val databaseRepo: DatabaseRepositoryImpl,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow<DetailsState>(DetailsState.Loading)
@@ -59,11 +57,11 @@ class DetailsViewModel @Inject constructor(
             _state.update { DetailsState.Loading }
             val response = when (type) {
                 ItemType.MOVIE -> {
-                    val copy = (item as MovieDB).copy(rating = rating)
+                    val copy = (item as MovieDbEntity).copy(rating = rating)
                     databaseRepo.updateItem(copy)
                 }
                 ItemType.SERIAL -> {
-                    val copy = (item as SerialDB).copy(rating = rating)
+                    val copy = (item as SerialDbEntity).copy(rating = rating)
                     databaseRepo.updateItem(copy)
                 }
                 ItemType.BOOK -> {
@@ -72,7 +70,7 @@ class DetailsViewModel @Inject constructor(
                 }
                 ItemType.MUSIC -> {
                     // TODO: change to music entity
-                    val copy = (item as MovieDB).copy(rating = rating)
+                    val copy = (item as MovieDbEntity).copy(rating = rating)
                     databaseRepo.updateItem(copy)
                 }
             }
@@ -90,11 +88,11 @@ class DetailsViewModel @Inject constructor(
             _state.update { DetailsState.Loading }
             val response = when (type) {
                 ItemType.MOVIE -> {
-                    val copy = (item as MovieDB).copy(poster = poster)
+                    val copy = (item as MovieDbEntity).copy(poster = poster)
                     databaseRepo.updateItem(copy)
                 }
                 ItemType.SERIAL -> {
-                    val copy = (item as SerialDB).copy(poster = poster)
+                    val copy = (item as SerialDbEntity).copy(poster = poster)
                     databaseRepo.updateItem(copy)
                 }
                 ItemType.BOOK -> {
@@ -103,7 +101,7 @@ class DetailsViewModel @Inject constructor(
                 }
                 ItemType.MUSIC -> {
                     // TODO: change to music entity
-                    val copy = (item as MovieDB).copy(poster = poster)
+                    val copy = (item as MovieDbEntity).copy(poster = poster)
                     databaseRepo.updateItem(copy)
                 }
             }
@@ -119,10 +117,10 @@ class DetailsViewModel @Inject constructor(
         launchDefault {
             _state.update { DetailsState.Loading }
             val response = when (type) {
-                ItemType.MOVIE -> databaseRepo.deleteItem(item as MovieDB)
-                ItemType.SERIAL -> databaseRepo.deleteItem(item as SerialDB)
+                ItemType.MOVIE -> databaseRepo.deleteItem(item as MovieDbEntity)
+                ItemType.SERIAL -> databaseRepo.deleteItem(item as SerialDbEntity)
                 ItemType.BOOK -> databaseRepo.deleteItem(item as BookDB)
-                ItemType.MUSIC -> databaseRepo.deleteItem(item as MovieDB) // TODO: change to music entity
+                ItemType.MUSIC -> databaseRepo.deleteItem(item as MovieDbEntity) // TODO: change to music entity
             }
             response
                 .onSuccess {

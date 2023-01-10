@@ -27,10 +27,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.emikhalets.medialib.R
-import com.emikhalets.medialib.data.entity.database.BookDB
-import com.emikhalets.medialib.data.entity.database.MovieDB
-import com.emikhalets.medialib.data.entity.database.SerialDB
-import com.emikhalets.medialib.data.entity.support.ViewListItem
+import com.emikhalets.medialib.data.database.movies.MovieDbEntity
+import com.emikhalets.medialib.data.database.serials.SerialDbEntity
 import com.emikhalets.medialib.presentation.core.AppButton
 import com.emikhalets.medialib.presentation.core.AppScaffold
 import com.emikhalets.medialib.presentation.core.AppStatusSpinner
@@ -88,7 +86,7 @@ private fun EditScreen(
     var genres by remember { mutableStateOf(item?.genres ?: "") }
     var releaseYear by remember { mutableStateOf(item?.releaseYear ?: 0) }
     var comment by remember { mutableStateOf(item?.comment ?: "") }
-    var seasons by remember { mutableStateOf((item as? SerialDB)?.seasons?.toString() ?: "") }
+    var seasons by remember { mutableStateOf((item as? SerialDbEntity)?.seasons?.toString() ?: "") }
     var status by remember { mutableStateOf(item?.status?.toString() ?: "") }
     var rating by remember { mutableStateOf(item?.rating ?: 0) }
 
@@ -117,7 +115,7 @@ private fun EditScreen(
                 Spacer(modifier = Modifier.height(8.dp))
             }
 
-            if (item is SerialDB) {
+            if (item is SerialDbEntity) {
                 AppTextField(seasons, { seasons = it }, label = stringResource(R.string.seasons))
                 Spacer(modifier = Modifier.height(8.dp))
             }
@@ -191,7 +189,7 @@ private fun ViewListItem?.buildItem(
 ): ViewListItem? {
     return when (itemType) {
         ItemType.MOVIE -> {
-            (this as MovieDB?)?.copy(
+            (this as MovieDbEntity?)?.copy(
                 id = this?.id ?: 0,
                 title = title,
                 titleRu = titleRu,
@@ -203,7 +201,7 @@ private fun ViewListItem?.buildItem(
             )
         }
         ItemType.SERIAL -> {
-            (this as SerialDB?)?.copy(
+            (this as SerialDbEntity?)?.copy(
                 id = this?.id ?: 0,
                 title = title,
                 titleRu = titleRu,
@@ -230,7 +228,7 @@ private fun ViewListItem?.buildItem(
         }
         ItemType.MUSIC -> {
             // TODO: change to music entity
-            (this as MovieDB?)?.copy(
+            (this as MovieDbEntity?)?.copy(
                 id = this?.id ?: 0,
                 title = title,
                 titleRu = titleRu,

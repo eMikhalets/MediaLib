@@ -39,11 +39,27 @@ val Int.px: Float
 inline fun String?.ifNullOrEmpty(defaultValue: () -> String): String =
     if (isNullOrEmpty()) defaultValue() else this
 
-fun String.toSafeInt(): Int {
+fun String?.toSafeInt(): Int {
     return try {
-        this.toInt()
+        this?.toInt() ?: 0
     } catch (ex: NumberFormatException) {
         0
+    }
+}
+
+fun String?.toIntSafe(): Int {
+    return try {
+        this?.toInt() ?: 0
+    } catch (ex: NumberFormatException) {
+        0
+    }
+}
+
+fun String?.toDoubleSafe(): Double {
+    return try {
+        this?.toDouble() ?: 0.0
+    } catch (ex: NumberFormatException) {
+        0.0
     }
 }
 

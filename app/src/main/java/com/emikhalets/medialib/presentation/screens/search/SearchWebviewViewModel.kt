@@ -1,11 +1,11 @@
 package com.emikhalets.medialib.presentation.screens.search
 
 import androidx.lifecycle.ViewModel
-import com.emikhalets.medialib.data.entity.database.MovieDB
-import com.emikhalets.medialib.data.entity.database.SerialDB
-import com.emikhalets.medialib.data.network.MovieResponse
-import com.emikhalets.medialib.data.repository.DatabaseRepository
-import com.emikhalets.medialib.data.repository.NetworkRepository
+import com.emikhalets.medialib.data.database.movies.MovieDbEntity
+import com.emikhalets.medialib.data.database.serials.SerialDbEntity
+import com.emikhalets.medialib.data.network.MovieRemoteEntity
+import com.emikhalets.medialib.data.repository.DatabaseRepositoryImpl
+import com.emikhalets.medialib.data.repository.NetworkRepositoryImpl
 import com.emikhalets.medialib.utils.enums.SearchType
 import com.emikhalets.medialib.utils.launchDefault
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,8 +16,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SearchWebviewViewModel @Inject constructor(
-    private val networkRepo: NetworkRepository,
-    private val databaseRepo: DatabaseRepository,
+    private val networkRepo: NetworkRepositoryImpl,
+    private val databaseRepo: DatabaseRepositoryImpl,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(State())
@@ -57,15 +57,15 @@ class SearchWebviewViewModel @Inject constructor(
             }
     }
 
-    private suspend fun saveMovie(response: MovieResponse) {
-        val itemDb = MovieDB.fromResponse(response)
+    private suspend fun saveMovie(response: MovieRemoteEntity) {
+        val itemDb = MovieDbEntity.fromResponse(response)
         databaseRepo.insertItem(itemDb)
             .onSuccess { _state.update { it.setSaved() } }
             .onFailure { ex -> _state.update { it.setError(ex.message ?: "") } }
     }
 
-    private suspend fun saveSerial(response: MovieResponse) {
-        val itemDb = SerialDB.fromResponse(response)
+    private suspend fun saveSerial(response: MovieRemoteEntity) {
+        val itemDb = SerialDbEntity.fromResponse(response)
         databaseRepo.insertItem(itemDb)
             .onSuccess { _state.update { it.setSaved() } }
             .onFailure { ex -> _state.update { it.setError(ex.message ?: "") } }

@@ -1,5 +1,6 @@
 package com.emikhalets.medialib.domain.use_case.movies
 
+import com.emikhalets.medialib.domain.entities.movies.MovieEntity
 import com.emikhalets.medialib.domain.entities.movies.MovieFullEntity
 import com.emikhalets.medialib.domain.repository.DatabaseRepository
 import kotlinx.coroutines.Dispatchers
@@ -11,7 +12,7 @@ class MoviesListUseCase(
     private val databaseRepository: DatabaseRepository,
 ) {
 
-    suspend fun getMoviesList(): Result<Flow<List<MovieFullEntity>>> {
+    suspend fun getMoviesList(): Result<Flow<List<MovieEntity>>> {
         return databaseRepository.getMoviesListFlowOrderByLastUpdated()
     }
 

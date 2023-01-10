@@ -1,5 +1,6 @@
 package com.emikhalets.medialib.domain.repository
 
+import com.emikhalets.medialib.domain.entities.movies.MovieEntity
 import com.emikhalets.medialib.domain.entities.movies.MovieFullEntity
 import com.emikhalets.medialib.domain.entities.serials.SerialFullEntity
 import kotlinx.coroutines.flow.Flow
@@ -8,7 +9,7 @@ interface DatabaseRepository {
 
     // Movies Dao
 
-    suspend fun getMoviesListFlowOrderByLastUpdated(): Result<Flow<List<MovieFullEntity>>>
+    suspend fun getMoviesListFlowOrderByLastUpdated(): Result<Flow<List<MovieEntity>>>
 
     suspend fun getMovieFlowById(movieId: Long): Result<Flow<MovieFullEntity>>
 

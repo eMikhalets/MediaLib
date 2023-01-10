@@ -2,10 +2,8 @@ package com.emikhalets.medialib.utils.di
 
 import android.content.Context
 import com.emikhalets.medialib.data.database.AppDatabase
-import com.emikhalets.medialib.data.database.BooksDao
-import com.emikhalets.medialib.data.database.MoviesDao
-import com.emikhalets.medialib.data.database.MusicsDao
-import com.emikhalets.medialib.data.database.SerialsDao
+import com.emikhalets.medialib.data.database.movies.MoviesDao
+import com.emikhalets.medialib.data.database.serials.SerialsDao
 import com.emikhalets.medialib.data.network.MoviesApi
 import com.emikhalets.medialib.data.network.RetrofitFactory
 import dagger.Module
@@ -36,7 +34,7 @@ object ProvidesModule {
     @Singleton
     @Provides
     fun providesDatabase(@ApplicationContext context: Context): AppDatabase =
-        AppDatabase.get(context)
+        AppDatabase.getInstance(context)
 
     @Singleton
     @Provides
@@ -45,12 +43,4 @@ object ProvidesModule {
     @Singleton
     @Provides
     fun providesSerialsDao(database: AppDatabase): SerialsDao = database.serialsDao
-
-    @Singleton
-    @Provides
-    fun providesBooksDao(database: AppDatabase): BooksDao = database.booksDao
-
-    @Singleton
-    @Provides
-    fun providesMusicsDao(database: AppDatabase): MusicsDao = database.musicsDao
 }

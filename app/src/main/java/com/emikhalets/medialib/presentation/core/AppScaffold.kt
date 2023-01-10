@@ -21,7 +21,7 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.emikhalets.medialib.data.entity.support.MenuIconEntity
+import com.emikhalets.medialib.domain.entities.compose.MenuIconEntity
 import com.emikhalets.medialib.presentation.AppScreen
 import com.emikhalets.medialib.utils.ifNullOrEmpty
 

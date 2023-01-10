@@ -5,7 +5,7 @@ import com.emikhalets.medialib.domain.entities.serials.SerialEntity
 
 interface NetworkRepository {
 
-    suspend fun searchMovie(id: Int): Result<MovieEntity>
+    suspend fun searchMovie(id: String): Result<MovieEntity>
 
-    suspend fun searchSerial(id: Int): Result<SerialEntity>
+    suspend fun searchSerial(id: String): Result<SerialEntity>
 }

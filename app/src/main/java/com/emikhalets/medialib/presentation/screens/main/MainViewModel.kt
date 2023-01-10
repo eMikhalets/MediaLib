@@ -1,12 +1,9 @@
 package com.emikhalets.medialib.presentation.screens.main
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.emikhalets.medialib.data.entity.database.BookDB
-import com.emikhalets.medialib.data.entity.database.MovieDB
-import com.emikhalets.medialib.data.entity.database.SerialDB
-import com.emikhalets.medialib.data.entity.support.ViewListItem
-import com.emikhalets.medialib.data.repository.DatabaseRepository
+import com.emikhalets.medialib.data.database.movies.MovieDbEntity
+import com.emikhalets.medialib.data.database.serials.SerialDbEntity
+import com.emikhalets.medialib.data.repository.DatabaseRepositoryImpl
 import com.emikhalets.medialib.utils.enums.ItemType
 import com.emikhalets.medialib.utils.launchDefault
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,7 +19,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val databaseRepo: DatabaseRepository,
+    private val databaseRepo: DatabaseRepositoryImpl,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(State())
@@ -88,16 +85,16 @@ class MainViewModel @Inject constructor(
     }
 
     data class State(
-        val movies: List<MovieDB> = emptyList(),
-        val serials: List<SerialDB> = emptyList(),
+        val movies: List<MovieDbEntity> = emptyList(),
+        val serials: List<SerialDbEntity> = emptyList(),
         val books: List<BookDB> = emptyList(),
     ) {
 
-        fun setMovies(movies: List<MovieDB>): State {
+        fun setMovies(movies: List<MovieDbEntity>): State {
             return this.copy(movies = movies)
         }
 
-        fun setSerials(serials: List<SerialDB>): State {
+        fun setSerials(serials: List<SerialDbEntity>): State {
             return this.copy(serials = serials)
         }
 
