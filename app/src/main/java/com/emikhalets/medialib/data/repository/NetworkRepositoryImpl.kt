@@ -16,7 +16,7 @@ class NetworkRepositoryImpl @Inject constructor(
     override suspend fun searchMovie(id: String): Result<MovieEntity> {
         return execute {
             val response = moviesApi.getMovieDetails(id)
-            MovieMappers.mapMovieRemoteToMovie(response)
+            MovieMappers.mapRemoteEntityToEntity(response)
         }
     }
 

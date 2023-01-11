@@ -23,8 +23,8 @@ interface MoviesDao {
     fun getAllItemsFlowOrderByLastUpdate(): Flow<List<MovieDbEntity>>
 
     @Query("SELECT * FROM movies_table WHERE movie_id=:id LIMIT 1")
-    fun getItemFlow(id: Int): Flow<MovieDbEntity>
+    fun getItemFlow(id: Long): Flow<MovieDbEntity>
 
     @Query("SELECT * FROM movies_table WHERE movie_id=:id LIMIT 1")
-    suspend fun getItem(id: Int): MovieDbEntity
+    suspend fun getItem(id: Long): MovieDbEntity
 }

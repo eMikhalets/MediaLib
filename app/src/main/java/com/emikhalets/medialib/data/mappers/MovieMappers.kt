@@ -3,13 +3,14 @@ package com.emikhalets.medialib.data.mappers
 import com.emikhalets.medialib.data.database.movies.MovieDbEntity
 import com.emikhalets.medialib.data.network.MovieRemoteEntity
 import com.emikhalets.medialib.domain.entities.movies.MovieEntity
+import com.emikhalets.medialib.domain.entities.movies.MovieFullEntity
 import com.emikhalets.medialib.domain.entities.movies.MovieWatchStatus
 import com.emikhalets.medialib.utils.toDoubleSafe
 import com.emikhalets.medialib.utils.toSafeInt
 
 object MovieMappers {
 
-    fun mapMovieRemoteToMovie(entity: MovieRemoteEntity): MovieEntity {
+    fun mapRemoteEntityToEntity(entity: MovieRemoteEntity): MovieEntity {
         return MovieEntity(
             id = 0,
             title = entity.title ?: "",
@@ -26,7 +27,7 @@ object MovieMappers {
         )
     }
 
-    fun mapMovieDbToMovie(entity: MovieDbEntity): MovieEntity {
+    fun mapDbEntityToEntity(entity: MovieDbEntity): MovieEntity {
         return MovieEntity(
             id = entity.id,
             title = entity.title,
@@ -43,7 +44,25 @@ object MovieMappers {
         )
     }
 
-    fun mapMovieDbToMovieList(list: List<MovieDbEntity>): List<MovieEntity> {
-        return list.map { mapMovieDbToMovie(it) }
+    fun mapEntityToDbEntity(entity: MovieFullEntity): MovieDbEntity {
+        return MovieDbEntity(
+            id = entity.movieEntity.id,
+            title = entity.movieEntity.title,
+            titleRu = entity.movieEntity.titleRu,
+            overview = entity.movieEntity.overview,
+            poster = entity.movieEntity.poster,
+            year = entity.movieEntity.year,
+            imdbRating = entity.movieEntity.imdbRating,
+            saveTimestamp = entity.movieEntity.saveTimestamp,
+            lastUpdateTimestamp = entity.movieEntity.lastUpdateTimestamp,
+            comment = entity.movieEntity.comment,
+            rating = entity.movieEntity.rating,
+            watchStatus = entity.movieEntity.watchStatus,
+            genres = entity.genres.map { it.name }
+        )
+    }
+
+    fun mapDbListToList(list: List<MovieDbEntity>): List<MovieEntity> {
+        return list.map { mapDbEntityToEntity(it) }
     }
 }

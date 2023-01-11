@@ -7,7 +7,7 @@ class MoviesSearchUseCase(
     private val networkRepository: NetworkRepository,
 ) {
 
-    suspend fun searchMovie(id: Int): Result<MovieEntity> {
+    suspend fun searchMovie(id: String): Result<MovieEntity> {
         return networkRepository.searchMovie(id)
     }
 }

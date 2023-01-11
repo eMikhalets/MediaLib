@@ -13,7 +13,7 @@ class MovieEditUseCase @Inject constructor(
     }
 
     suspend fun saveMovie(entity: MovieFullEntity): Result<Unit> {
-        return if (entity.movieEntity.id == 0) {
+        return if (entity.movieEntity.id == 0L) {
             databaseRepository.insertMovie(entity)
         } else {
             databaseRepository.updateMovie(entity)

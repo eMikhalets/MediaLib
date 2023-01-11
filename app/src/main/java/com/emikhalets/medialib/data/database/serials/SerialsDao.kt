@@ -23,8 +23,8 @@ interface SerialsDao {
     fun getAllItemsFlowOrderByLastUpdate(): Flow<List<SerialDbEntity>>
 
     @Query("SELECT * FROM serials_table WHERE serial_id=:id LIMIT 1")
-    fun getItemFlow(id: Int): Flow<SerialDbEntity>
+    fun getItemFlow(id: Long): Flow<SerialDbEntity>
 
     @Query("SELECT * FROM serials_table WHERE serial_id=:id LIMIT 1")
-    suspend fun getItem(id: Int): SerialDbEntity
+    suspend fun getItem(id: Long): SerialDbEntity
 }

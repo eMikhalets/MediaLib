@@ -13,11 +13,15 @@ class MovieDetailsUseCase @Inject constructor(
         return databaseRepository.getMovieFlowById(movieId)
     }
 
-    suspend fun updateMoviePosterUrl(posterUrl: String): Result<Unit> {
-        return databaseRepository.updateMoviePosterUrl(posterUrl)
+    suspend fun updateMoviePosterUrl(posterUrl: String, entity: MovieFullEntity): Result<Unit> {
+        val newMovieEntity = entity.movieEntity.copy(poster = posterUrl)
+        val newEntity = entity.copy(movieEntity = newMovieEntity)
+        return databaseRepository.updateMovie(newEntity)
     }
 
-    suspend fun updateMovieRating(rating: Int): Result<Unit> {
-        return databaseRepository.updateMovieRating(rating)
+    suspend fun updateMovieRating(rating: Int, entity: MovieFullEntity): Result<Unit> {
+        val newMovieEntity = entity.movieEntity.copy(rating = rating)
+        val newEntity = entity.copy(movieEntity = newMovieEntity)
+        return databaseRepository.updateMovie(newEntity)
     }
 }

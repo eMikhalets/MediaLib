@@ -8,6 +8,6 @@ import com.emikhalets.medialib.domain.entities.genres.GenreType
 @Entity(tableName = "genres_table")
 data class GenreDbEntity(
     @PrimaryKey(autoGenerate = false)
-    @ColumnInfo(name = "name") val title: String,
-    @ColumnInfo(name = "type") val titleRu: GenreType,
+    @ColumnInfo(name = "name") val name: String,
+    @ColumnInfo(name = "type") val type: GenreType,
 )

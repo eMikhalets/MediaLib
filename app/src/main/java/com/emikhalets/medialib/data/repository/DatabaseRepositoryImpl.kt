@@ -3,8 +3,9 @@ package com.emikhalets.medialib.data.repository
 import com.emikhalets.medialib.data.database.genres.GenresDao
 import com.emikhalets.medialib.data.database.movies.MoviesDao
 import com.emikhalets.medialib.data.database.serials.SerialsDao
+import com.emikhalets.medialib.data.mappers.GenresMappers
 import com.emikhalets.medialib.data.mappers.MovieMappers
-import com.emikhalets.medialib.domain.entities.movies.MovieEntity
+import com.emikhalets.medialib.domain.entities.genres.GenreEntity
 import com.emikhalets.medialib.domain.entities.movies.MovieFullEntity
 import com.emikhalets.medialib.domain.entities.serials.SerialFullEntity
 import com.emikhalets.medialib.domain.repository.DatabaseRepository
@@ -46,35 +47,51 @@ class DatabaseRepositoryImpl @Inject constructor(
 
     // Movies
 
-    override suspend fun getMoviesListFlowOrderByLastUpdated(): Result<Flow<List<MovieEntity>>> {
+    override suspend fun getMoviesListFlowOrderByLastUpdated(): Result<Flow<List<MovieFullEntity>>> {
         return execute {
             val flow = moviesDao.getAllItemsFlowOrderByLastUpdate()
-            flow.map { list -> list.map { movie -> MovieMappers.mapMovieDbToMovie(movie) } }
+            flow.map { list ->
+                list.map { movie ->
+                    val movieEntity = MovieMappers.mapDbEntityToEntity(movie)
+                    val genres = getGenres(movie.genres)
+                    MovieFullEntity(movieEntity, genres)
+                }
+            }
         }
     }
 
     override suspend fun getMovieFlowById(movieId: Long): Result<Flow<MovieFullEntity>> {
-        TODO("Not yet implemented")
+        return execute {
+            val flow = moviesDao.getItemFlow(movieId)
+            flow.map { movieDb ->
+                val movieEntity = MovieMappers.mapDbEntityToEntity(movieDb)
+                val genres = getGenres(movieDb.genres)
+                MovieFullEntity(movieEntity, genres)
+            }
+        }
     }
 
     override suspend fun getMovieById(movieId: Long): Result<MovieFullEntity> {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun updateMoviePosterUrl(posterUrl: String): Result<Unit> {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun updateMovieRating(rating: Int): Result<Unit> {
-        TODO("Not yet implemented")
+        return execute {
+            val movieDb = moviesDao.getItem(movieId)
+            val movieEntity = MovieMappers.mapDbEntityToEntity(movieDb)
+            val genres = getGenres(movieDb.genres)
+            MovieFullEntity(movieEntity, genres)
+        }
     }
 
     override suspend fun insertMovie(entity: MovieFullEntity): Result<Unit> {
-        TODO("Not yet implemented")
+        return execute {
+            val movieDb = MovieMappers.mapEntityToDbEntity(entity)
+            moviesDao.insert(movieDb)
+        }
     }
 
     override suspend fun updateMovie(entity: MovieFullEntity): Result<Unit> {
-        TODO("Not yet implemented")
+        return execute {
+            val movieDb = MovieMappers.mapEntityToDbEntity(entity)
+            moviesDao.update(movieDb)
+        }
     }
 
     // Serials
@@ -91,19 +108,22 @@ class DatabaseRepositoryImpl @Inject constructor(
         TODO("Not yet implemented")
     }
 
-    override suspend fun updateSerialPosterUrl(posterUrl: String): Result<Unit> {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun updateSerialRating(rating: Int): Result<Unit> {
-        TODO("Not yet implemented")
-    }
-
     override suspend fun insertSerial(entity: SerialFullEntity): Result<Unit> {
         TODO("Not yet implemented")
     }
 
     override suspend fun updateSerial(entity: SerialFullEntity): Result<Unit> {
         TODO("Not yet implemented")
+    }
+
+    // Other
+
+    private suspend fun getGenres(genres: List<String>): List<GenreEntity> {
+        val list = mutableListOf<GenreEntity>()
+        genres.forEach { genreName ->
+            val genreDb = genresDao.getItem(genreName)
+            list.add(GenresMappers.mapDbEntityToEntity(genreDb))
+        }
+        return list
     }
 }
