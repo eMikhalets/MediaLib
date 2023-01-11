@@ -5,6 +5,7 @@ import com.emikhalets.medialib.data.database.movies.MoviesDao
 import com.emikhalets.medialib.data.database.serials.SerialsDao
 import com.emikhalets.medialib.data.mappers.GenresMappers
 import com.emikhalets.medialib.data.mappers.MovieMappers
+import com.emikhalets.medialib.data.mappers.SerialMappers
 import com.emikhalets.medialib.domain.entities.genres.GenreEntity
 import com.emikhalets.medialib.domain.entities.movies.MovieFullEntity
 import com.emikhalets.medialib.domain.entities.serials.SerialFullEntity
@@ -51,9 +52,9 @@ class DatabaseRepositoryImpl @Inject constructor(
         return execute {
             val flow = moviesDao.getAllItemsFlowOrderByLastUpdate()
             flow.map { list ->
-                list.map { movie ->
-                    val movieEntity = MovieMappers.mapDbEntityToEntity(movie)
-                    val genres = getGenres(movie.genres)
+                list.map { movieDb ->
+                    val movieEntity = MovieMappers.mapDbEntityToEntity(movieDb)
+                    val genres = getGenres(movieDb.genres)
                     MovieFullEntity(movieEntity, genres)
                 }
             }
@@ -97,23 +98,50 @@ class DatabaseRepositoryImpl @Inject constructor(
     // Serials
 
     override suspend fun getSerialsListFlowOrderByLastUpdated(): Result<Flow<List<SerialFullEntity>>> {
-        TODO("Not yet implemented")
+        return execute {
+            val flow = serialsDao.getAllItemsFlowOrderByLastUpdate()
+            flow.map { list ->
+                list.map { serialDb ->
+                    val serialEntity = SerialMappers.mapDbEntityToEntity(serialDb)
+                    val genres = getGenres(serialDb.genres)
+                    SerialFullEntity(serialEntity, genres)
+                }
+            }
+        }
     }
 
     override suspend fun getSerialFlowById(serialId: Long): Result<Flow<SerialFullEntity>> {
-        TODO("Not yet implemented")
+        return execute {
+            val flow = serialsDao.getItemFlow(serialId)
+            flow.map { serialDb ->
+                val serialEntity = SerialMappers.mapDbEntityToEntity(serialDb)
+                val genres = getGenres(serialDb.genres)
+                SerialFullEntity(serialEntity, genres)
+            }
+        }
     }
 
     override suspend fun getSerialById(serialId: Long): Result<SerialFullEntity> {
-        TODO("Not yet implemented")
+        return execute {
+            val serialDb = serialsDao.getItem(serialId)
+            val serialEntity = SerialMappers.mapDbEntityToEntity(serialDb)
+            val genres = getGenres(serialDb.genres)
+            SerialFullEntity(serialEntity, genres)
+        }
     }
 
     override suspend fun insertSerial(entity: SerialFullEntity): Result<Unit> {
-        TODO("Not yet implemented")
+        return execute {
+            val serialDb = SerialMappers.mapEntityToDbEntity(entity)
+            serialsDao.insert(serialDb)
+        }
     }
 
     override suspend fun updateSerial(entity: SerialFullEntity): Result<Unit> {
-        TODO("Not yet implemented")
+        return execute {
+            val serialDb = SerialMappers.mapEntityToDbEntity(entity)
+            serialsDao.update(serialDb)
+        }
     }
 
     // Other

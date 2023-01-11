@@ -13,7 +13,7 @@ class SerialEditUseCase @Inject constructor(
     }
 
     suspend fun saveSerial(entity: SerialFullEntity): Result<Unit> {
-        return if (entity.serialEntity.id == 0) {
+        return if (entity.serialEntity.id == 0L) {
             databaseRepository.insertSerial(entity)
         } else {
             databaseRepository.updateSerial(entity)

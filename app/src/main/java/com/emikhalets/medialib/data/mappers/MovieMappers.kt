@@ -10,20 +10,23 @@ import com.emikhalets.medialib.utils.toSafeInt
 
 object MovieMappers {
 
-    fun mapRemoteEntityToEntity(entity: MovieRemoteEntity): MovieEntity {
-        return MovieEntity(
-            id = 0,
-            title = entity.title ?: "",
-            titleRu = "",
-            overview = "",
-            poster = entity.poster ?: "",
-            year = entity.year.toSafeInt(),
-            imdbRating = entity.rating.toDoubleSafe(),
-            saveTimestamp = 0,
-            lastUpdateTimestamp = 0,
-            comment = "",
-            rating = 0,
-            watchStatus = MovieWatchStatus.NONE,
+    fun mapRemoteEntityToEntity(entity: MovieRemoteEntity): MovieFullEntity {
+        return MovieFullEntity(
+            movieEntity = MovieEntity(
+                id = 0,
+                title = entity.title ?: "",
+                titleRu = "",
+                overview = "",
+                poster = entity.poster ?: "",
+                year = entity.year.toSafeInt(),
+                imdbRating = entity.rating.toDoubleSafe(),
+                saveTimestamp = 0,
+                lastUpdateTimestamp = 0,
+                comment = "",
+                rating = 0,
+                watchStatus = MovieWatchStatus.NONE,
+            ),
+            genres = emptyList()
         )
     }
 
@@ -60,9 +63,5 @@ object MovieMappers {
             watchStatus = entity.movieEntity.watchStatus,
             genres = entity.genres.map { it.name }
         )
-    }
-
-    fun mapDbListToList(list: List<MovieDbEntity>): List<MovieEntity> {
-        return list.map { mapDbEntityToEntity(it) }
     }
 }

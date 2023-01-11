@@ -12,11 +12,15 @@ class SerialDetailsUseCase(
         return databaseRepository.getSerialFlowById(serialId)
     }
 
-    suspend fun updateSerialPosterUrl(posterUrl: String): Result<Unit> {
-        return databaseRepository.updateSerialPosterUrl(posterUrl)
+    suspend fun updateSerialPosterUrl(posterUrl: String, entity: SerialFullEntity): Result<Unit> {
+        val newMovieEntity = entity.serialEntity.copy(poster = posterUrl)
+        val newEntity = entity.copy(serialEntity = newMovieEntity)
+        return databaseRepository.updateSerial(newEntity)
     }
 
-    suspend fun updateSerialRating(rating: Int): Result<Unit> {
-        return databaseRepository.updateSerialRating(rating)
+    suspend fun updateSerialRating(rating: Int, entity: SerialFullEntity): Result<Unit> {
+        val newMovieEntity = entity.serialEntity.copy(rating = rating)
+        val newEntity = entity.copy(serialEntity = newMovieEntity)
+        return databaseRepository.updateSerial(newEntity)
     }
 }

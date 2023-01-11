@@ -1,11 +1,11 @@
 package com.emikhalets.medialib.domain.repository
 
-import com.emikhalets.medialib.domain.entities.movies.MovieEntity
-import com.emikhalets.medialib.domain.entities.serials.SerialEntity
+import com.emikhalets.medialib.domain.entities.movies.MovieFullEntity
+import com.emikhalets.medialib.domain.entities.serials.SerialFullEntity
 
 interface NetworkRepository {
 
-    suspend fun searchMovie(id: String): Result<MovieEntity>
+    suspend fun searchMovie(id: String): Result<MovieFullEntity>
 
-    suspend fun searchSerial(id: String): Result<SerialEntity>
+    suspend fun searchSerial(id: String): Result<SerialFullEntity>
 }
