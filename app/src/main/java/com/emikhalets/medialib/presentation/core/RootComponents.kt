@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -94,6 +95,25 @@ fun AppAsyncImage(
             .height(height)
             .padding(8.dp)
             .clickable { onClick() }
+    )
+}
+
+@Composable
+fun PosterListItem(url: String) {
+    AsyncImage(
+        model = ImageRequest.Builder(LocalContext.current)
+            .data(url)
+            .crossfade(true)
+            .transformations(RoundedCornersTransformation(8.px))
+            .error(R.drawable.ph_poster)
+            .build(),
+        contentDescription = null,
+        placeholder = painterResource(R.drawable.ph_poster),
+        contentScale = ContentScale.FillHeight,
+        modifier = Modifier
+            .size(70.dp, 95.dp)
+            .padding(end = 8.dp)
+
     )
 }
 

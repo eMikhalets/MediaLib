@@ -13,12 +13,23 @@
     <string name="movies_empty_list">Movies list is empty</string>
     <string name="movies_search_placeholder">Movie name</string>
 
+    <!--  Serials  -->
+    <string name="serials_empty_list">Serials list is empty</string>
+    <string name="serials_search_placeholder">Serial name</string>
+
     <!--  Movie Watch Status  -->
     <string name="movie_status_watched">Watched</string>
     <string name="movie_status_watch_again">Watch again</string>
     <string name="movie_status_watch">Watch</string>
     <string name="movie_status_dropped">Dropped</string>
     <string name="movie_status_none">Not selected</string>
+
+    <!--  Serial Watch Status  -->
+    <string name="serial_status_watched">Watched</string>
+    <string name="serial_status_watch_again">Watch again</string>
+    <string name="serial_status_watch">Watch</string>
+    <string name="serial_status_dropped">Dropped</string>
+    <string name="serial_status_none">Not selected</string>
 
     <string name="parse_movie_id">Parse imdb id</string>
     <string name="loading_error">Loading error</string>

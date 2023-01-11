@@ -6,6 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.emikhalets.medialib.presentation.screens.main.MainMenuScreen
 import com.emikhalets.medialib.presentation.screens.movies.MoviesScreen
+import com.emikhalets.medialib.presentation.screens.serials.SerialsScreen
 import com.emikhalets.medialib.utils.enums.ItemType
 import com.emikhalets.medialib.utils.enums.SearchType
 
@@ -34,6 +35,10 @@ fun AppNavGraph(navController: NavHostController) {
         }
 
         composable(AppScreen.Serials.route) {
+            SerialsScreen(
+                navigateToSerialDetails = { serialId -> },
+                navigateToSerialEdit = { }
+            )
         }
 
 //        composable(AppScreen.Search.route) {
