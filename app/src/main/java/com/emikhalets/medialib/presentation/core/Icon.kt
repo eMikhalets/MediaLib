@@ -1,29 +1,21 @@
 package com.emikhalets.medialib.presentation.core
 
-import androidx.compose.foundation.clickable
+import androidx.annotation.DrawableRes
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 
 @Composable
-fun AppIcon(
-    imageVector: ImageVector?,
+fun IconPrimary(
+    @DrawableRes drawableRes: Int,
     modifier: Modifier = Modifier,
-    tint: Color = MaterialTheme.colors.onPrimary,
-    onClick: (() -> Unit)? = null,
 ) {
-    imageVector ?: return
     Icon(
-        imageVector = imageVector,
+        painter = painterResource(id = drawableRes),
         contentDescription = null,
-        tint = tint,
-        modifier = if (onClick == null) {
-            modifier
-        } else {
-            modifier.clickable { onClick() }
-        }
+        tint = MaterialTheme.colors.onPrimary,
+        modifier = modifier
     )
 }

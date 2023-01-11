@@ -20,13 +20,17 @@ class MoviesListUseCase(
         moviesList: List<MovieFullEntity>,
     ): Result<Flow<List<MovieFullEntity>>> {
         return withContext(Dispatchers.IO) {
-            val newMoviesList = moviesList.filter {
-                it.movieEntity.title.contains(query) ||
-                        it.movieEntity.titleRu.contains(query) ||
-                        query.contains(it.movieEntity.title) ||
-                        query.contains(it.movieEntity.titleRu)
+            if (query.isEmpty()) {
+                Result.success(flowOf(moviesList))
+            } else {
+                val newMoviesList = moviesList.filter {
+                    it.movieEntity.title.contains(query) ||
+                            it.movieEntity.titleRu.contains(query) ||
+                            query.contains(it.movieEntity.title) ||
+                            query.contains(it.movieEntity.titleRu)
+                }
+                Result.success(flowOf(newMoviesList))
             }
-            Result.success(flowOf(newMoviesList))
         }
     }
 }

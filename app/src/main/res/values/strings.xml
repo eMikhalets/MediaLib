@@ -2,13 +2,23 @@
     <!--  General  -->
     <string name="app_name">MediaLib</string>
 
-    <string name="item_status_watched">Watched</string>
-    <string name="item_status_no_mind">No meaning</string>
-    <string name="item_status_will_watch">Watch</string>
-    <string name="item_status_read">Read</string>
-    <string name="item_status_will_read">Need read</string>
-    <string name="item_status_dropped">Dropped</string>
-    <string name="item_status_none">Not selected</string>
+    <!--  Errors  -->
+    <string name="error_internal">Internal error</string>
+
+    <!--  Main menu  -->
+    <string name="main_menu_item_movies">Movies</string>
+    <string name="main_menu_item_serials">Serials</string>
+
+    <!--  Movies  -->
+    <string name="movies_empty_list">Movies list is empty</string>
+    <string name="movies_search_placeholder">Movie name</string>
+
+    <!--  Movie Watch Status  -->
+    <string name="movie_status_watched">Watched</string>
+    <string name="movie_status_watch_again">Watch again</string>
+    <string name="movie_status_watch">Watch</string>
+    <string name="movie_status_dropped">Dropped</string>
+    <string name="movie_status_none">Not selected</string>
 
     <string name="parse_movie_id">Parse imdb id</string>
     <string name="loading_error">Loading error</string>
@@ -30,8 +40,6 @@
     <string name="year">Year</string>
     <string name="comment">Comment</string>
     <string name="overview">Overview</string>
-
-    <string name="error_internal_error">Internal error</string>
 
     <!--  Search  -->
     <string name="webview_imdb_link">https://www.imdb.com/</string>

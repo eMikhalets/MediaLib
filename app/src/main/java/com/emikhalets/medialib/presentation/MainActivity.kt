@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.navigation.compose.rememberNavController
+import com.emikhalets.medialib.presentation.core.AppScaffold
 import com.emikhalets.medialib.presentation.theme.AppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -17,7 +18,9 @@ class MainActivity : ComponentActivity() {
             val navController = rememberNavController()
 
             AppTheme {
-                AppNavGraph(navController)
+                AppScaffold(navController) {
+                    AppNavGraph(navController)
+                }
             }
         }
     }

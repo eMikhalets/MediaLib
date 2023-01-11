@@ -20,7 +20,7 @@ fun AppTextFullScreen(text: String? = null) {
         modifier = Modifier.fillMaxSize()
     ) {
         Text(
-            text = text ?: stringResource(R.string.error_internal_error),
+            text = text ?: stringResource(R.string.error_internal),
             fontSize = 24.sp,
             fontWeight = FontWeight.Medium,
             textAlign = TextAlign.Center,

@@ -3,14 +3,24 @@ package com.emikhalets.medialib.presentation.core
 import android.annotation.SuppressLint
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Search
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -25,6 +35,42 @@ import coil.request.ImageRequest
 import coil.transform.RoundedCornersTransformation
 import com.emikhalets.medialib.R
 import com.emikhalets.medialib.utils.px
+
+@Composable
+fun SearchBox(
+    query: String,
+    placeholder: String,
+    onQueryChange: (String) -> Unit,
+    onAddClick: () -> Unit,
+) {
+    Row(
+        modifier = Modifier
+            .height(IntrinsicSize.Min)
+            .fillMaxWidth()
+            .background(MaterialTheme.colors.primary)
+            .padding(8.dp)
+    ) {
+        AppTextField(
+            value = query,
+            onValueChange = onQueryChange,
+            leadingIcon = Icons.Rounded.Search,
+            placeholder = placeholder,
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f)
+        )
+        Spacer(modifier = Modifier.width(8.dp))
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier
+                .fillMaxHeight()
+                .aspectRatio(1f, true)
+                .clickable { onAddClick() }
+        ) {
+            IconPrimary(drawableRes = R.drawable.ic_round_add_24)
+        }
+    }
+}
 
 @Composable
 fun AppAsyncImage(
