@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import com.emikhalets.medialib.data.database.genres.GenreDbEntity
 import com.emikhalets.medialib.data.database.genres.GenresDao
 import com.emikhalets.medialib.data.database.movies.MovieDbEntity
@@ -21,6 +22,7 @@ import com.emikhalets.medialib.data.database.serials.SerialsDao
     version = 1,
     exportSchema = true
 )
+@TypeConverters(GenresConverters::class)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract val moviesDao: MoviesDao

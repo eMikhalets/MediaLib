@@ -2,6 +2,7 @@ package com.emikhalets.medialib.utils.di
 
 import android.content.Context
 import com.emikhalets.medialib.data.database.AppDatabase
+import com.emikhalets.medialib.data.database.genres.GenresDao
 import com.emikhalets.medialib.data.database.movies.MoviesDao
 import com.emikhalets.medialib.data.database.serials.SerialsDao
 import com.emikhalets.medialib.data.network.MoviesApi
@@ -43,4 +44,8 @@ object ProvidesModule {
     @Singleton
     @Provides
     fun providesSerialsDao(database: AppDatabase): SerialsDao = database.serialsDao
+
+    @Singleton
+    @Provides
+    fun providesGenresDao(database: AppDatabase): GenresDao = database.genresDao
 }
