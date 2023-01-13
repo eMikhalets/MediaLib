@@ -1,5 +1,7 @@
 package com.emikhalets.medialib.utils
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import kotlinx.coroutines.CoroutineDispatcher
@@ -64,4 +66,8 @@ fun String.toSafeLong(): Long {
     } catch (ex: NumberFormatException) {
         0L
     }
+}
+
+fun String.toast(context: Context) {
+    Toast.makeText(context, this, Toast.LENGTH_SHORT).show()
 }

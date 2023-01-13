@@ -1,4 +1,4 @@
-package com.emikhalets.medialib.presentation.screens.movies
+package com.emikhalets.medialib.presentation.screens.movies.list
 
 import com.emikhalets.medialib.domain.entities.movies.MovieFullEntity
 import com.emikhalets.medialib.domain.use_case.movies.MoviesListUseCase
@@ -20,6 +20,8 @@ class MoviesViewModel @Inject constructor(
     private var searchJob: Job? = null
 
     override fun initState() = MoviesState()
+
+    fun resetError() = setState { it.copy(error = null) }
 
     fun getMoviesList() {
         launchIO {

@@ -35,7 +35,7 @@ import com.emikhalets.medialib.presentation.core.AppStatusSpinner
 import com.emikhalets.medialib.presentation.core.AppTextField
 import com.emikhalets.medialib.presentation.core.AppTextFieldDate
 import com.emikhalets.medialib.presentation.core.RatingBar
-import com.emikhalets.medialib.presentation.core.YearDialog
+import com.emikhalets.medialib.presentation.dialogs.YearDialog
 import com.emikhalets.medialib.presentation.theme.AppTheme
 import com.emikhalets.medialib.utils.enums.ItemStatus
 import com.emikhalets.medialib.utils.enums.ItemType

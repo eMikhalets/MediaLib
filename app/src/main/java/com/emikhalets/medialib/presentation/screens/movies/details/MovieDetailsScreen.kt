@@ -1,4 +1,4 @@
-package com.emikhalets.medialib.presentation.screens.details
+package com.emikhalets.medialib.presentation.screens.movies.details
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -11,9 +11,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Delete
-import androidx.compose.material.icons.rounded.Edit
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -29,81 +26,88 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
 import com.emikhalets.medialib.R
 import com.emikhalets.medialib.data.database.movies.MovieDbEntity
 import com.emikhalets.medialib.data.database.serials.SerialDbEntity
-import com.emikhalets.medialib.domain.entities.compose.MenuIconEntity
+import com.emikhalets.medialib.domain.entities.movies.MovieEntity
 import com.emikhalets.medialib.presentation.core.AppAsyncImage
 import com.emikhalets.medialib.presentation.core.AppDetailsSection
 import com.emikhalets.medialib.presentation.core.AppLoader
-import com.emikhalets.medialib.presentation.core.AppScaffold
 import com.emikhalets.medialib.presentation.core.AppTextFullScreen
-import com.emikhalets.medialib.presentation.dialogs.DeleteDialog
-import com.emikhalets.medialib.presentation.dialogs.PosterDialog
 import com.emikhalets.medialib.presentation.core.RatingBar
-import com.emikhalets.medialib.presentation.navToItemEdit
+import com.emikhalets.medialib.presentation.dialogs.DeleteFromDbDialog
+import com.emikhalets.medialib.presentation.dialogs.PosterDialog
 import com.emikhalets.medialib.presentation.theme.AppTheme
-import com.emikhalets.medialib.utils.enums.ItemType
+import com.emikhalets.medialib.utils.toast
 
 @Composable
-fun DetailsScreen(
-    navController: NavHostController,
-    itemId: Int?,
-    itemType: ItemType,
-    viewModel: DetailsViewModel = hiltViewModel(),
+fun MovieDetailsScreen(
+    onNavigateToMovieEdit: (movieId: Long) -> Unit,
+    onNavigateBack: () -> Unit,
+    onSetTopBarActions: (entity: MovieEntity) -> Unit,
+    movieId: Long,
+    viewModel: MovieDetailsViewModel = hiltViewModel(),
 ) {
     val context = LocalContext.current
     val state by viewModel.state.collectAsState()
 
-    var title by remember { mutableStateOf(context.getString(R.string.screen_name_details)) }
     var showDeleteDialog by remember { mutableStateOf(false) }
     var showPosterDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
-        viewModel.getItem(itemId, itemType)
+        viewModel.getMovie(movieId)
     }
 
-    AppScaffold(
-        navController = navController,
-        title = title,
-        actions = listOf(
-            MenuIconEntity(Icons.Rounded.Edit) {
-                val id = (state as? DetailsState.Item)?.item?.id
-                if (id != null) navController.navToItemEdit(id, itemType)
-            },
-            MenuIconEntity(Icons.Rounded.Delete) {
-                showDeleteDialog = true
-            }
-        )
-    ) {
-        when (state) {
+    LaunchedEffect(state.entity) {
+        viewModel.getMovie(movieId)
+    }
 
-            is DetailsState.Item -> {
-                val uiState = state as DetailsState.Item
-                title = uiState.item?.title ?: stringResource(R.string.screen_name_details)
-                DetailsScreen(
-                    item = uiState.item,
-                    onRatingChange = { viewModel.updateItem(it, itemType) },
-                    onPosterClick = { showPosterDialog = true }
-                )
-            }
-            is DetailsState.Error -> {
-                val uiState = state as DetailsState.Error
-                AppTextFullScreen(uiState.message)
-            }
-            DetailsState.ItemDeleted -> navController.popBackStack()
-            DetailsState.ItemEmpty -> AppTextFullScreen(stringResource(R.string.error_internal_error))
-            DetailsState.Loading -> AppLoader()
+    LaunchedEffect(state.error) {
+        val error = state.error
+        if (error != null) {
+            val message = error.asString(context)
+            message.toast(context)
+            viewModel.resetError()
         }
     }
 
+    LaunchedEffect(state.deleted) {
+        if (state.deleted) {
+            onNavigateBack()
+        }
+    }
+
+    if (state.loading) {
+        AppLoader()
+    } else {
+        val entity = state.entity
+        if (entity == null) {
+            AppTextFullScreen()
+        } else {
+            DetailsScreen(
+                item = entity,
+                onRatingChange = { viewModel.updateMovie(it) },
+                onPosterClick = { showPosterDialog = true }
+            )
+        }
+    }
+
+//        actions = listOf(
+//            MenuIconEntity(Icons.Rounded.Edit) {
+//                val id = (state as? DetailsState.Item)?.item?.id
+//                if (id != null) navController.navToItemEdit(id, itemType)
+//            },
+//            MenuIconEntity(Icons.Rounded.Delete) {
+//                showDeleteDialog = true
+//            }
+//        )
+
     if (showDeleteDialog) {
-        DeleteDialog(
+        DeleteFromDbDialog(
             onDismiss = { showDeleteDialog = false },
             onDeleteClick = {
                 showDeleteDialog = false
-                viewModel.deleteItem(itemType)
+                viewModel.deleteMovie()
             }
         )
     }
@@ -115,7 +119,7 @@ fun DetailsScreen(
             onDismiss = { showPosterDialog = false },
             onOkClick = {
                 showPosterDialog = false
-                viewModel.updateItem(it, itemType)
+                viewModel.updateMovie(it, itemType)
             }
         )
     }

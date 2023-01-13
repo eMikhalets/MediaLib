@@ -1,4 +1,4 @@
-package com.emikhalets.medialib.presentation.screens.movies
+package com.emikhalets.medialib.presentation.screens.movies.list
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -49,6 +49,7 @@ import com.emikhalets.medialib.presentation.core.RatingRow
 import com.emikhalets.medialib.presentation.core.SearchBox
 import com.emikhalets.medialib.presentation.theme.AppTheme
 import com.emikhalets.medialib.utils.px
+import com.emikhalets.medialib.utils.toast
 
 @Composable
 fun MoviesScreen(
@@ -56,12 +57,22 @@ fun MoviesScreen(
     navigateToMovieEdit: () -> Unit,
     viewModel: MoviesViewModel = hiltViewModel(),
 ) {
+    val context = LocalContext.current
     val state by viewModel.state.collectAsState()
 
     var query by remember { mutableStateOf("") }
 
     LaunchedEffect(Unit) {
         viewModel.getMoviesList()
+    }
+
+    LaunchedEffect(state.error) {
+        val error = state.error
+        if (error != null) {
+            val message = error.asString(context)
+            message.toast(context)
+            viewModel.resetError()
+        }
     }
 
     if (state.loading) {

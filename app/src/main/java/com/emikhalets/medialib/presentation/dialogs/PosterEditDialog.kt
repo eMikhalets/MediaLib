@@ -1,4 +1,4 @@
-package com.emikhalets.medialib.presentation.core
+package com.emikhalets.medialib.presentation.dialogs
 
 import android.widget.DatePicker
 import androidx.compose.foundation.background
@@ -34,12 +34,13 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.emikhalets.medialib.R
+import com.emikhalets.medialib.presentation.core.AppTextField
 import com.emikhalets.medialib.presentation.theme.AppTheme
 import java.util.*
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun AppDialog(
+fun PosterEditDialog(
     onDismiss: () -> Unit,
     label: String = "",
     padding: Dp = 8.dp,

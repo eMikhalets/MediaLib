@@ -31,6 +31,11 @@
     <string name="serial_status_dropped">Dropped</string>
     <string name="serial_status_none">Not selected</string>
 
+    <!--  Dialogs  -->
+    <string name="dialog_delete_entity_title">Delete from local library?</string>
+    <string name="dialog_cancel">Cancel</string>
+    <string name="dialog_delete">Delete</string>
+
     <string name="parse_movie_id">Parse imdb id</string>
     <string name="loading_error">Loading error</string>
     <string name="search_query">Search query</string>

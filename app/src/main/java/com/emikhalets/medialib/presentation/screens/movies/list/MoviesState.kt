@@ -1,4 +1,4 @@
-package com.emikhalets.medialib.presentation.screens.movies
+package com.emikhalets.medialib.presentation.screens.movies.list
 
 import com.emikhalets.medialib.domain.entities.movies.MovieFullEntity
 import com.emikhalets.medialib.utils.State
