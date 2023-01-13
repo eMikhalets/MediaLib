@@ -6,25 +6,50 @@ import com.emikhalets.medialib.R
 
 enum class MovieWatchStatus {
     NONE, WATCH, WATCH_AGAIN, WATCHED, DROPPED;
-}
 
-fun MovieWatchStatus.getIconRes(): Int? {
-    return when (this) {
-        MovieWatchStatus.NONE -> null
-        MovieWatchStatus.WATCH -> R.drawable.ic_round_bookmark_24
-        MovieWatchStatus.WATCH_AGAIN -> R.drawable.ic_round_question_mark_24
-        MovieWatchStatus.WATCHED -> R.drawable.ic_round_visibility_24
-        MovieWatchStatus.DROPPED -> R.drawable.ic_round_close_24
-    }
-}
+    companion object {
 
-@Composable
-fun MovieWatchStatus.getText(): String {
-    return when (this) {
-        MovieWatchStatus.NONE -> stringResource(R.string.movie_status_none)
-        MovieWatchStatus.WATCH -> stringResource(R.string.movie_status_watch)
-        MovieWatchStatus.WATCH_AGAIN -> stringResource(R.string.movie_status_watch_again)
-        MovieWatchStatus.WATCHED -> stringResource(R.string.movie_status_watched)
-        MovieWatchStatus.DROPPED -> stringResource(R.string.movie_status_dropped)
+        fun MovieWatchStatus.getIconRes(): Int? {
+            return when (this) {
+                NONE -> null
+                WATCH -> R.drawable.ic_round_bookmark_24
+                WATCH_AGAIN -> R.drawable.ic_round_question_mark_24
+                WATCHED -> R.drawable.ic_round_visibility_24
+                DROPPED -> R.drawable.ic_round_close_24
+            }
+        }
+
+        @Composable
+        fun MovieWatchStatus.getText(): String {
+            return when (this) {
+                NONE -> stringResource(R.string.movie_status_none)
+                WATCH -> stringResource(R.string.movie_status_watch)
+                WATCH_AGAIN -> stringResource(R.string.movie_status_watch_again)
+                WATCHED -> stringResource(R.string.movie_status_watched)
+                DROPPED -> stringResource(R.string.movie_status_dropped)
+            }
+        }
+
+        @Composable
+        fun getStatus(text: String): MovieWatchStatus {
+            return when (text) {
+                stringResource(R.string.movie_status_watch) -> WATCH
+                stringResource(R.string.movie_status_watch_again) -> WATCH_AGAIN
+                stringResource(R.string.movie_status_watched) -> WATCHED
+                stringResource(R.string.movie_status_dropped) -> DROPPED
+                else -> NONE
+            }
+        }
+
+        @Composable
+        fun getTextList(): List<String> {
+            return listOf(
+                NONE.getText(),
+                WATCH.getText(),
+                WATCH_AGAIN.getText(),
+                WATCHED.getText(),
+                DROPPED.getText()
+            )
+        }
     }
 }

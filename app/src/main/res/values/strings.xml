@@ -17,6 +17,13 @@
     <string name="movie_details_comment">Comment</string>
     <string name="movie_details_overview">Overview</string>
     <string name="movie_details_genres">Genres: %s</string>
+    <string name="movie_edit_new">New Movie</string>
+    <string name="movie_edit_title">Title</string>
+    <string name="movie_edit_title_ru">Title russian</string>
+    <string name="movie_edit_genres">Genres</string>
+    <string name="movie_edit_year">Year</string>
+    <string name="movie_edit_comment">Comment</string>
+    <string name="movie_edit_overview">Overview</string>
 
     <!--  Serials  -->
     <string name="serials_empty_list">Serials list is empty</string>

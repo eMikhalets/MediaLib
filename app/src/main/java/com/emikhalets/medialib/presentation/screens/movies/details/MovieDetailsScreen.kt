@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.emikhalets.medialib.R
-import com.emikhalets.medialib.domain.entities.compose.MenuIconEntity
+import com.emikhalets.medialib.domain.entities.utils.MenuIconEntity
 import com.emikhalets.medialib.domain.entities.genres.GenreEntity
 import com.emikhalets.medialib.domain.entities.genres.GenreType
 import com.emikhalets.medialib.domain.entities.movies.MovieEntity

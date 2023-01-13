@@ -11,7 +11,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.emikhalets.medialib.R
-import com.emikhalets.medialib.domain.entities.compose.MenuIconEntity
+import com.emikhalets.medialib.domain.entities.utils.MenuIconEntity
 
 @Composable
 fun AppTopBar(

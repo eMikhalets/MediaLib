@@ -1,4 +1,4 @@
-package com.emikhalets.medialib.domain.entities.compose
+package com.emikhalets.medialib.domain.entities.utils
 
 import androidx.annotation.DrawableRes
 

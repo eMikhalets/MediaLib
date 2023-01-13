@@ -41,7 +41,7 @@ import com.emikhalets.medialib.domain.entities.genres.GenreType
 import com.emikhalets.medialib.domain.entities.movies.MovieEntity
 import com.emikhalets.medialib.domain.entities.movies.MovieFullEntity
 import com.emikhalets.medialib.domain.entities.movies.MovieWatchStatus
-import com.emikhalets.medialib.domain.entities.movies.getIconRes
+import com.emikhalets.medialib.domain.entities.movies.MovieWatchStatus.Companion.getIconRes
 import com.emikhalets.medialib.presentation.core.AppLoader
 import com.emikhalets.medialib.presentation.core.AppTextFullScreen
 import com.emikhalets.medialib.presentation.core.AppTopBar

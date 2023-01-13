@@ -53,11 +53,13 @@ fun AppTextField(
     )
 }
 
+// TODO: refactor as simple text with border
 @Composable
 fun AppTextFieldDate(
     value: String,
     label: String? = null,
     onClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     OutlinedTextField(
         value = if (value == "0") "" else value,
@@ -77,7 +79,7 @@ fun AppTextFieldDate(
             disabledTextColor = LocalContentColor.current.copy(LocalContentAlpha.current),
             disabledLabelColor = MaterialTheme.colors.onSurface.copy(ContentAlpha.medium)
         ),
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .clickable { onClick() }
     )

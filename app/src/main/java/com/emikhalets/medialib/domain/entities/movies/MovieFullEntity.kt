@@ -8,6 +8,6 @@ data class MovieFullEntity(
 ) {
 
     fun formatGenres(): String {
-        return genres.joinToString(separator = " ,") { it.name }
+        return genres.joinToString(separator = ", ") { it.name }
     }
 }
