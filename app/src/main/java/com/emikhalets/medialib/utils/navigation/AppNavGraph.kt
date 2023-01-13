@@ -8,7 +8,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.emikhalets.medialib.presentation.screens.library.LibraryScreen
 import com.emikhalets.medialib.presentation.screens.movies.details.MovieDetailsScreen
+import com.emikhalets.medialib.presentation.screens.movies.edit.MovieEditScreen
 import com.emikhalets.medialib.presentation.screens.movies.list.MoviesScreen
+import com.emikhalets.medialib.presentation.screens.searching.SearchMainScreen
 
 @Composable
 fun AppNavGraph(navController: NavHostController) {
@@ -26,7 +28,9 @@ fun AppNavGraph(navController: NavHostController) {
                 navigateToMovieDetails = { movieId ->
                     navController.navigate("${AppScreen.MovieDetails.route}/$movieId")
                 },
-                navigateToMovieEdit = {},
+                navigateToMovieEdit = {
+                    navController.navigate("${AppScreen.MovieEdit.route}/0")
+                },
                 navigateBack = { navController.popBackStack() }
             )
         }
@@ -36,9 +40,33 @@ fun AppNavGraph(navController: NavHostController) {
             arguments = listOf(navArgument(NavArgs.MOVIE_ID) { type = NavType.LongType })
         ) {
             MovieDetailsScreen(
-                navigateToMovieEdit = { movieId -> },
+                navigateToMovieEdit = { movieId ->
+                    navController.navigate("${AppScreen.MovieEdit.route}/$movieId")
+                },
                 navigateBack = { navController.popBackStack() },
                 movieId = it.arguments?.getLong(NavArgs.MOVIE_ID) ?: 0,
+            )
+        }
+
+        composable(
+            route = "${AppScreen.MovieEdit.route}/{${NavArgs.MOVIE_ID}}",
+            arguments = listOf(navArgument(NavArgs.MOVIE_ID) { type = NavType.LongType })
+        ) {
+            MovieEditScreen(
+                navigateBack = { navController.popBackStack() },
+                movieId = it.arguments?.getLong(NavArgs.MOVIE_ID) ?: 0,
+            )
+        }
+
+        composable(AppScreen.Searching.route) {
+            SearchMainScreen(
+                navigateImdbSearching = { navController.navigate(AppScreen.Serials.route) }
+            )
+        }
+
+        composable(AppScreen.SearchImdb.route) {
+            SearchMainScreen(
+                navigateImdbSearching = { navController.navigate(AppScreen.Serials.route) }
             )
         }
 

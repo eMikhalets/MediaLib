@@ -6,10 +6,11 @@
     <string name="error_internal">Internal error</string>
     <string name="error_save_entity_null">Error: saving entity is null</string>
     <string name="error_delete_entity_null">Error: deleting entity is null</string>
+    <string name="error_parsing_imdb_id">Error while parsing imdb id</string>
 
-    <!--  Main menu  -->
-    <string name="main_menu_item_movies">Movies</string>
-    <string name="main_menu_item_serials">Serials</string>
+    <!--  Library  -->
+    <string name="library_menu_item_movies">Movies</string>
+    <string name="library_menu_item_serials">Serials</string>
 
     <!--  Movies  -->
     <string name="movies_empty_list">Movies list is empty</string>
@@ -24,10 +25,17 @@
     <string name="movie_edit_year">Year</string>
     <string name="movie_edit_comment">Comment</string>
     <string name="movie_edit_overview">Overview</string>
+    <string name="movie_edit_save">Save</string>
 
     <!--  Serials  -->
     <string name="serials_empty_list">Serials list is empty</string>
     <string name="serials_search_placeholder">Serial name</string>
+
+    <!--  Searching  -->
+    <string name="searching_title">Searching</string>
+    <string name="searching_menu_item_imdb">Search with IMDB</string>
+    <string name="searching_imdb_link">https://www.imdb.com/</string>
+    <string name="searching_save">Save</string>
 
     <!--  Movie Watch Status  -->
     <string name="movie_status_watched">Watched</string>
@@ -57,39 +65,6 @@
     <string name="screen_title_serials">Serials</string>
 
 
-    <string name="parse_movie_id">Parse imdb id</string>
-    <string name="loading_error">Loading error</string>
-    <string name="search_query">Search query</string>
-    <string name="empty_list">Empty list</string>
     <string name="save">Save</string>
-    <string name="cancel">Cancel</string>
-    <string name="delete">Delete</string>
 
-    <string name="title">Title</string>
-    <string name="title_ru">Title russian</string>
-    <string name="author">Author</string>
-    <string name="seasons">Seasons</string>
-    <string name="seasons_value">Seasons: %s</string>
-    <string name="budget_value">Budget: %s</string>
-    <string name="revenue_value">Revenue: %s</string>
-    <string name="genres">Genres</string>
-    <string name="genres_value">Genres: %s</string>
-    <string name="year">Year</string>
-    <string name="comment">Comment</string>
-    <string name="overview">Overview</string>
-
-    <!--  Search  -->
-    <string name="webview_imdb_link">https://www.imdb.com/</string>
-    <string name="search_movies">Search movies</string>
-    <string name="search_serials">Search serials</string>
-    <string name="search_books">Search books</string>
-
-    <!--  Pager tabs  -->
-    <string name="pager_tab_movies">Movies</string>
-    <string name="pager_tab_serials">Serials</string>
-    <string name="pager_tab_books">Books</string>
-
-    <!--  Dialog  -->
-    <string name="dialog_delete_title">Delete item?</string>
-    <string name="dialog_poster_title">Poster url</string>
 </resources>

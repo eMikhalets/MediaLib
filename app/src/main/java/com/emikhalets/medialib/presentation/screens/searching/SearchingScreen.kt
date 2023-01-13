@@ -1,4 +1,4 @@
-package com.emikhalets.medialib.presentation.screens.library
+package com.emikhalets.medialib.presentation.screens.searching
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.clickable
@@ -20,22 +20,16 @@ import com.emikhalets.medialib.presentation.core.IconPrimary
 import com.emikhalets.medialib.presentation.theme.AppTheme
 
 @Composable
-fun LibraryScreen(
-    navigateToMovies: () -> Unit,
-    navigateToSerials: () -> Unit,
+fun SearchMainScreen(
+    navigateImdbSearching: () -> Unit,
 ) {
     Column(modifier = Modifier.fillMaxSize()) {
-        AppTopBar(title = stringResource(id = R.string.screen_title_library))
+        AppTopBar(title = stringResource(id = R.string.searching_title))
         Row(modifier = Modifier.fillMaxWidth()) {
             MenuItem(
-                title = stringResource(id = R.string.library_menu_item_movies),
+                title = stringResource(id = R.string.searching_menu_item_imdb),
                 icon = R.drawable.ic_round_local_movies_24,
-                onItemClick = navigateToMovies
-            )
-            MenuItem(
-                title = stringResource(id = R.string.library_menu_item_serials),
-                icon = R.drawable.ic_round_tv_24,
-                onItemClick = navigateToSerials
+                onItemClick = navigateImdbSearching
             )
         }
     }
@@ -66,11 +60,10 @@ private fun RowScope.MenuItem(
 
 @Preview(showBackground = true)
 @Composable
-private fun ScreenPreview() {
+private fun MainScreenPreview() {
     AppTheme {
-        LibraryScreen(
-            navigateToMovies = {},
-            navigateToSerials = {}
+        SearchMainScreen(
+            navigateImdbSearching = {},
         )
     }
 }

@@ -222,7 +222,7 @@ private fun MovieEditScreen(
         )
 
         AppButton(
-            text = stringResource(R.string.save),
+            text = stringResource(R.string.movie_edit_save),
             onClick = onSaveClick,
             modifier = Modifier.padding(top = 16.dp, bottom = 8.dp)
         )

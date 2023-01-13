@@ -26,12 +26,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.emikhalets.medialib.R
-import com.emikhalets.medialib.domain.entities.utils.MenuIconEntity
 import com.emikhalets.medialib.domain.entities.genres.GenreEntity
 import com.emikhalets.medialib.domain.entities.genres.GenreType
 import com.emikhalets.medialib.domain.entities.movies.MovieEntity
 import com.emikhalets.medialib.domain.entities.movies.MovieFullEntity
 import com.emikhalets.medialib.domain.entities.movies.MovieWatchStatus
+import com.emikhalets.medialib.domain.entities.utils.MenuIconEntity
 import com.emikhalets.medialib.presentation.core.AppAsyncImage
 import com.emikhalets.medialib.presentation.core.AppLoader
 import com.emikhalets.medialib.presentation.core.AppTextFullScreen
@@ -224,7 +224,7 @@ private fun DetailsScreen(
                 .padding(top = 8.dp)
         )
         DetailsSection(
-            header = stringResource(R.string.overview),
+            header = stringResource(R.string.movie_details_overview),
             content = entity.movieEntity.overview,
             modifier = Modifier.padding(top = 4.dp, bottom = 8.dp)
         )
