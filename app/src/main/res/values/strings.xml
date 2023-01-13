@@ -4,6 +4,8 @@
 
     <!--  Errors  -->
     <string name="error_internal">Internal error</string>
+    <string name="error_save_entity_null">Error: saving entity is null</string>
+    <string name="error_delete_entity_null">Error: deleting entity is null</string>
 
     <!--  Main menu  -->
     <string name="main_menu_item_movies">Movies</string>
@@ -12,6 +14,9 @@
     <!--  Movies  -->
     <string name="movies_empty_list">Movies list is empty</string>
     <string name="movies_search_placeholder">Movie name</string>
+    <string name="movie_details_comment">Comment</string>
+    <string name="movie_details_overview">Overview</string>
+    <string name="movie_details_genres">Genres: %s</string>
 
     <!--  Serials  -->
     <string name="serials_empty_list">Serials list is empty</string>
@@ -33,8 +38,10 @@
 
     <!--  Dialogs  -->
     <string name="dialog_delete_entity_title">Delete from local library?</string>
+    <string name="dialog_edit_poster_url_title">Edit poster URL</string>
     <string name="dialog_cancel">Cancel</string>
     <string name="dialog_delete">Delete</string>
+    <string name="dialog_save">Save</string>
 
     <string name="parse_movie_id">Parse imdb id</string>
     <string name="loading_error">Loading error</string>

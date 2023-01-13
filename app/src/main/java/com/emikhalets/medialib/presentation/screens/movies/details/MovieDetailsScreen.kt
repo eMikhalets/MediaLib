@@ -3,7 +3,6 @@ package com.emikhalets.medialib.presentation.screens.movies.details
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -27,30 +26,44 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.emikhalets.medialib.R
-import com.emikhalets.medialib.data.database.movies.MovieDbEntity
-import com.emikhalets.medialib.data.database.serials.SerialDbEntity
+import com.emikhalets.medialib.domain.entities.genres.GenreEntity
+import com.emikhalets.medialib.domain.entities.genres.GenreType
 import com.emikhalets.medialib.domain.entities.movies.MovieEntity
+import com.emikhalets.medialib.domain.entities.movies.MovieFullEntity
+import com.emikhalets.medialib.domain.entities.movies.MovieWatchStatus
 import com.emikhalets.medialib.presentation.core.AppAsyncImage
-import com.emikhalets.medialib.presentation.core.AppDetailsSection
 import com.emikhalets.medialib.presentation.core.AppLoader
 import com.emikhalets.medialib.presentation.core.AppTextFullScreen
+import com.emikhalets.medialib.presentation.core.DetailsSection
 import com.emikhalets.medialib.presentation.core.RatingBar
 import com.emikhalets.medialib.presentation.dialogs.DeleteFromDbDialog
-import com.emikhalets.medialib.presentation.dialogs.PosterDialog
+import com.emikhalets.medialib.presentation.dialogs.PosterEditDialog
 import com.emikhalets.medialib.presentation.theme.AppTheme
+import com.emikhalets.medialib.utils.getRandomText
 import com.emikhalets.medialib.utils.toast
 
 @Composable
 fun MovieDetailsScreen(
     onNavigateToMovieEdit: (movieId: Long) -> Unit,
     onNavigateBack: () -> Unit,
-    onSetTopBarActions: (entity: MovieEntity) -> Unit,
     movieId: Long,
     viewModel: MovieDetailsViewModel = hiltViewModel(),
 ) {
+//        actions = listOf(
+//            MenuIconEntity(Icons.Rounded.Edit) {
+//                val id = (state as? DetailsState.Item)?.item?.id
+//                if (id != null) navController.navToItemEdit(id, itemType)
+//            },
+//            MenuIconEntity(Icons.Rounded.Delete) {
+//                showDeleteDialog = true
+//            }
+//        )
+
     val context = LocalContext.current
     val state by viewModel.state.collectAsState()
 
+    var poster by remember { mutableStateOf("") }
+    var rating by remember { mutableStateOf(0) }
     var showDeleteDialog by remember { mutableStateOf(false) }
     var showPosterDialog by remember { mutableStateOf(false) }
 
@@ -59,7 +72,11 @@ fun MovieDetailsScreen(
     }
 
     LaunchedEffect(state.entity) {
-        viewModel.getMovie(movieId)
+        val entity = state.entity
+        if (entity != null) {
+            poster = entity.movieEntity.poster
+            rating = entity.movieEntity.rating
+        }
     }
 
     LaunchedEffect(state.error) {
@@ -85,22 +102,17 @@ fun MovieDetailsScreen(
             AppTextFullScreen()
         } else {
             DetailsScreen(
-                item = entity,
-                onRatingChange = { viewModel.updateMovie(it) },
+                entity = entity,
+                poster = poster,
+                rating = rating,
+                onRatingChange = {
+                    rating = it
+                    viewModel.updateMovieRating(rating)
+                },
                 onPosterClick = { showPosterDialog = true }
             )
         }
     }
-
-//        actions = listOf(
-//            MenuIconEntity(Icons.Rounded.Edit) {
-//                val id = (state as? DetailsState.Item)?.item?.id
-//                if (id != null) navController.navToItemEdit(id, itemType)
-//            },
-//            MenuIconEntity(Icons.Rounded.Delete) {
-//                showDeleteDialog = true
-//            }
-//        )
 
     if (showDeleteDialog) {
         DeleteFromDbDialog(
@@ -113,13 +125,13 @@ fun MovieDetailsScreen(
     }
 
     if (showPosterDialog) {
-        val uiState = state as? DetailsState.Item
-        PosterDialog(
-            poster = uiState?.item?.poster,
+        PosterEditDialog(
+            url = state.entity?.movieEntity?.poster ?: "",
             onDismiss = { showPosterDialog = false },
-            onOkClick = {
+            onSaveClick = { url ->
                 showPosterDialog = false
-                viewModel.updateMovie(it, itemType)
+                poster = url
+                viewModel.updateMoviePoster(poster)
             }
         )
     }
@@ -127,122 +139,85 @@ fun MovieDetailsScreen(
 
 @Composable
 private fun DetailsScreen(
-    item: ViewListItem?,
+    entity: MovieFullEntity,
+    poster: String,
+    rating: Int,
     onRatingChange: (Int) -> Unit,
     onPosterClick: () -> Unit,
 ) {
-    if (item == null) {
-        AppTextFullScreen()
-    } else {
-        Column(
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(horizontal = 8.dp)
+            .verticalScroll(rememberScrollState())
+    ) {
+        Row(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = 8.dp)
-                .verticalScroll(rememberScrollState())
+                .fillMaxWidth()
+                .height(IntrinsicSize.Min)
         ) {
-            Row(
+            AppAsyncImage(
+                data = poster,
+                height = 150.dp,
+                onClick = { onPosterClick() }
+            )
+            Column(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .height(IntrinsicSize.Min)
+                    .fillMaxSize()
+                    .weight(1f)
+                    .padding(vertical = 16.dp)
+                    .padding(end = 16.dp)
             ) {
-                AppAsyncImage(
-                    data = item.poster,
-                    height = 150.dp,
-                    onClick = { onPosterClick() }
-                )
-                Column(
+                Text(
+                    text = entity.movieEntity.title,
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Medium,
                     modifier = Modifier
-                        .fillMaxSize()
-                        .weight(1f)
-                        .padding(vertical = 16.dp)
-                        .padding(end = 16.dp)
-                ) {
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp)
+                )
+                if (entity.movieEntity.titleRu.isNotEmpty()) {
                     Text(
-                        text = item.title,
-                        fontSize = 24.sp,
-                        fontWeight = FontWeight.Medium,
+                        text = entity.movieEntity.titleRu,
+                        fontSize = 16.sp,
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 16.dp)
-                    )
-                    val localeTitle = item.getLocaleTitle()
-                    if (localeTitle.isNotEmpty()) {
-                        Text(
-                            text = localeTitle,
-                            fontSize = 16.sp,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 16.dp)
-                        )
-                    }
-                    if (item is BookDB) {
-                        Spacer(modifier = Modifier.height(4.dp))
-                        Text(
-                            text = item.author,
-                            fontSize = 18.sp,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 16.dp)
-                        )
-                    }
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text(
-                        text = item.releaseYear.toString(),
-                        fontSize = 18.sp,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp)
-                    )
-                    Spacer(modifier = Modifier.height(8.dp))
-                    RatingBar(
-                        rating = item.rating,
-                        onRatingChange = onRatingChange,
-                        modifier = Modifier.fillMaxWidth()
                     )
                 }
-            }
-            AppDetailsSection(
-                header = stringResource(R.string.comment),
-                content = item.comment
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text = stringResource(R.string.genres_value, item.genres),
-                fontSize = 14.sp,
-                modifier = Modifier.fillMaxWidth()
-            )
-            Spacer(modifier = Modifier.height(4.dp))
-            AppDetailsSection(
-                header = stringResource(R.string.overview),
-                content = item.overview
-            )
-
-            if (item is MovieDbEntity) {
-                Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = stringResource(R.string.budget_value, item.budget),
-                    fontSize = 14.sp,
-                    modifier = Modifier.fillMaxWidth()
+                    text = entity.movieEntity.year.toString(),
+                    fontSize = 18.sp,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 16.dp, end = 16.dp, top = 8.dp)
                 )
-                Spacer(modifier = Modifier.height(4.dp))
-                Text(
-                    text = stringResource(R.string.revenue_value, item.revenue),
-                    fontSize = 14.sp,
-                    modifier = Modifier.fillMaxWidth()
+                RatingBar(
+                    rating = rating,
+                    onRatingChange = onRatingChange,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 8.dp)
                 )
             }
-
-            if (item is SerialDbEntity) {
-                Spacer(modifier = Modifier.height(4.dp))
-                Text(
-                    text = stringResource(R.string.seasons_value, item.seasons),
-                    fontSize = 14.sp,
-                    modifier = Modifier.fillMaxWidth()
-                )
-            }
-
-            Spacer(modifier = Modifier.height(4.dp))
         }
+        DetailsSection(
+            header = stringResource(R.string.movie_details_comment),
+            content = entity.movieEntity.comment,
+            modifier = Modifier.padding(top = 8.dp)
+        )
+        Text(
+            text = stringResource(R.string.movie_details_genres, entity.formatGenres()),
+            fontSize = 14.sp,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 8.dp)
+        )
+        DetailsSection(
+            header = stringResource(R.string.overview),
+            content = entity.movieEntity.overview,
+            modifier = Modifier.padding(top = 4.dp, bottom = 8.dp)
+        )
     }
 }
 
@@ -251,15 +226,32 @@ private fun DetailsScreen(
 private fun ScreenPreview() {
     AppTheme {
         DetailsScreen(
-            item = MovieDbEntity(
-                id = 1,
-                title = "Spider-man",
-                genres = "Action, Drama",
-                releaseYear = 2018,
-                rating = 4,
-                overview = "overview overview overview overview overview overview overview overview overview overview",
-                comment = "overview overview overview overview overview overview overview overview overview overview"
+            entity = MovieFullEntity(
+                movieEntity = MovieEntity(
+                    id = 0,
+                    title = "Movie name",
+                    titleRu = "Movie name rus",
+                    year = 2015,
+                    rating = 4,
+                    watchStatus = MovieWatchStatus.WATCH,
+                    overview = getRandomText(20),
+                    poster = "",
+                    imdbRating = 6.4,
+                    saveTimestamp = 0,
+                    lastUpdateTimestamp = 0,
+                    comment = getRandomText(20)
+                ),
+                genres = listOf(
+                    GenreEntity("Action", GenreType.MOVIE),
+                    GenreEntity("Drama", GenreType.MOVIE),
+                    GenreEntity("Action", GenreType.MOVIE),
+                    GenreEntity("Drama", GenreType.MOVIE),
+                    GenreEntity("Action", GenreType.MOVIE),
+                    GenreEntity("Drama", GenreType.MOVIE)
+                )
             ),
+            poster = "",
+            rating = 4,
             onRatingChange = {},
             onPosterClick = {}
         )

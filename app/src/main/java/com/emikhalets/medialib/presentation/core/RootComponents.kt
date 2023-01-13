@@ -6,6 +6,7 @@ import android.webkit.WebViewClient
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -118,20 +119,25 @@ fun PosterListItem(url: String) {
 }
 
 @Composable
-fun AppDetailsSection(header: String, content: String) {
+fun DetailsSection(
+    header: String,
+    content: String,
+    modifier: Modifier = Modifier,
+) {
     if (content.isNotEmpty()) {
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(
-            text = header,
-            fontSize = 16.sp,
-            fontWeight = FontWeight.Medium,
-            modifier = Modifier.fillMaxWidth()
-        )
-        Text(
-            text = content,
-            fontSize = 14.sp,
-            modifier = Modifier.fillMaxWidth()
-        )
+        Column(modifier = modifier.fillMaxWidth()) {
+            Text(
+                text = header,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Medium,
+                modifier = Modifier.fillMaxWidth()
+            )
+            Text(
+                text = content,
+                fontSize = 14.sp,
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
     }
 }
 

@@ -35,7 +35,7 @@ import com.emikhalets.medialib.data.database.movies.MovieDbEntity
 import com.emikhalets.medialib.data.database.serials.SerialDbEntity
 import com.emikhalets.medialib.domain.entities.compose.MenuIconEntity
 import com.emikhalets.medialib.presentation.core.AppAsyncImage
-import com.emikhalets.medialib.presentation.core.AppDetailsSection
+import com.emikhalets.medialib.presentation.core.DetailsSection
 import com.emikhalets.medialib.presentation.core.AppLoader
 import com.emikhalets.medialib.presentation.core.AppScaffold
 import com.emikhalets.medialib.presentation.core.AppTextFullScreen
@@ -197,7 +197,7 @@ private fun DetailsScreen(
                     )
                 }
             }
-            AppDetailsSection(
+            DetailsSection(
                 header = stringResource(R.string.comment),
                 content = item.comment
             )
@@ -208,7 +208,7 @@ private fun DetailsScreen(
                 modifier = Modifier.fillMaxWidth()
             )
             Spacer(modifier = Modifier.height(4.dp))
-            AppDetailsSection(
+            DetailsSection(
                 header = stringResource(R.string.overview),
                 content = item.overview
             )

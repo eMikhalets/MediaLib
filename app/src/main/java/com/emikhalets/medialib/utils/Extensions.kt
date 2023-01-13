@@ -4,6 +4,7 @@ import android.content.Context
 import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -22,6 +23,10 @@ suspend inline fun <T : Any> execute(
 fun Long.formatDate(pattern: String = "dd.MM.yyyy"): String {
     val formatter = SimpleDateFormat(pattern, Locale.getDefault())
     return formatter.format(this)
+}
+
+fun Int.formatYear(): Int {
+    return if (this == 0) Calendar.getInstance().get(Calendar.YEAR) else this
 }
 
 fun String.toDate(pattern: String = "dd.MM.yyyy"): String {
@@ -70,4 +75,8 @@ fun String.toSafeLong(): Long {
 
 fun String.toast(context: Context) {
     Toast.makeText(context, this, Toast.LENGTH_SHORT).show()
+}
+
+fun getRandomText(words: Int = 500): String {
+    return LoremIpsum(words).values.joinToString()
 }

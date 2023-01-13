@@ -1,13 +1,10 @@
 package com.emikhalets.medialib.presentation.screens.movies.details
 
-import com.emikhalets.medialib.data.database.movies.MovieDbEntity
-import com.emikhalets.medialib.data.database.serials.SerialDbEntity
+import com.emikhalets.medialib.R
 import com.emikhalets.medialib.domain.use_case.movies.MovieDetailsUseCase
 import com.emikhalets.medialib.utils.BaseViewModel
-import com.emikhalets.medialib.utils.enums.ItemType
+import com.emikhalets.medialib.utils.UiString
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
@@ -20,111 +17,64 @@ class MovieDetailsViewModel @Inject constructor(
     fun resetError() = setState { it.copy(error = null) }
 
     fun getMovie(movieId: Long) {
-        setState { it.copy(loading = true) }
-        if (movieId == 0) {
-            setState { it.copy(loading = false) }
-        }
-
-        launchDefault {
-            _state.update { DetailsState.Loading }
-            val response = when (type) {
-                ItemType.MOVIE -> databaseRepo.getMovieFlow(id)
-                ItemType.SERIAL -> databaseRepo.getSerialFlow(id)
-                ItemType.BOOK -> databaseRepo.getBookFlow(id)
-                ItemType.MUSIC -> databaseRepo.getMovieFlow(id) // TODO: change to music request
-            }
-            response
-                .onSuccess { flow ->
-                    flow.collectLatest { item ->
-                        item?.let { _state.update { DetailsState.Item(item) } }
-                        this@MovieDetailsViewModel.item = item
-                    }
-                }
-                .onFailure { exception ->
-                    _state.update { DetailsState.Error(exception.message) }
-                }
-        }
-    }
-
-    fun updateMovie(rating: Int, type: ItemType) {
-        item ?: return
-
-        launchDefault {
-            _state.update { DetailsState.Loading }
-            val response = when (type) {
-                ItemType.MOVIE -> {
-                    val copy = (item as MovieDbEntity).copy(rating = rating)
-                    databaseRepo.updateItem(copy)
-                }
-                ItemType.SERIAL -> {
-                    val copy = (item as SerialDbEntity).copy(rating = rating)
-                    databaseRepo.updateItem(copy)
-                }
-                ItemType.BOOK -> {
-                    val copy = (item as BookDB).copy(rating = rating)
-                    databaseRepo.updateItem(copy)
-                }
-                ItemType.MUSIC -> {
-                    // TODO: change to music entity
-                    val copy = (item as MovieDbEntity).copy(rating = rating)
-                    databaseRepo.updateItem(copy)
-                }
-            }
-            response.onFailure { exception ->
-                _state.update { DetailsState.Error(exception.message) }
+        launchIO {
+            setState { it.copy(loading = true) }
+            if (movieId == 0L) {
+                setState { it.copy(loading = false) }
+            } else {
+                useCase.getMovie(movieId)
+                    .onSuccess { entity -> setState { it.copy(loading = false, entity = entity) } }
+                    .onFailure { throwable -> handleFailure(throwable) }
             }
         }
     }
 
-    fun updateMovie(poster: String, type: ItemType) {
-        item ?: return
-        if (poster != item?.poster) return
-
-        launchDefault {
-            _state.update { DetailsState.Loading }
-            val response = when (type) {
-                ItemType.MOVIE -> {
-                    val copy = (item as MovieDbEntity).copy(poster = poster)
-                    databaseRepo.updateItem(copy)
-                }
-                ItemType.SERIAL -> {
-                    val copy = (item as SerialDbEntity).copy(poster = poster)
-                    databaseRepo.updateItem(copy)
-                }
-                ItemType.BOOK -> {
-                    val copy = (item as BookDB).copy(poster = poster)
-                    databaseRepo.updateItem(copy)
-                }
-                ItemType.MUSIC -> {
-                    // TODO: change to music entity
-                    val copy = (item as MovieDbEntity).copy(poster = poster)
-                    databaseRepo.updateItem(copy)
-                }
-            }
-            response.onFailure { exception ->
-                _state.update { DetailsState.Error(exception.message) }
+    fun updateMovieRating(rating: Int) {
+        launchIO {
+            val entity = currentState.entity
+            if (entity != null) {
+                setState { it.copy(loading = true) }
+                useCase.updateMovieRating(rating, entity)
+                    .onSuccess { setState { it.copy(loading = false) } }
+                    .onFailure { throwable -> handleFailure(throwable) }
+            } else {
+                val message = R.string.error_save_entity_null
+                setState { it.copy(error = UiString.create(message)) }
             }
         }
     }
 
-    fun deleteMovie(type: ItemType) {
-        item ?: return
-
-        launchDefault {
-            _state.update { DetailsState.Loading }
-            val response = when (type) {
-                ItemType.MOVIE -> databaseRepo.deleteItem(item as MovieDbEntity)
-                ItemType.SERIAL -> databaseRepo.deleteItem(item as SerialDbEntity)
-                ItemType.BOOK -> databaseRepo.deleteItem(item as BookDB)
-                ItemType.MUSIC -> databaseRepo.deleteItem(item as MovieDbEntity) // TODO: change to music entity
+    fun updateMoviePoster(poster: String) {
+        launchIO {
+            val entity = currentState.entity
+            if (entity != null) {
+                setState { it.copy(loading = true) }
+                useCase.updateMoviePosterUrl(poster, entity)
+                    .onSuccess { setState { it.copy(loading = false) } }
+                    .onFailure { throwable -> handleFailure(throwable) }
+            } else {
+                val message = R.string.error_save_entity_null
+                setState { it.copy(error = UiString.create(message)) }
             }
-            response
-                .onSuccess {
-                    _state.update { DetailsState.ItemDeleted }
-                }
-                .onFailure { exception ->
-                    _state.update { DetailsState.Error(exception.message) }
-                }
         }
+    }
+
+    fun deleteMovie() {
+        launchIO {
+            val entity = currentState.entity
+            if (entity != null) {
+                setState { it.copy(loading = true) }
+                useCase.deleteMovie(entity)
+                    .onSuccess { setState { it.copy(loading = false) } }
+                    .onFailure { throwable -> handleFailure(throwable) }
+            } else {
+                val message = R.string.error_delete_entity_null
+                setState { it.copy(error = UiString.create(message)) }
+            }
+        }
+    }
+
+    private fun handleFailure(throwable: Throwable) {
+        setState { it.copy(loading = false, error = UiString.create(throwable.message)) }
     }
 }

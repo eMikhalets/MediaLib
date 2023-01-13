@@ -18,6 +18,8 @@ interface DatabaseRepository {
 
     suspend fun updateMovie(entity: MovieFullEntity): Result<Unit>
 
+    suspend fun deleteMovie(entity: MovieFullEntity): Result<Unit>
+
     // Serials Dao
 
     suspend fun getSerialsListFlowOrderByLastUpdated(): Result<Flow<List<SerialFullEntity>>>
@@ -29,4 +31,6 @@ interface DatabaseRepository {
     suspend fun insertSerial(entity: SerialFullEntity): Result<Unit>
 
     suspend fun updateSerial(entity: SerialFullEntity): Result<Unit>
+
+    suspend fun deleteSerial(entity: SerialFullEntity): Result<Unit>
 }

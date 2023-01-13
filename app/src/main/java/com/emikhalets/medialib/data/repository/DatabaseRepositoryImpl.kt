@@ -21,31 +21,6 @@ class DatabaseRepositoryImpl @Inject constructor(
     private val genresDao: GenresDao,
 ) : DatabaseRepository {
 
-//    suspend fun insertItem(item: MovieDbEntity): Result<Long> = execute { moviesDao.insert(item) }
-//    suspend fun insertItem(item: SerialDbEntity): Result<Long> = execute { serialsDao.insert(item) }
-//    suspend fun insertItem(item: BookDB): Result<Long> = execute { booksDao.insert(item) }
-//
-//    suspend fun updateItem(item: MovieDbEntity): Result<Int> = execute { moviesDao.update(item) }
-//    suspend fun updateItem(item: SerialDbEntity): Result<Int> = execute { serialsDao.update(item) }
-//    suspend fun updateItem(item: BookDB): Result<Int> = execute { booksDao.update(item) }
-//
-//    suspend fun deleteItem(item: MovieDbEntity): Result<Int> = execute { moviesDao.delete(item) }
-//    suspend fun deleteItem(item: SerialDbEntity): Result<Int> = execute { serialsDao.delete(item) }
-//    suspend fun deleteItem(item: BookDB): Result<Int> = execute { booksDao.delete(item) }
-//
-//    suspend fun getMovieFlow(id: Int): Result<Flow<MovieDbEntity?>> = execute { moviesDao.getItem(id) }
-//    suspend fun getSerialFlow(id: Int): Result<Flow<SerialDbEntity?>> = execute { serialsDao.getItem(id) }
-//    suspend fun getBookFlow(id: Int): Result<Flow<BookDB?>> = execute { booksDao.getItem(id) }
-//
-//    suspend fun getMovies() = execute { moviesDao.getAllItemsFlow() }
-//    suspend fun getMovies(query: String) = execute { moviesDao.searchByTitle(query) }
-//
-//    suspend fun getSerials() = execute { serialsDao.getAllItemsFlow() }
-//    suspend fun getSerials(query: String) = execute { serialsDao.searchByTitle(query) }
-//
-//    suspend fun getBooks() = execute { booksDao.getAllItemsFlow() }
-//    suspend fun getBooks(query: String) = execute { booksDao.searchByTitle(query) }
-
     // Movies
 
     override suspend fun getMoviesListFlowOrderByLastUpdated(): Result<Flow<List<MovieFullEntity>>> {
@@ -95,6 +70,13 @@ class DatabaseRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun deleteMovie(entity: MovieFullEntity): Result<Unit> {
+        return execute {
+            val movieDb = MovieMappers.mapEntityToDbEntity(entity)
+            moviesDao.delete(movieDb)
+        }
+    }
+
     // Serials
 
     override suspend fun getSerialsListFlowOrderByLastUpdated(): Result<Flow<List<SerialFullEntity>>> {
@@ -141,6 +123,13 @@ class DatabaseRepositoryImpl @Inject constructor(
         return execute {
             val serialDb = SerialMappers.mapEntityToDbEntity(entity)
             serialsDao.update(serialDb)
+        }
+    }
+
+    override suspend fun deleteSerial(entity: SerialFullEntity): Result<Unit> {
+        return execute {
+            val serialDb = SerialMappers.mapEntityToDbEntity(entity)
+            serialsDao.delete(serialDb)
         }
     }
 
