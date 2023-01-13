@@ -17,7 +17,7 @@ enum class AppScreen(val route: String) {
     companion object {
 
         fun getBottomBarItems(): List<AppScreen> {
-            return listOf()
+            return listOf(Library, Searching)
         }
 
         fun AppScreen.getBottomBarIconRes(): Int {

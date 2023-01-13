@@ -8,7 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 
 @Composable
-fun IconPrimary(
+fun IconOnPrimary(
     @DrawableRes drawableRes: Int,
     modifier: Modifier = Modifier,
 ) {
@@ -21,7 +21,7 @@ fun IconPrimary(
 }
 
 @Composable
-fun IconTextField(
+fun IconPrimary(
     @DrawableRes drawableRes: Int,
     modifier: Modifier = Modifier,
 ) {

@@ -11,6 +11,7 @@ import com.emikhalets.medialib.presentation.screens.movies.details.MovieDetailsS
 import com.emikhalets.medialib.presentation.screens.movies.edit.MovieEditScreen
 import com.emikhalets.medialib.presentation.screens.movies.list.MoviesScreen
 import com.emikhalets.medialib.presentation.screens.searching.SearchMainScreen
+import com.emikhalets.medialib.presentation.screens.searching.SearchWithImdbScreen
 
 @Composable
 fun AppNavGraph(navController: NavHostController) {
@@ -19,7 +20,7 @@ fun AppNavGraph(navController: NavHostController) {
         composable(AppScreen.Library.route) {
             LibraryScreen(
                 navigateToMovies = { navController.navigate(AppScreen.Movies.route) },
-                navigateToSerials = { navController.navigate(AppScreen.Serials.route) }
+                navigateToSerials = {}
             )
         }
 
@@ -60,13 +61,13 @@ fun AppNavGraph(navController: NavHostController) {
 
         composable(AppScreen.Searching.route) {
             SearchMainScreen(
-                navigateImdbSearching = { navController.navigate(AppScreen.Serials.route) }
+                navigateImdbSearching = { navController.navigate(AppScreen.SearchImdb.route) }
             )
         }
 
         composable(AppScreen.SearchImdb.route) {
-            SearchMainScreen(
-                navigateImdbSearching = { navController.navigate(AppScreen.Serials.route) }
+            SearchWithImdbScreen(
+                navigateBack = { navController.popBackStack() }
             )
         }
 

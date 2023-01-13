@@ -2,6 +2,7 @@ package com.emikhalets.medialib.presentation.screens.searching
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -97,7 +98,8 @@ private fun SearchWithImdbScreen(
         )
         Button(
             enabled = saveEnabled,
-            onClick = { onSaveClicked() }
+            onClick = { onSaveClicked() },
+            modifier = Modifier.fillMaxWidth()
         ) {
             Text(text = stringResource(R.string.searching_save))
         }

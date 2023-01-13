@@ -34,7 +34,7 @@ fun AppTextField(
             { Text(label) }
         } else null,
         leadingIcon = if (leadingIconRes != null) {
-            { IconTextField(drawableRes = leadingIconRes) }
+            { IconPrimary(drawableRes = leadingIconRes) }
         } else null,
         placeholder = if (placeholder != null) {
             { Text(placeholder) }

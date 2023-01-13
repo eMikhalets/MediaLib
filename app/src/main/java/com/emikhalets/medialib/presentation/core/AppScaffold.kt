@@ -4,12 +4,15 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
+import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.ScaffoldState
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -40,9 +43,11 @@ private fun AppBottomBar(navController: NavHostController) {
     BottomNavigation {
         AppScreen.getBottomBarItems().forEach { screen ->
             BottomNavigationItem(
-                icon = { IconPrimary(screen.getBottomBarIconRes()) },
+                icon = { Icon(painterResource(screen.getBottomBarIconRes()), null) },
                 label = { Text(stringResource(screen.getBottomBarTextRes())) },
                 selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true,
+                selectedContentColor = MaterialTheme.colors.onPrimary,
+                unselectedContentColor = MaterialTheme.colors.onPrimary.copy(alpha = 0.5f),
                 onClick = {
                     navController.navigate(screen.route) {
                         // TODO: navigate to library screen?
