@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.emikhalets.medialib.R
+import com.emikhalets.medialib.domain.entities.compose.MenuIconEntity
 import com.emikhalets.medialib.domain.entities.genres.GenreEntity
 import com.emikhalets.medialib.domain.entities.genres.GenreType
 import com.emikhalets.medialib.domain.entities.movies.MovieEntity
@@ -34,6 +35,7 @@ import com.emikhalets.medialib.domain.entities.movies.MovieWatchStatus
 import com.emikhalets.medialib.presentation.core.AppAsyncImage
 import com.emikhalets.medialib.presentation.core.AppLoader
 import com.emikhalets.medialib.presentation.core.AppTextFullScreen
+import com.emikhalets.medialib.presentation.core.AppTopBar
 import com.emikhalets.medialib.presentation.core.DetailsSection
 import com.emikhalets.medialib.presentation.core.RatingBar
 import com.emikhalets.medialib.presentation.dialogs.DeleteFromDbDialog
@@ -44,21 +46,11 @@ import com.emikhalets.medialib.utils.toast
 
 @Composable
 fun MovieDetailsScreen(
-    onNavigateToMovieEdit: (movieId: Long) -> Unit,
-    onNavigateBack: () -> Unit,
+    navigateToMovieEdit: (movieId: Long) -> Unit,
+    navigateBack: () -> Unit,
     movieId: Long,
     viewModel: MovieDetailsViewModel = hiltViewModel(),
 ) {
-//        actions = listOf(
-//            MenuIconEntity(Icons.Rounded.Edit) {
-//                val id = (state as? DetailsState.Item)?.item?.id
-//                if (id != null) navController.navToItemEdit(id, itemType)
-//            },
-//            MenuIconEntity(Icons.Rounded.Delete) {
-//                showDeleteDialog = true
-//            }
-//        )
-
     val context = LocalContext.current
     val state by viewModel.state.collectAsState()
 
@@ -90,7 +82,7 @@ fun MovieDetailsScreen(
 
     LaunchedEffect(state.deleted) {
         if (state.deleted) {
-            onNavigateBack()
+            navigateBack()
         }
     }
 
@@ -109,7 +101,10 @@ fun MovieDetailsScreen(
                     rating = it
                     viewModel.updateMovieRating(rating)
                 },
-                onPosterClick = { showPosterDialog = true }
+                onPosterClick = { showPosterDialog = true },
+                onMovieEditClick = navigateToMovieEdit,
+                onBackClick = navigateBack,
+                onDeleteClick = { showDeleteDialog = true }
             )
         }
     }
@@ -144,6 +139,9 @@ private fun DetailsScreen(
     rating: Int,
     onRatingChange: (Int) -> Unit,
     onPosterClick: () -> Unit,
+    onMovieEditClick: (movieId: Long) -> Unit,
+    onBackClick: () -> Unit,
+    onDeleteClick: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -151,6 +149,18 @@ private fun DetailsScreen(
             .padding(horizontal = 8.dp)
             .verticalScroll(rememberScrollState())
     ) {
+        AppTopBar(
+            title = stringResource(id = R.string.screen_title_library),
+            onNavigateBack = onBackClick,
+            actions = listOf(
+                MenuIconEntity(R.drawable.ic_round_edit_24) {
+                    onMovieEditClick(entity.movieEntity.id)
+                },
+                MenuIconEntity(R.drawable.ic_round_delete_24) {
+                    onDeleteClick()
+                }
+            )
+        )
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -253,7 +263,10 @@ private fun ScreenPreview() {
             poster = "",
             rating = 4,
             onRatingChange = {},
-            onPosterClick = {}
+            onPosterClick = {},
+            onMovieEditClick = {},
+            onBackClick = {},
+            onDeleteClick = {}
         )
     }
 }

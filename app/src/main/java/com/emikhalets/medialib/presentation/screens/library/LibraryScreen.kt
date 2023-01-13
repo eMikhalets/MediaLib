@@ -1,4 +1,4 @@
-package com.emikhalets.medialib.presentation.screens.main
+package com.emikhalets.medialib.presentation.screens.library
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.clickable
@@ -15,15 +15,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.emikhalets.medialib.R
+import com.emikhalets.medialib.presentation.core.AppTopBar
 import com.emikhalets.medialib.presentation.core.IconPrimary
 import com.emikhalets.medialib.presentation.theme.AppTheme
 
 @Composable
-fun MainMenuScreen(
+fun LibraryScreen(
     navigateToMovies: () -> Unit,
     navigateToSerials: () -> Unit,
 ) {
     Column(modifier = Modifier.fillMaxSize()) {
+        AppTopBar(title = stringResource(id = R.string.screen_title_library))
         Row(modifier = Modifier.fillMaxWidth()) {
             MenuItem(
                 title = stringResource(id = R.string.main_menu_item_movies),
@@ -66,7 +68,7 @@ private fun RowScope.MenuItem(
 @Composable
 private fun ScreenPreview() {
     AppTheme {
-        MainMenuScreen(
+        LibraryScreen(
             navigateToMovies = {},
             navigateToSerials = {}
         )

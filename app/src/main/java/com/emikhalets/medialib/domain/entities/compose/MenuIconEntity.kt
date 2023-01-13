@@ -1,8 +1,8 @@
 package com.emikhalets.medialib.domain.entities.compose
 
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.annotation.DrawableRes
 
 data class MenuIconEntity(
-    val icon: ImageVector,
+    @DrawableRes val iconRes: Int,
     val onClick: () -> Unit,
 )

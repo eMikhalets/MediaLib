@@ -44,6 +44,7 @@ import com.emikhalets.medialib.domain.entities.movies.MovieWatchStatus
 import com.emikhalets.medialib.domain.entities.movies.getIconRes
 import com.emikhalets.medialib.presentation.core.AppLoader
 import com.emikhalets.medialib.presentation.core.AppTextFullScreen
+import com.emikhalets.medialib.presentation.core.AppTopBar
 import com.emikhalets.medialib.presentation.core.IconPrimary
 import com.emikhalets.medialib.presentation.core.RatingRow
 import com.emikhalets.medialib.presentation.core.SearchBox
@@ -55,6 +56,7 @@ import com.emikhalets.medialib.utils.toast
 fun MoviesScreen(
     navigateToMovieDetails: (movieId: Long) -> Unit,
     navigateToMovieEdit: () -> Unit,
+    navigateBack: () -> Unit,
     viewModel: MoviesViewModel = hiltViewModel(),
 ) {
     val context = LocalContext.current
@@ -86,7 +88,8 @@ fun MoviesScreen(
                 viewModel.searchMovies(query)
             },
             onAddMovieClick = { navigateToMovieEdit() },
-            onMovieClick = { movieId -> navigateToMovieDetails(movieId) }
+            onMovieClick = { movieId -> navigateToMovieDetails(movieId) },
+            onBackClick = navigateBack
         )
     }
 }
@@ -98,8 +101,13 @@ private fun MoviesScreen(
     onQueryChange: (String) -> Unit,
     onAddMovieClick: () -> Unit,
     onMovieClick: (movieId: Long) -> Unit,
+    onBackClick: () -> Unit,
 ) {
     Column(modifier = Modifier.fillMaxSize()) {
+        AppTopBar(
+            title = stringResource(id = R.string.screen_title_movies),
+            onNavigateBack = onBackClick
+        )
         SearchBox(
             query = query,
             placeholder = stringResource(id = R.string.movies_search_placeholder),
@@ -207,7 +215,8 @@ private fun ScreenPreview() {
             moviesList = emptyList(),
             onQueryChange = {},
             onAddMovieClick = {},
-            onMovieClick = {}
+            onMovieClick = {},
+            onBackClick = {}
         )
     }
 }

@@ -19,3 +19,16 @@ fun IconPrimary(
         modifier = modifier
     )
 }
+
+@Composable
+fun IconTextField(
+    @DrawableRes drawableRes: Int,
+    modifier: Modifier = Modifier,
+) {
+    Icon(
+        painter = painterResource(id = drawableRes),
+        contentDescription = null,
+        tint = MaterialTheme.colors.onBackground,
+        modifier = modifier
+    )
+}

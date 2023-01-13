@@ -19,8 +19,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -55,7 +53,7 @@ fun SearchBox(
         AppTextField(
             value = query,
             onValueChange = onQueryChange,
-            leadingIcon = Icons.Rounded.Search,
+            leadingIconRes = R.drawable.ic_round_search_24,
             placeholder = placeholder,
             modifier = Modifier
                 .fillMaxWidth()

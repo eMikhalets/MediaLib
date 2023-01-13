@@ -20,7 +20,7 @@ import com.emikhalets.medialib.utils.enums.SearchType
 fun SearchMainScreen(
     navController: NavHostController,
 ) {
-    AppScaffold(navController) {
+    AppScaffold(navController, scaffoldState) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.fillMaxSize()

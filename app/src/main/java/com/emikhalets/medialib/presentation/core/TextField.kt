@@ -1,5 +1,6 @@
 package com.emikhalets.medialib.presentation.core
 
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardOptions
@@ -12,7 +13,6 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 
@@ -22,7 +22,7 @@ fun AppTextField(
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
     label: String? = null,
-    leadingIcon: ImageVector? = null,
+    @DrawableRes leadingIconRes: Int? = null,
     placeholder: String? = null,
     maxLines: Int = 1,
     keyboardType: KeyboardType = KeyboardType.Text,
@@ -33,8 +33,8 @@ fun AppTextField(
         label = if (!label.isNullOrEmpty()) {
             { Text(label) }
         } else null,
-        leadingIcon = if (leadingIcon != null) {
-            { AppIcon(imageVector = leadingIcon, tint = MaterialTheme.colors.onBackground) }
+        leadingIcon = if (leadingIconRes != null) {
+            { IconTextField(drawableRes = leadingIconRes) }
         } else null,
         placeholder = if (placeholder != null) {
             { Text(placeholder) }

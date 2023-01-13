@@ -1,20 +1,41 @@
 package com.emikhalets.medialib.utils.navigation
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Home
-import androidx.compose.material.icons.rounded.Search
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.res.stringResource
-import androidx.navigation.NavBackStackEntry
 import com.emikhalets.medialib.R
-import com.emikhalets.medialib.presentation.NavArgs
 
 
 enum class AppScreen(val route: String) {
 
-    MainMenu("main_menu"),
+    Library("library"),
+    Searching("searching"),
     Movies("movies"),
-    Serials("serials");
+    MovieDetails("movie_details"),
+    MovieEdit("movie_edit"),
+    Serials("serials"),
+    SerialDetails("serial_details"),
+    SerialEdit("serial_edit");
+
+    companion object {
+
+        fun getBottomBarItems(): List<AppScreen> {
+            return listOf()
+        }
+
+        fun AppScreen.getBottomBarIconRes(): Int {
+            return when (this) {
+                Library -> R.drawable.ic_round_home_24
+                Searching -> R.drawable.ic_round_search_24
+                else -> 0
+            }
+        }
+
+        fun AppScreen.getBottomBarTextRes(): Int {
+            return when (this) {
+                Library -> R.string.screen_title_library
+                Searching -> R.string.screen_title_searching
+                else -> 0
+            }
+        }
+    }
 
 //    object Main : AppScreen(
 //        route = "main",

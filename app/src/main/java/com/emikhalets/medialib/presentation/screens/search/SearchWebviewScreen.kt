@@ -70,7 +70,7 @@ private fun SearchMoviesScreen(
     onSaveClicked: () -> Unit,
 ) {
 
-    AppScaffold(navController) {
+    AppScaffold(navController, scaffoldState) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.fillMaxSize()
