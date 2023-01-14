@@ -32,7 +32,7 @@ fun SearchWithImdbScreen(
     val context = LocalContext.current
     val state by viewModel.state.collectAsState()
 
-    var isLoading by remember { mutableStateOf(false) }
+    var loadedUrl by remember { mutableStateOf(context.getString(R.string.searching_imdb_link)) }
     var saveEnabled by remember { mutableStateOf(false) }
 
     LaunchedEffect(state.saved) {
@@ -60,13 +60,16 @@ fun SearchWithImdbScreen(
         }
     }
 
-    if (state.loading || isLoading) {
+    if (state.loading) {
         AppLoader()
     } else {
         SearchWithImdbScreen(
-            link = stringResource(R.string.searching_imdb_link),
+            link = loadedUrl,
             saveEnabled = saveEnabled,
-            onUrlLoaded = { viewModel.parseImdbId(it) },
+            onUrlLoaded = {
+                loadedUrl = it
+                viewModel.parseImdbId(loadedUrl)
+            },
             onSaveClicked = { viewModel.searchAndSaveMovie() },
             onBackClick = navigateBack
         )

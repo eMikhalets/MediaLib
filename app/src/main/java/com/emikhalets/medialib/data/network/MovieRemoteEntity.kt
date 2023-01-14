@@ -12,4 +12,6 @@ data class MovieRemoteEntity(
     @SerializedName("Actors") val actors: String? = null,
     @SerializedName("Poster") val poster: String? = null,
     @SerializedName("imdbRating") val rating: String? = null,
+    @SerializedName("Response") val response: Boolean? = null,
+    @SerializedName("Error") val error: String? = null,
 )

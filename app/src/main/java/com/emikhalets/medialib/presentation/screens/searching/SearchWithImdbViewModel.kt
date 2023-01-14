@@ -23,7 +23,11 @@ class SearchWithImdbViewModel @Inject constructor(
         launchIO {
             try {
                 val id = url.split("/")[4]
-                setState { it.copy(imdbId = id) }
+                if (id[0] == 't' && id[1] == 't') {
+                    setState { it.copy(imdbId = id) }
+                } else {
+                    throw RuntimeException("No valid imdb id")
+                }
             } catch (ex: Exception) {
                 ex.printStackTrace()
             }

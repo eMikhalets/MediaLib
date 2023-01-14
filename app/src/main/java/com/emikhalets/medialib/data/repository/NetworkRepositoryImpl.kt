@@ -16,14 +16,22 @@ class NetworkRepositoryImpl @Inject constructor(
     override suspend fun searchMovie(id: String): Result<MovieFullEntity> {
         return execute {
             val response = moviesApi.getMovieDetails(id)
-            MovieMappers.mapRemoteEntityToEntity(response)
+            if (response.response != false) {
+                MovieMappers.mapRemoteEntityToEntity(response)
+            } else {
+                throw Exception(response.error)
+            }
         }
     }
 
     override suspend fun searchSerial(id: String): Result<SerialFullEntity> {
         return execute {
             val response = moviesApi.getMovieDetails(id)
-            SerialMappers.mapRemoteEntityToEntity(response)
+            if (response.response != false) {
+                SerialMappers.mapRemoteEntityToEntity(response)
+            } else {
+                throw Exception(response.error)
+            }
         }
     }
 }
