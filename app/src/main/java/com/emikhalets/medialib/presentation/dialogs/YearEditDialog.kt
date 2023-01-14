@@ -5,8 +5,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -22,6 +20,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.emikhalets.medialib.R
+import com.emikhalets.medialib.presentation.core.TextButtonPrimary
 import com.emikhalets.medialib.presentation.theme.AppTheme
 import com.emikhalets.medialib.utils.formatYear
 import java.util.*
@@ -75,23 +74,21 @@ private fun DialogLayout(
                 .fillMaxWidth()
                 .padding(top = 32.dp)
         ) {
-            TextButton(
+            TextButtonPrimary(
+                text = stringResource(id = R.string.dialog_cancel),
                 onClick = onCancelClick,
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f)
                     .padding(end = 8.dp)
-            ) {
-                Text(text = stringResource(id = R.string.dialog_cancel))
-            }
-            TextButton(
+            )
+            TextButtonPrimary(
+                text = stringResource(id = R.string.dialog_save),
                 onClick = onSaveClick,
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f)
-            ) {
-                Text(text = stringResource(id = R.string.dialog_save))
-            }
+            )
         }
     }
 }

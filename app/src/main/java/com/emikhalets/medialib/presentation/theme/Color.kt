@@ -11,9 +11,9 @@ object AppColors {
     val Teal200 = Color(0xFF03DAC5)
     val Cyan = Color(0xFF018786)
     val Red500 = Color(0xFFF44336)
-    val Blue700 = Color(0xFF1976D2)
+    val Blue800 = Color(0xFF1565C0)
 
     val Colors.textSecondary get() = if (isLight) Color.Gray else Color.Black
-    val Colors.textLink get() = if (isLight) Blue700 else Color.Black
+    val Colors.textLink get() = if (isLight) Blue800 else Color.Black
     val Colors.disabled get() = if (isLight) Color.LightGray else Color.Black
 }
