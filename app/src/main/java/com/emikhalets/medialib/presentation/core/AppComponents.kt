@@ -103,6 +103,32 @@ fun DetailsSection(
     }
 }
 
+@Composable
+fun DetailsSectionList(
+    header: String,
+    content: List<String>,
+    modifier: Modifier = Modifier,
+) {
+    if (content.isNotEmpty()) {
+        Column(modifier = modifier.fillMaxWidth()) {
+            TextTitle(
+                text = header,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Medium,
+                textAlign = TextAlign.Start,
+                modifier = Modifier.fillMaxWidth()
+            )
+            content.forEach {
+                TextPrimary(
+                    text = it,
+                    fontSize = 14.sp,
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+        }
+    }
+}
+
 @SuppressLint("SetJavaScriptEnabled")
 @Composable
 fun Webview(

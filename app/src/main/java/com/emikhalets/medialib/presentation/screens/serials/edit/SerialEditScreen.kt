@@ -275,7 +275,8 @@ private fun ScreenPreview() {
                     GenreEntity("Drama", GenreType.SERIAL),
                     GenreEntity("Action", GenreType.SERIAL),
                     GenreEntity("Drama", GenreType.SERIAL)
-                )
+                ),
+                ratings = emptyList()
             ),
             title = "Serial name",
             titleRu = "Serial name rus",

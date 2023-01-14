@@ -18,6 +18,7 @@
     <string name="movie_details_comment">Comment</string>
     <string name="movie_details_overview">Overview</string>
     <string name="movie_details_genres">Genres</string>
+    <string name="movie_details_ratings">Ratings</string>
     <string name="movie_edit_new">New Movie</string>
     <string name="movie_edit_title">Title</string>
     <string name="movie_edit_title_ru">Title russian</string>
@@ -34,6 +35,7 @@
     <string name="serial_details_comment">Comment</string>
     <string name="serial_details_overview">Overview</string>
     <string name="serial_details_genres">Genres</string>
+    <string name="serial_details_ratings">Ratings</string>
     <string name="serial_edit_new">New Serial</string>
     <string name="serial_edit_title">Title</string>
     <string name="serial_edit_title_ru">Title russian</string>

@@ -27,6 +27,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.emikhalets.medialib.R
 import com.emikhalets.medialib.domain.entities.genres.GenreEntity
 import com.emikhalets.medialib.domain.entities.genres.GenreType
+import com.emikhalets.medialib.domain.entities.ratings.RatingEntity
 import com.emikhalets.medialib.domain.entities.serials.SerialEntity
 import com.emikhalets.medialib.domain.entities.serials.SerialFullEntity
 import com.emikhalets.medialib.domain.entities.serials.SerialWatchStatus
@@ -36,6 +37,7 @@ import com.emikhalets.medialib.presentation.core.AppLoader
 import com.emikhalets.medialib.presentation.core.AppTextFullScreen
 import com.emikhalets.medialib.presentation.core.AppTopBar
 import com.emikhalets.medialib.presentation.core.DetailsSection
+import com.emikhalets.medialib.presentation.core.DetailsSectionList
 import com.emikhalets.medialib.presentation.core.RatingBar
 import com.emikhalets.medialib.presentation.core.TextPrimary
 import com.emikhalets.medialib.presentation.core.TextSecondary
@@ -217,6 +219,11 @@ private fun DetailsScreen(
                 content = entity.formatGenres(),
                 modifier = Modifier.padding(top = 8.dp)
             )
+            DetailsSectionList(
+                header = stringResource(R.string.serial_details_ratings),
+                content = entity.formatRatings(),
+                modifier = Modifier.padding(top = 8.dp)
+            )
             DetailsSection(
                 header = stringResource(R.string.serial_details_overview),
                 content = entity.serialEntity.overview,
@@ -257,6 +264,11 @@ private fun ScreenPreview() {
                     GenreEntity("Drama", GenreType.SERIAL),
                     GenreEntity("Action", GenreType.SERIAL),
                     GenreEntity("Drama", GenreType.SERIAL)
+                ),
+                ratings = listOf(
+                    RatingEntity("IMDB", "123"),
+                    RatingEntity("IMDB", "123"),
+                    RatingEntity("IMDB", "123")
                 )
             ),
             poster = "",

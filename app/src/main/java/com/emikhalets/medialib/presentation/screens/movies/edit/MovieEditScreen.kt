@@ -275,7 +275,8 @@ private fun ScreenPreview() {
                     GenreEntity("Drama", GenreType.MOVIE),
                     GenreEntity("Action", GenreType.MOVIE),
                     GenreEntity("Drama", GenreType.MOVIE)
-                )
+                ),
+                ratings = emptyList()
             ),
             title = "Movie name",
             titleRu = "Movie name rus",

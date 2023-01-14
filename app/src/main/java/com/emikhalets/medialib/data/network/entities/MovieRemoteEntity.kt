@@ -16,7 +16,6 @@ data class MovieRemoteEntity(
     @SerializedName("Awards") val awards: String? = null,
     @SerializedName("Poster") val poster: String? = null,
     @SerializedName("Ratings") val ratings: List<RatingsRemoteEntity>? = null,
-    @SerializedName("imdbRating") val rating: String? = null,
     @SerializedName("Type") val type: String? = null,
     @SerializedName("Response") val response: Boolean? = null,
     @SerializedName("Error") val error: String? = null,

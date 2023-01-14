@@ -234,7 +234,8 @@ private fun SerialItemPreview() {
                     GenreEntity("Drama", GenreType.SERIAL),
                     GenreEntity("Action", GenreType.SERIAL),
                     GenreEntity("Drama", GenreType.SERIAL)
-                )
+                ),
+                ratings = emptyList()
             )
         )
     }

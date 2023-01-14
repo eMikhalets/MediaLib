@@ -4,7 +4,10 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
-import com.emikhalets.medialib.data.database.GenresConverters
+import com.emikhalets.medialib.data.database.converters.GenresConverters
+import com.emikhalets.medialib.data.database.converters.RatingsConverters
+import com.emikhalets.medialib.domain.entities.genres.GenreEntity
+import com.emikhalets.medialib.domain.entities.ratings.RatingEntity
 import com.emikhalets.medialib.domain.entities.serials.SerialWatchStatus
 import java.util.*
 
@@ -23,5 +26,7 @@ data class SerialDbEntity(
     @ColumnInfo(name = "rating") val rating: Int,
     @ColumnInfo(name = "watch_status") val watchStatus: SerialWatchStatus,
     @TypeConverters(GenresConverters::class)
-    @ColumnInfo(name = "genres") val genres: List<String>,
+    @ColumnInfo(name = "genres") val genres: List<GenreEntity>,
+    @TypeConverters(RatingsConverters::class)
+    @ColumnInfo(name = "ratings", defaultValue = "") val ratings: List<RatingEntity>,
 )

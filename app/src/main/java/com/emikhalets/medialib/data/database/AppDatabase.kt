@@ -8,6 +8,8 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.room.migration.AutoMigrationSpec
+import com.emikhalets.medialib.data.database.converters.GenresConverters
+import com.emikhalets.medialib.data.database.converters.RatingsConverters
 import com.emikhalets.medialib.data.database.genres.GenreDbEntity
 import com.emikhalets.medialib.data.database.genres.GenresDao
 import com.emikhalets.medialib.data.database.movies.MovieDbEntity
@@ -27,7 +29,7 @@ import com.emikhalets.medialib.data.database.serials.SerialsDao
     version = 2,
     exportSchema = true
 )
-@TypeConverters(GenresConverters::class)
+@TypeConverters(GenresConverters::class, RatingsConverters::class)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract val moviesDao: MoviesDao

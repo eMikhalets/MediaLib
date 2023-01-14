@@ -30,12 +30,14 @@ import com.emikhalets.medialib.domain.entities.genres.GenreType
 import com.emikhalets.medialib.domain.entities.movies.MovieEntity
 import com.emikhalets.medialib.domain.entities.movies.MovieFullEntity
 import com.emikhalets.medialib.domain.entities.movies.MovieWatchStatus
+import com.emikhalets.medialib.domain.entities.ratings.RatingEntity
 import com.emikhalets.medialib.domain.entities.utils.MenuIconEntity
 import com.emikhalets.medialib.presentation.core.AppAsyncImage
 import com.emikhalets.medialib.presentation.core.AppLoader
 import com.emikhalets.medialib.presentation.core.AppTextFullScreen
 import com.emikhalets.medialib.presentation.core.AppTopBar
 import com.emikhalets.medialib.presentation.core.DetailsSection
+import com.emikhalets.medialib.presentation.core.DetailsSectionList
 import com.emikhalets.medialib.presentation.core.RatingBar
 import com.emikhalets.medialib.presentation.core.TextPrimary
 import com.emikhalets.medialib.presentation.core.TextSecondary
@@ -217,6 +219,11 @@ private fun DetailsScreen(
                 content = entity.formatGenres(),
                 modifier = Modifier.padding(top = 8.dp)
             )
+            DetailsSectionList(
+                header = stringResource(R.string.movie_details_ratings),
+                content = entity.formatRatings(),
+                modifier = Modifier.padding(top = 8.dp)
+            )
             DetailsSection(
                 header = stringResource(R.string.movie_details_overview),
                 content = entity.movieEntity.overview,
@@ -257,6 +264,11 @@ private fun ScreenPreview() {
                     GenreEntity("Drama", GenreType.MOVIE),
                     GenreEntity("Action", GenreType.MOVIE),
                     GenreEntity("Drama", GenreType.MOVIE)
+                ),
+                ratings = listOf(
+                    RatingEntity("IMDB", "123"),
+                    RatingEntity("IMDB", "123"),
+                    RatingEntity("IMDB", "123")
                 )
             ),
             poster = "",

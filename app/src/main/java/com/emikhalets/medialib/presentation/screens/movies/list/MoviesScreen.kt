@@ -234,7 +234,8 @@ private fun MovieItemPreview() {
                     GenreEntity("Drama", GenreType.MOVIE),
                     GenreEntity("Action", GenreType.MOVIE),
                     GenreEntity("Drama", GenreType.MOVIE)
-                )
+                ),
+                ratings = emptyList()
             )
         )
     }

@@ -4,8 +4,11 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
-import com.emikhalets.medialib.data.database.GenresConverters
+import com.emikhalets.medialib.data.database.converters.GenresConverters
+import com.emikhalets.medialib.data.database.converters.RatingsConverters
+import com.emikhalets.medialib.domain.entities.genres.GenreEntity
 import com.emikhalets.medialib.domain.entities.movies.MovieWatchStatus
+import com.emikhalets.medialib.domain.entities.ratings.RatingEntity
 import java.util.*
 
 @Entity(tableName = "movies_table")
@@ -23,5 +26,7 @@ data class MovieDbEntity(
     @ColumnInfo(name = "rating") val rating: Int,
     @ColumnInfo(name = "watch_status") val watchStatus: MovieWatchStatus,
     @TypeConverters(GenresConverters::class)
-    @ColumnInfo(name = "genres") val genres: List<String>,
+    @ColumnInfo(name = "genres") val genres: List<GenreEntity>,
+    @TypeConverters(RatingsConverters::class)
+    @ColumnInfo(name = "ratings", defaultValue = "") val ratings: List<RatingEntity>,
 )

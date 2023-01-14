@@ -39,7 +39,8 @@ class MovieEditViewModel @Inject constructor(
                         lastUpdateTimestamp = 0,
                         comment = ""
                     ),
-                    genres = emptyList()
+                    genres = emptyList(),
+                    ratings = emptyList()
                 )
                 setState { it.copy(loading = false, entity = entity) }
             } else {

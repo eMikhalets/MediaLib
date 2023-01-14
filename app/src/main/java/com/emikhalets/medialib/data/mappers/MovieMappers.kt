@@ -2,11 +2,13 @@ package com.emikhalets.medialib.data.mappers
 
 import com.emikhalets.medialib.data.database.movies.MovieDbEntity
 import com.emikhalets.medialib.data.network.entities.MovieRemoteEntity
+import com.emikhalets.medialib.data.network.entities.RatingsRemoteEntity
 import com.emikhalets.medialib.domain.entities.genres.GenreEntity
 import com.emikhalets.medialib.domain.entities.genres.GenreType
 import com.emikhalets.medialib.domain.entities.movies.MovieEntity
 import com.emikhalets.medialib.domain.entities.movies.MovieFullEntity
 import com.emikhalets.medialib.domain.entities.movies.MovieWatchStatus
+import com.emikhalets.medialib.domain.entities.ratings.RatingEntity
 import java.util.*
 
 object MovieMappers {
@@ -26,7 +28,8 @@ object MovieMappers {
                 rating = 0,
                 watchStatus = MovieWatchStatus.NONE,
             ),
-            genres = mapGenres(entity.genre)
+            genres = mapGenres(entity.genre),
+            ratings = mapRatings(entity.ratings)
         )
     }
 
@@ -34,6 +37,18 @@ object MovieMappers {
         return try {
             val arr = genres?.split(", ") ?: return emptyList()
             arr.map { GenreEntity(it, GenreType.MOVIE) }
+        } catch (ex: Exception) {
+            emptyList()
+        }
+    }
+
+    private fun mapRatings(ratings: List<RatingsRemoteEntity>?): List<RatingEntity> {
+        return try {
+            ratings?.mapNotNull {
+                val source = it.source ?: return@mapNotNull null
+                val value = it.value ?: return@mapNotNull null
+                RatingEntity(source, value)
+            } ?: return emptyList()
         } catch (ex: Exception) {
             emptyList()
         }
@@ -68,7 +83,8 @@ object MovieMappers {
             comment = entity.movieEntity.comment,
             rating = entity.movieEntity.rating,
             watchStatus = entity.movieEntity.watchStatus,
-            genres = entity.genres.map { it.name }
+            genres = entity.genres,
+            ratings = entity.ratings
         )
     }
 }

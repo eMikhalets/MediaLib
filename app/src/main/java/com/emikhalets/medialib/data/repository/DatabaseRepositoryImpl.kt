@@ -29,8 +29,9 @@ class DatabaseRepositoryImpl @Inject constructor(
             flow.map { list ->
                 list.map { movieDb ->
                     val movieEntity = MovieMappers.mapDbEntityToEntity(movieDb)
-                    val genres = getGenres(movieDb.genres)
-                    MovieFullEntity(movieEntity, genres)
+                    val genres = movieDb.genres
+                    val ratings = movieDb.ratings
+                    MovieFullEntity(movieEntity, genres, ratings)
                 }
             }
         }
@@ -41,8 +42,9 @@ class DatabaseRepositoryImpl @Inject constructor(
             val flow = moviesDao.getItemFlow(movieId)
             flow.map { movieDb ->
                 val movieEntity = MovieMappers.mapDbEntityToEntity(movieDb)
-                val genres = getGenres(movieDb.genres)
-                MovieFullEntity(movieEntity, genres)
+                val genres = movieDb.genres
+                val ratings = movieDb.ratings
+                MovieFullEntity(movieEntity, genres, ratings)
             }
         }
     }
@@ -51,8 +53,9 @@ class DatabaseRepositoryImpl @Inject constructor(
         return execute {
             val movieDb = moviesDao.getItem(movieId)
             val movieEntity = MovieMappers.mapDbEntityToEntity(movieDb)
-            val genres = getGenres(movieDb.genres)
-            MovieFullEntity(movieEntity, genres)
+            val genres = movieDb.genres
+            val ratings = movieDb.ratings
+            MovieFullEntity(movieEntity, genres, ratings)
         }
     }
 
@@ -89,8 +92,9 @@ class DatabaseRepositoryImpl @Inject constructor(
             flow.map { list ->
                 list.map { serialDb ->
                     val serialEntity = SerialMappers.mapDbEntityToEntity(serialDb)
-                    val genres = getGenres(serialDb.genres)
-                    SerialFullEntity(serialEntity, genres)
+                    val genres = serialDb.genres
+                    val ratings = serialDb.ratings
+                    SerialFullEntity(serialEntity, genres, ratings)
                 }
             }
         }
@@ -101,8 +105,9 @@ class DatabaseRepositoryImpl @Inject constructor(
             val flow = serialsDao.getItemFlow(serialId)
             flow.map { serialDb ->
                 val serialEntity = SerialMappers.mapDbEntityToEntity(serialDb)
-                val genres = getGenres(serialDb.genres)
-                SerialFullEntity(serialEntity, genres)
+                val genres = serialDb.genres
+                val ratings = serialDb.ratings
+                SerialFullEntity(serialEntity, genres, ratings)
             }
         }
     }
@@ -111,8 +116,9 @@ class DatabaseRepositoryImpl @Inject constructor(
         return execute {
             val serialDb = serialsDao.getItem(serialId)
             val serialEntity = SerialMappers.mapDbEntityToEntity(serialDb)
-            val genres = getGenres(serialDb.genres)
-            SerialFullEntity(serialEntity, genres)
+            val genres = serialDb.genres
+            val ratings = serialDb.ratings
+            SerialFullEntity(serialEntity, genres, ratings)
         }
     }
 
