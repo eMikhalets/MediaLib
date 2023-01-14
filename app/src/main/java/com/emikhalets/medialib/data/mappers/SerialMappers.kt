@@ -63,7 +63,6 @@ object SerialMappers {
             overview = entity.serialEntity.overview,
             poster = entity.serialEntity.poster,
             year = entity.serialEntity.year,
-            imdbRating = 0.0,
             saveTimestamp = entity.serialEntity.saveTimestamp,
             lastUpdateTimestamp = entity.serialEntity.lastUpdateTimestamp,
             comment = entity.serialEntity.comment,

@@ -1,10 +1,13 @@
 package com.emikhalets.medialib.data.database
 
 import android.content.Context
+import androidx.room.AutoMigration
 import androidx.room.Database
+import androidx.room.DeleteColumn
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import androidx.room.migration.AutoMigrationSpec
 import com.emikhalets.medialib.data.database.genres.GenreDbEntity
 import com.emikhalets.medialib.data.database.genres.GenresDao
 import com.emikhalets.medialib.data.database.movies.MovieDbEntity
@@ -18,8 +21,10 @@ import com.emikhalets.medialib.data.database.serials.SerialsDao
         SerialDbEntity::class,
         GenreDbEntity::class,
     ],
-    autoMigrations = [],
-    version = 1,
+    autoMigrations = [
+        AutoMigration(from = 1, to = 2, spec = MigrationFrom1To2::class)
+    ],
+    version = 2,
     exportSchema = true
 )
 @TypeConverters(GenresConverters::class)
@@ -42,3 +47,7 @@ abstract class AppDatabase : RoomDatabase() {
             Room.databaseBuilder(context, AppDatabase::class.java, "MediaLib.db").build()
     }
 }
+
+@DeleteColumn(tableName = "movies_table", columnName = "imdb_rating")
+@DeleteColumn(tableName = "serials_table", columnName = "imdb_rating")
+class MigrationFrom1To2 : AutoMigrationSpec

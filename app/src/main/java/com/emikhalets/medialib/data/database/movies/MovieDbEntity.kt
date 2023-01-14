@@ -17,7 +17,6 @@ data class MovieDbEntity(
     @ColumnInfo(name = "overview") val overview: String,
     @ColumnInfo(name = "poster") val poster: String,
     @ColumnInfo(name = "year") val year: Int,
-    @ColumnInfo(name = "imdb_rating") val imdbRating: Double,
     @ColumnInfo(name = "save_timestamp") val saveTimestamp: Long,
     @ColumnInfo(name = "last_update_timestamp") val lastUpdateTimestamp: Long,
     @ColumnInfo(name = "comment") val comment: String,

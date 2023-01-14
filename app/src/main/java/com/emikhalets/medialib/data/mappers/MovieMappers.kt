@@ -63,7 +63,6 @@ object MovieMappers {
             overview = entity.movieEntity.overview,
             poster = entity.movieEntity.poster,
             year = entity.movieEntity.year,
-            imdbRating = 0.0,
             saveTimestamp = entity.movieEntity.saveTimestamp,
             lastUpdateTimestamp = entity.movieEntity.lastUpdateTimestamp,
             comment = entity.movieEntity.comment,
