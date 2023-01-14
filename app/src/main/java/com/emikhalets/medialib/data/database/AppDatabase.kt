@@ -11,6 +11,8 @@ import androidx.room.migration.AutoMigrationSpec
 import com.emikhalets.medialib.data.database.converters.CrewConverters
 import com.emikhalets.medialib.data.database.converters.GenresConverters
 import com.emikhalets.medialib.data.database.converters.RatingsConverters
+import com.emikhalets.medialib.data.database.crew.CrewDao
+import com.emikhalets.medialib.data.database.crew.CrewDbEntity
 import com.emikhalets.medialib.data.database.genres.GenreDbEntity
 import com.emikhalets.medialib.data.database.genres.GenresDao
 import com.emikhalets.medialib.data.database.movies.MovieDbEntity
@@ -23,6 +25,7 @@ import com.emikhalets.medialib.data.database.serials.SerialsDao
         MovieDbEntity::class,
         SerialDbEntity::class,
         GenreDbEntity::class,
+        CrewDbEntity::class,
     ],
     autoMigrations = [
         AutoMigration(from = 1, to = 2, spec = MigrationFrom1To2::class)
@@ -36,6 +39,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract val moviesDao: MoviesDao
     abstract val serialsDao: SerialsDao
     abstract val genresDao: GenresDao
+    abstract val crewDao: CrewDao
 
     companion object {
 

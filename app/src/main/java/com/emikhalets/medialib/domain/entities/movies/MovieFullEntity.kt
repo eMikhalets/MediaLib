@@ -5,6 +5,7 @@ import com.emikhalets.medialib.domain.entities.crew.CrewEntity
 import com.emikhalets.medialib.domain.entities.genres.GenreEntity
 import com.emikhalets.medialib.domain.entities.ratings.CrewType.Companion.getTypeName
 import com.emikhalets.medialib.domain.entities.ratings.RatingEntity
+import com.emikhalets.medialib.utils.FIELD_N_A
 
 data class MovieFullEntity(
     val movieEntity: MovieEntity,
@@ -28,22 +29,16 @@ data class MovieFullEntity(
 
     fun formatListItemInfo(): String {
         return buildString {
-            if (movieEntity.runtime.isNotEmpty()) {
+            if (movieEntity.runtime.isNotEmpty() && movieEntity.runtime != FIELD_N_A) {
                 append(movieEntity.runtime)
             }
             if (movieEntity.year > 0) {
-                if (this.isEmpty()) {
-                    append(movieEntity.year.toString())
-                } else {
-                    append("  -  ${movieEntity.year}")
-                }
+                if (this.isNotEmpty()) append("  -  ")
+                append(movieEntity.year.toString())
             }
             if (genres.isNotEmpty()) {
-                if (this.isEmpty()) {
-                    append(genres.joinToString { it.name })
-                } else {
-                    append("  -  ${genres.joinToString { it.name }}")
-                }
+                if (this.isNotEmpty()) append("  -  ")
+                append(genres.joinToString { it.name })
             }
         }
     }
@@ -54,11 +49,8 @@ data class MovieFullEntity(
                 append(movieEntity.runtime)
             }
             if (movieEntity.year > 0) {
-                if (this.isEmpty()) {
-                    append(movieEntity.year.toString())
-                } else {
-                    append("  -  ${movieEntity.year}")
-                }
+                if (this.isNotEmpty()) append("  -  ")
+                append(movieEntity.year.toString())
             }
         }
     }

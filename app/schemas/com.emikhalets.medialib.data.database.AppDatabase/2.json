@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 2,
-    "identityHash": "4f9e661b5c4bd94353a28c3a717e7277",
+    "identityHash": "13ac31b444befb199b877ead98568e92",
     "entities": [
       {
         "tableName": "movies_table",
@@ -257,12 +257,38 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "crew_table",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`name` TEXT NOT NULL, `type` TEXT NOT NULL, PRIMARY KEY(`name`))",
+        "fields": [
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "type",
+            "columnName": "type",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "name"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '4f9e661b5c4bd94353a28c3a717e7277')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '13ac31b444befb199b877ead98568e92')"
     ]
   }
 }

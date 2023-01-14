@@ -11,6 +11,7 @@ import com.emikhalets.medialib.domain.entities.ratings.RatingEntity
 import com.emikhalets.medialib.domain.entities.serials.SerialEntity
 import com.emikhalets.medialib.domain.entities.serials.SerialFullEntity
 import com.emikhalets.medialib.domain.entities.serials.SerialWatchStatus
+import com.emikhalets.medialib.utils.FIELD_N_A
 import java.util.*
 
 object SerialMappers {
@@ -64,15 +65,18 @@ object SerialMappers {
             val list = mutableListOf<CrewEntity>()
             if (!director.isNullOrBlank()) {
                 val arr = director.split(", ")
-                arr.forEach { list.add(CrewEntity(it, CrewType.DIRECTOR)) }
+                arr.filterNot { it == FIELD_N_A }
+                    .forEach { list.add(CrewEntity(it, CrewType.DIRECTOR)) }
             }
             if (!whiter.isNullOrBlank()) {
                 val arr = whiter.split(", ")
-                arr.forEach { list.add(CrewEntity(it, CrewType.WRITER)) }
+                arr.filterNot { it == FIELD_N_A }
+                    .forEach { list.add(CrewEntity(it, CrewType.WRITER)) }
             }
             if (!actors.isNullOrBlank()) {
                 val arr = actors.split(", ")
-                arr.forEach { list.add(CrewEntity(it, CrewType.ACTOR)) }
+                arr.filterNot { it == FIELD_N_A }
+                    .forEach { list.add(CrewEntity(it, CrewType.ACTOR)) }
             }
             return list
         } catch (ex: Exception) {

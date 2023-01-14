@@ -5,6 +5,7 @@ import com.emikhalets.medialib.domain.entities.crew.CrewEntity
 import com.emikhalets.medialib.domain.entities.genres.GenreEntity
 import com.emikhalets.medialib.domain.entities.ratings.CrewType.Companion.getTypeName
 import com.emikhalets.medialib.domain.entities.ratings.RatingEntity
+import com.emikhalets.medialib.utils.FIELD_N_A
 
 data class SerialFullEntity(
     val serialEntity: SerialEntity,
@@ -28,37 +29,28 @@ data class SerialFullEntity(
 
     fun formatListItemInfo(): String {
         return buildString {
-            if (serialEntity.runtime.isNotEmpty()) {
+            if (serialEntity.runtime.isNotEmpty() && serialEntity.runtime != FIELD_N_A) {
                 append(serialEntity.runtime)
             }
             if (serialEntity.year > 0) {
-                if (this.isEmpty()) {
-                    append(serialEntity.year.toString())
-                } else {
-                    append("  -  ${serialEntity.year}")
-                }
+                if (this.isNotEmpty()) append("  -  ")
+                append(serialEntity.year.toString())
             }
             if (genres.isNotEmpty()) {
-                if (this.isEmpty()) {
-                    append(genres.joinToString { it.name })
-                } else {
-                    append("  -  ${genres.joinToString { it.name }}")
-                }
+                if (this.isNotEmpty()) append("  -  ")
+                append(genres.joinToString { it.name })
             }
         }
     }
 
     fun formatDetailsInfo(): String {
         return buildString {
-            if (serialEntity.runtime.isNotEmpty()) {
+            if (serialEntity.runtime.isNotEmpty() && serialEntity.runtime != FIELD_N_A) {
                 append(serialEntity.runtime)
             }
             if (serialEntity.year > 0) {
-                if (this.isEmpty()) {
-                    append(serialEntity.year.toString())
-                } else {
-                    append("  -  ${serialEntity.year}")
-                }
+                if (this.isNotEmpty()) append("  -  ")
+                append(serialEntity.year.toString())
             }
         }
     }
