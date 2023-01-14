@@ -4,112 +4,83 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
+import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
+import androidx.compose.material.ScaffoldState
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.emikhalets.medialib.data.entity.support.MenuIconEntity
-import com.emikhalets.medialib.presentation.AppScreen
-import com.emikhalets.medialib.utils.ifNullOrEmpty
+import androidx.navigation.compose.rememberNavController
+import com.emikhalets.medialib.presentation.theme.AppColors.textSecondary
+import com.emikhalets.medialib.presentation.theme.AppTheme
+import com.emikhalets.medialib.utils.navigation.AppScreen
+import com.emikhalets.medialib.utils.navigation.AppScreen.Companion.getBottomBarIconRes
+import com.emikhalets.medialib.utils.navigation.AppScreen.Companion.getBottomBarTextRes
 
 @Composable
 fun AppScaffold(
     navController: NavHostController,
-    title: String? = "",
-    actions: List<MenuIconEntity> = emptyList(),
+    scaffoldState: ScaffoldState,
     content: @Composable () -> Unit,
 ) {
-    val scaffoldState = rememberScaffoldState()
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
-
-    val rootScreens = remember { listOf(AppScreen.Main, AppScreen.Search) }
-    val isRootScreen = AppScreen.isRootScreen(navBackStackEntry)
-
     Scaffold(
         scaffoldState = scaffoldState,
-        topBar = { AppToolbar(title, isRootScreen, navController, actions) },
-        bottomBar = { AppBottomBar(navController, rootScreens) },
-        content = { Box(modifier = Modifier.padding(it)) { content() } }
-    )
-}
-
-@Composable
-private fun AppToolbar(
-    title: String?,
-    isCurrentScreenRoot: Boolean,
-    navController: NavHostController,
-    actions: List<MenuIconEntity>,
-) {
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val toolbarTitle = title.ifNullOrEmpty { AppScreen.getTitle(navBackStackEntry) }
-
-    TopAppBar(
-        title = {
-            Text(
-                text = toolbarTitle,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
-        },
-        elevation = 0.dp,
-        navigationIcon = if (isCurrentScreenRoot) {
-            null
-        } else {
-            {
-                AppIcon(
-                    imageVector = Icons.Rounded.ArrowBack,
-                    onClick = { navController.popBackStack() },
-                    modifier = Modifier.padding(20.dp, 16.dp)
-                )
-            }
-        },
-        actions = {
-            actions.forEach { menuItem ->
-                AppIcon(
-                    imageVector = menuItem.icon,
-                    onClick = { menuItem.onClick() },
-                    modifier = Modifier.padding(10.dp, 16.dp)
-                )
+        bottomBar = { AppBottomBar(navController) }
+    ) {
+        Surface(color = MaterialTheme.colors.surface) {
+            Box(modifier = Modifier.padding(it)) {
+                content()
             }
         }
-    )
+    }
 }
 
 @Composable
-private fun AppBottomBar(
-    navController: NavHostController,
-    rootScreens: List<AppScreen>,
-) {
+private fun AppBottomBar(navController: NavHostController) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
 
     BottomNavigation {
-        rootScreens.forEach { screen ->
+        AppScreen.getBottomBarItems().forEach { screen ->
             BottomNavigationItem(
-                icon = { AppIcon(screen.icon) },
-                label = { Text(stringResource(screen.titleRes)) },
+                icon = { Icon(painterResource(screen.getBottomBarIconRes()), null) },
+                label = { Text(stringResource(screen.getBottomBarTextRes())) },
                 selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true,
+                selectedContentColor = MaterialTheme.colors.onPrimary,
+                unselectedContentColor = MaterialTheme.colors.textSecondary,
                 onClick = {
                     navController.navigate(screen.route) {
+                        // TODO: navigate to library screen?
                         popUpTo(navController.graph.findStartDestination().id) { saveState = true }
                         launchSingleTop = true
                         restoreState = true
                     }
                 }
             )
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun Preview() {
+    AppTheme {
+        AppScaffold(
+            navController = rememberNavController(),
+            scaffoldState = rememberScaffoldState()
+        ) {
+            Text(text = "Test")
         }
     }
 }

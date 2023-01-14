@@ -1,14 +1,12 @@
 package com.emikhalets.medialib.utils
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.*
@@ -27,6 +25,10 @@ fun Long.formatDate(pattern: String = "dd.MM.yyyy"): String {
     return formatter.format(this)
 }
 
+fun Int.formatYear(): Int {
+    return if (this == 0) Calendar.getInstance().get(Calendar.YEAR) else this
+}
+
 fun String.toDate(pattern: String = "dd.MM.yyyy"): String {
     val formatter = SimpleDateFormat(pattern, Locale.getDefault())
     return formatter.format(this)
@@ -39,11 +41,27 @@ val Int.px: Float
 inline fun String?.ifNullOrEmpty(defaultValue: () -> String): String =
     if (isNullOrEmpty()) defaultValue() else this
 
-fun String.toSafeInt(): Int {
+fun String?.toSafeInt(): Int {
     return try {
-        this.toInt()
+        this?.toInt() ?: 0
     } catch (ex: NumberFormatException) {
         0
+    }
+}
+
+fun String?.toIntSafe(): Int {
+    return try {
+        this?.toInt() ?: 0
+    } catch (ex: NumberFormatException) {
+        0
+    }
+}
+
+fun String?.toDoubleSafe(): Double {
+    return try {
+        this?.toDouble() ?: 0.0
+    } catch (ex: NumberFormatException) {
+        0.0
     }
 }
 
@@ -55,10 +73,10 @@ fun String.toSafeLong(): Long {
     }
 }
 
-fun ViewModel.launchDefault(content: suspend CoroutineScope.() -> Unit): Job {
-    return viewModelScope.launch(Dispatchers.Default) { content() }
+fun String.toast(context: Context) {
+    Toast.makeText(context, this, Toast.LENGTH_SHORT).show()
 }
 
-fun ViewModel.launchIo(content: suspend CoroutineScope.() -> Unit): Job {
-    return viewModelScope.launch(Dispatchers.IO) { content() }
+fun getRandomText(words: Int = 500): String {
+    return LoremIpsum(words).values.joinToString()
 }
