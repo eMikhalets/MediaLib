@@ -2,11 +2,12 @@ package com.emikhalets.medialib.data.mappers
 
 import com.emikhalets.medialib.data.database.serials.SerialDbEntity
 import com.emikhalets.medialib.data.network.entities.MovieRemoteEntity
+import com.emikhalets.medialib.domain.entities.genres.GenreEntity
+import com.emikhalets.medialib.domain.entities.genres.GenreType
 import com.emikhalets.medialib.domain.entities.serials.SerialEntity
 import com.emikhalets.medialib.domain.entities.serials.SerialFullEntity
 import com.emikhalets.medialib.domain.entities.serials.SerialWatchStatus
-import com.emikhalets.medialib.utils.toDoubleSafe
-import com.emikhalets.medialib.utils.toSafeInt
+import java.util.*
 
 object SerialMappers {
 
@@ -16,18 +17,26 @@ object SerialMappers {
                 id = 0,
                 title = entity.title ?: "",
                 titleRu = "",
-                overview = "",
+                overview = entity.plot ?: "",
                 poster = entity.poster ?: "",
-                year = entity.year.toSafeInt(),
-                imdbRating = entity.rating.toDoubleSafe(),
-                saveTimestamp = 0,
-                lastUpdateTimestamp = 0,
+                year = entity.formatYear(),
+                saveTimestamp = Calendar.getInstance().timeInMillis,
+                lastUpdateTimestamp = Calendar.getInstance().timeInMillis,
                 comment = "",
                 rating = 0,
                 watchStatus = SerialWatchStatus.NONE,
             ),
-            genres = emptyList()
+            genres = mapGenres(entity.genre)
         )
+    }
+
+    private fun mapGenres(genres: String?): List<GenreEntity> {
+        return try {
+            val arr = genres?.split(", ") ?: return emptyList()
+            arr.map { GenreEntity(it, GenreType.SERIAL) }
+        } catch (ex: Exception) {
+            emptyList()
+        }
     }
 
     fun mapDbEntityToEntity(entity: SerialDbEntity): SerialEntity {
@@ -38,7 +47,6 @@ object SerialMappers {
             overview = entity.overview,
             poster = entity.poster,
             year = entity.year,
-            imdbRating = entity.imdbRating,
             saveTimestamp = entity.saveTimestamp,
             lastUpdateTimestamp = entity.lastUpdateTimestamp,
             comment = entity.comment,
@@ -55,7 +63,7 @@ object SerialMappers {
             overview = entity.serialEntity.overview,
             poster = entity.serialEntity.poster,
             year = entity.serialEntity.year,
-            imdbRating = entity.serialEntity.imdbRating,
+            imdbRating = 0.0,
             saveTimestamp = entity.serialEntity.saveTimestamp,
             lastUpdateTimestamp = entity.serialEntity.lastUpdateTimestamp,
             comment = entity.serialEntity.comment,

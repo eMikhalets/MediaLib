@@ -1,4 +1,4 @@
-package com.emikhalets.medialib.presentation.screens.movies.list
+package com.emikhalets.medialib.presentation.screens.serials.list
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -28,10 +28,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.emikhalets.medialib.R
 import com.emikhalets.medialib.domain.entities.genres.GenreEntity
 import com.emikhalets.medialib.domain.entities.genres.GenreType
-import com.emikhalets.medialib.domain.entities.movies.MovieEntity
-import com.emikhalets.medialib.domain.entities.movies.MovieFullEntity
-import com.emikhalets.medialib.domain.entities.movies.MovieWatchStatus
-import com.emikhalets.medialib.domain.entities.movies.MovieWatchStatus.Companion.getIconRes
+import com.emikhalets.medialib.domain.entities.serials.SerialEntity
+import com.emikhalets.medialib.domain.entities.serials.SerialFullEntity
+import com.emikhalets.medialib.domain.entities.serials.SerialWatchStatus
+import com.emikhalets.medialib.domain.entities.serials.SerialWatchStatus.Companion.getIconRes
 import com.emikhalets.medialib.presentation.core.AppAsyncImage
 import com.emikhalets.medialib.presentation.core.AppLoader
 import com.emikhalets.medialib.presentation.core.AppTextFullScreen
@@ -46,11 +46,11 @@ import com.emikhalets.medialib.presentation.theme.AppTheme
 import com.emikhalets.medialib.utils.toast
 
 @Composable
-fun MoviesScreen(
-    navigateToMovieDetails: (movieId: Long) -> Unit,
-    navigateToMovieEdit: () -> Unit,
+fun SerialsScreen(
+    navigateToSerialDetails: (serialId: Long) -> Unit,
+    navigateToSerialEdit: () -> Unit,
     navigateBack: () -> Unit,
-    viewModel: MoviesViewModel = hiltViewModel(),
+    viewModel: SerialsViewModel = hiltViewModel(),
 ) {
     val context = LocalContext.current
     val state by viewModel.state.collectAsState()
@@ -58,7 +58,7 @@ fun MoviesScreen(
     var query by remember { mutableStateOf("") }
 
     LaunchedEffect(Unit) {
-        viewModel.getMoviesList()
+        viewModel.getSerialsList()
     }
 
     LaunchedEffect(state.error) {
@@ -73,57 +73,57 @@ fun MoviesScreen(
     if (state.loading) {
         AppLoader()
     } else {
-        MoviesScreen(
+        SerialsScreen(
             query = query,
-            moviesList = state.showedMovies,
+            serialsList = state.showedSerials,
             onQueryChange = {
                 query = it
-                viewModel.searchMovies(query)
+                viewModel.searchSerials(query)
             },
-            onAddMovieClick = { navigateToMovieEdit() },
-            onMovieClick = { movieId -> navigateToMovieDetails(movieId) },
+            onAddSerialClick = { navigateToSerialEdit() },
+            onSerialClick = { serialId -> navigateToSerialDetails(serialId) },
             onBackClick = navigateBack
         )
     }
 }
 
 @Composable
-private fun MoviesScreen(
+private fun SerialsScreen(
     query: String,
-    moviesList: List<MovieFullEntity>,
+    serialsList: List<SerialFullEntity>,
     onQueryChange: (String) -> Unit,
-    onAddMovieClick: () -> Unit,
-    onMovieClick: (movieId: Long) -> Unit,
+    onAddSerialClick: () -> Unit,
+    onSerialClick: (serialId: Long) -> Unit,
     onBackClick: () -> Unit,
 ) {
     Column(modifier = Modifier.fillMaxSize()) {
         AppTopBar(
-            title = stringResource(id = R.string.screen_title_movies),
+            title = stringResource(id = R.string.screen_title_serials),
             onNavigateBack = onBackClick
         )
         SearchBox(
             query = query,
-            placeholder = stringResource(id = R.string.movies_search_placeholder),
+            placeholder = stringResource(id = R.string.serials_search_placeholder),
             onQueryChange = onQueryChange,
-            onAddClick = onAddMovieClick,
+            onAddClick = onAddSerialClick,
             modifier = Modifier.padding(8.dp)
         )
 
-        if (moviesList.isEmpty()) {
-            AppTextFullScreen(text = stringResource(id = R.string.movies_empty_list))
+        if (serialsList.isEmpty()) {
+            AppTextFullScreen(text = stringResource(id = R.string.serials_empty_list))
         } else {
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(horizontal = 8.dp)
             ) {
-                items(moviesList) { entity ->
-                    MovieBox(
+                items(serialsList) { entity ->
+                    SerialBox(
                         entity = entity,
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(vertical = 4.dp)
-                            .clickable { onMovieClick(entity.movieEntity.id) }
+                            .clickable { onSerialClick(entity.serialEntity.id) }
                     )
                 }
             }
@@ -132,8 +132,8 @@ private fun MoviesScreen(
 }
 
 @Composable
-private fun MovieBox(
-    entity: MovieFullEntity,
+private fun SerialBox(
+    entity: SerialFullEntity,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -141,7 +141,7 @@ private fun MovieBox(
         modifier = modifier
     ) {
         AppAsyncImage(
-            url = entity.movieEntity.poster,
+            url = entity.serialEntity.poster,
             height = 100.dp
         )
         Column(
@@ -151,28 +151,28 @@ private fun MovieBox(
         ) {
             Row(modifier = Modifier.fillMaxWidth()) {
                 TextTitle(
-                    text = entity.movieEntity.title,
+                    text = entity.serialEntity.title,
                     fontSize = 18.sp,
                     textAlign = TextAlign.Start,
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(1f)
                 )
-                val statusIcon = entity.movieEntity.watchStatus.getIconRes()
+                val statusIcon = entity.serialEntity.watchStatus.getIconRes()
                 if (statusIcon != null) {
                     IconPrimary(drawableRes = statusIcon)
                 }
             }
-            if (entity.movieEntity.titleRu.isNotEmpty()) {
+            if (entity.serialEntity.titleRu.isNotEmpty()) {
                 TextSecondary(
-                    text = entity.movieEntity.titleRu,
+                    text = entity.serialEntity.titleRu,
                     fontSize = 14.sp,
                     modifier = Modifier.fillMaxWidth()
                 )
             }
-            if (entity.movieEntity.rating > 0) {
+            if (entity.serialEntity.rating > 0) {
                 RatingBar(
-                    rating = entity.movieEntity.rating,
+                    rating = entity.serialEntity.rating,
                     pointSize = 14.dp,
                     modifier = Modifier.padding(top = 4.dp)
                 )
@@ -197,12 +197,12 @@ private fun MovieBox(
 @Composable
 private fun ScreenPreview() {
     AppTheme {
-        MoviesScreen(
+        SerialsScreen(
             query = "",
-            moviesList = emptyList(),
+            serialsList = emptyList(),
             onQueryChange = {},
-            onAddMovieClick = {},
-            onMovieClick = {},
+            onAddSerialClick = {},
+            onSerialClick = {},
             onBackClick = {}
         )
     }
@@ -210,17 +210,17 @@ private fun ScreenPreview() {
 
 @Preview(showBackground = true)
 @Composable
-private fun MovieItemPreview() {
+private fun SerialItemPreview() {
     AppTheme {
-        MovieBox(
-            entity = MovieFullEntity(
-                movieEntity = MovieEntity(
+        SerialBox(
+            entity = SerialFullEntity(
+                serialEntity = SerialEntity(
                     id = 0,
-                    title = "Movie name",
-                    titleRu = "Movie name",
+                    title = "Serial name",
+                    titleRu = "Serial name",
                     year = 2015,
                     rating = 4,
-                    watchStatus = MovieWatchStatus.WATCH,
+                    watchStatus = SerialWatchStatus.WATCH,
                     overview = "",
                     poster = "",
                     saveTimestamp = 0,
@@ -228,12 +228,12 @@ private fun MovieItemPreview() {
                     comment = ""
                 ),
                 genres = listOf(
-                    GenreEntity("Action", GenreType.MOVIE),
-                    GenreEntity("Drama", GenreType.MOVIE),
-                    GenreEntity("Action", GenreType.MOVIE),
-                    GenreEntity("Drama", GenreType.MOVIE),
-                    GenreEntity("Action", GenreType.MOVIE),
-                    GenreEntity("Drama", GenreType.MOVIE)
+                    GenreEntity("Action", GenreType.SERIAL),
+                    GenreEntity("Drama", GenreType.SERIAL),
+                    GenreEntity("Action", GenreType.SERIAL),
+                    GenreEntity("Drama", GenreType.SERIAL),
+                    GenreEntity("Action", GenreType.SERIAL),
+                    GenreEntity("Drama", GenreType.SERIAL)
                 )
             )
         )

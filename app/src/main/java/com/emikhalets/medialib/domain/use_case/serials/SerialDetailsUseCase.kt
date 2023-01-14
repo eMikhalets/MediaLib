@@ -8,8 +8,8 @@ class SerialDetailsUseCase(
     private val databaseRepository: DatabaseRepository,
 ) {
 
-    suspend fun getSerial(serialId: Long): Result<Flow<SerialFullEntity>> {
-        return databaseRepository.getSerialFlowById(serialId)
+    suspend fun getSerial(serialId: Long): Result<SerialFullEntity> {
+        return databaseRepository.getSerialById(serialId)
     }
 
     suspend fun updateSerialPosterUrl(posterUrl: String, entity: SerialFullEntity): Result<Unit> {
@@ -22,5 +22,9 @@ class SerialDetailsUseCase(
         val newMovieEntity = entity.serialEntity.copy(rating = rating)
         val newEntity = entity.copy(serialEntity = newMovieEntity)
         return databaseRepository.updateSerial(newEntity)
+    }
+
+    suspend fun deleteSerial(entity: SerialFullEntity): Result<Unit> {
+        return databaseRepository.deleteSerial(entity)
     }
 }

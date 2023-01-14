@@ -7,7 +7,6 @@ import com.emikhalets.medialib.domain.entities.genres.GenreType
 import com.emikhalets.medialib.domain.entities.movies.MovieEntity
 import com.emikhalets.medialib.domain.entities.movies.MovieFullEntity
 import com.emikhalets.medialib.domain.entities.movies.MovieWatchStatus
-import com.emikhalets.medialib.utils.toDoubleSafe
 import java.util.*
 
 object MovieMappers {
@@ -21,7 +20,6 @@ object MovieMappers {
                 overview = entity.plot ?: "",
                 poster = entity.poster ?: "",
                 year = entity.formatYear(),
-                imdbRating = entity.rating.toDoubleSafe(),
                 saveTimestamp = Calendar.getInstance().timeInMillis,
                 lastUpdateTimestamp = Calendar.getInstance().timeInMillis,
                 comment = "",
@@ -49,7 +47,6 @@ object MovieMappers {
             overview = entity.overview,
             poster = entity.poster,
             year = entity.year,
-            imdbRating = entity.imdbRating,
             saveTimestamp = entity.saveTimestamp,
             lastUpdateTimestamp = entity.lastUpdateTimestamp,
             comment = entity.comment,
@@ -66,7 +63,7 @@ object MovieMappers {
             overview = entity.movieEntity.overview,
             poster = entity.movieEntity.poster,
             year = entity.movieEntity.year,
-            imdbRating = entity.movieEntity.imdbRating,
+            imdbRating = 0.0,
             saveTimestamp = entity.movieEntity.saveTimestamp,
             lastUpdateTimestamp = entity.movieEntity.lastUpdateTimestamp,
             comment = entity.movieEntity.comment,

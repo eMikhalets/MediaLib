@@ -31,12 +31,25 @@
     <!--  Serials  -->
     <string name="serials_empty_list">Serials list is empty</string>
     <string name="serials_search_placeholder">Serial name</string>
+    <string name="serial_details_comment">Comment</string>
+    <string name="serial_details_overview">Overview</string>
+    <string name="serial_details_genres">Genres</string>
+    <string name="serial_edit_new">New Serial</string>
+    <string name="serial_edit_title">Title</string>
+    <string name="serial_edit_title_ru">Title russian</string>
+    <string name="serial_edit_genres">Genres</string>
+    <string name="serial_edit_year">Year</string>
+    <string name="serial_edit_comment">Comment</string>
+    <string name="serial_edit_watch_status">Watch status</string>
+    <string name="serial_edit_overview">Overview</string>
+    <string name="serial_edit_save">Save</string>
 
     <!--  Searching  -->
     <string name="searching_title">Searching</string>
     <string name="searching_menu_item_imdb">Search with IMDB</string>
     <string name="searching_imdb_link">https://www.imdb.com/</string>
-    <string name="searching_save">Save</string>
+    <string name="searching_save_movie">Save movie</string>
+    <string name="searching_save_serial">Save serial</string>
 
     <!--  Movie Watch Status  -->
     <string name="movie_status_watched">Watched</string>
@@ -63,8 +76,9 @@
     <string name="screen_title_library">Library</string>
     <string name="screen_title_searching">Searching</string>
     <string name="screen_title_movies">Movies</string>
-    <string name="screen_title_movie_details">Movie details</string>
     <string name="screen_title_serials">Serials</string>
+    <string name="screen_title_movie_details">Movie details</string>
+    <string name="screen_title_serial_details">Serial details</string>
 
 
     <string name="save">Save</string>

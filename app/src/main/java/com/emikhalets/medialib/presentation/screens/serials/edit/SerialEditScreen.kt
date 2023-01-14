@@ -1,4 +1,4 @@
-package com.emikhalets.medialib.presentation.screens.movies.edit
+package com.emikhalets.medialib.presentation.screens.serials.edit
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -27,10 +27,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.emikhalets.medialib.R
 import com.emikhalets.medialib.domain.entities.genres.GenreEntity
 import com.emikhalets.medialib.domain.entities.genres.GenreType
-import com.emikhalets.medialib.domain.entities.movies.MovieEntity
-import com.emikhalets.medialib.domain.entities.movies.MovieFullEntity
-import com.emikhalets.medialib.domain.entities.movies.MovieWatchStatus
-import com.emikhalets.medialib.domain.entities.movies.MovieWatchStatus.Companion.getText
+import com.emikhalets.medialib.domain.entities.serials.SerialEntity
+import com.emikhalets.medialib.domain.entities.serials.SerialFullEntity
+import com.emikhalets.medialib.domain.entities.serials.SerialWatchStatus
+import com.emikhalets.medialib.domain.entities.serials.SerialWatchStatus.Companion.getText
 import com.emikhalets.medialib.presentation.core.AppLoader
 import com.emikhalets.medialib.presentation.core.AppSpinner
 import com.emikhalets.medialib.presentation.core.AppTextField
@@ -45,10 +45,10 @@ import com.emikhalets.medialib.utils.getRandomText
 import com.emikhalets.medialib.utils.toast
 
 @Composable
-fun MovieEditScreen(
+fun SerialEditScreen(
     navigateBack: () -> Unit,
-    movieId: Long,
-    viewModel: MovieEditViewModel = hiltViewModel(),
+    serialId: Long,
+    viewModel: SerialEditViewModel = hiltViewModel(),
 ) {
     val context = LocalContext.current
     val state by viewModel.state.collectAsState()
@@ -58,24 +58,24 @@ fun MovieEditScreen(
     var genres by remember { mutableStateOf("") }
     var year by remember { mutableStateOf(0.formatYear()) }
     var comment by remember { mutableStateOf("") }
-    var watchStatus by remember { mutableStateOf(MovieWatchStatus.NONE) }
+    var watchStatus by remember { mutableStateOf(SerialWatchStatus.NONE) }
     var rating by remember { mutableStateOf(0) }
     var showYearDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
-        viewModel.getMovie(movieId)
+        viewModel.getSerial(serialId)
     }
 
     LaunchedEffect(state.entity) {
         val entity = state.entity
         if (entity != null) {
-            title = entity.movieEntity.title
-            titleRu = entity.movieEntity.titleRu
+            title = entity.serialEntity.title
+            titleRu = entity.serialEntity.titleRu
             genres = entity.formatGenres()
-            year = entity.movieEntity.year
-            comment = entity.movieEntity.comment
-            watchStatus = entity.movieEntity.watchStatus
-            rating = entity.movieEntity.rating
+            year = entity.serialEntity.year
+            comment = entity.serialEntity.comment
+            watchStatus = entity.serialEntity.watchStatus
+            rating = entity.serialEntity.rating
         }
     }
 
@@ -101,7 +101,7 @@ fun MovieEditScreen(
         if (entity == null) {
             AppTextFullScreen()
         } else {
-            MovieEditScreen(
+            SerialEditScreen(
                 entity = entity,
                 title = title,
                 titleRu = titleRu,
@@ -115,10 +115,10 @@ fun MovieEditScreen(
                 onGenresChanged = { genres = it },
                 onCommentChanged = { comment = it },
                 onRatingChanged = { rating = it },
-                onWatchStatusChanged = { watchStatus = MovieWatchStatus.getStatus(context, it) },
+                onWatchStatusChanged = { watchStatus = SerialWatchStatus.getStatus(context, it) },
                 onYearClick = { showYearDialog = true },
                 onSaveClick = {
-                    viewModel.saveMovie(
+                    viewModel.saveSerial(
                         title = title,
                         titleRu = titleRu,
                         genres = genres,
@@ -146,15 +146,15 @@ fun MovieEditScreen(
 }
 
 @Composable
-private fun MovieEditScreen(
-    entity: MovieFullEntity,
+private fun SerialEditScreen(
+    entity: SerialFullEntity,
     title: String,
     titleRu: String,
     genres: String,
     year: Int,
     comment: String,
     rating: Int,
-    watchStatus: MovieWatchStatus,
+    watchStatus: SerialWatchStatus,
     onTitleChanged: (String) -> Unit,
     onTitleRuChanged: (String) -> Unit,
     onGenresChanged: (String) -> Unit,
@@ -169,7 +169,7 @@ private fun MovieEditScreen(
 
     Column(modifier = Modifier.fillMaxSize()) {
         AppTopBar(
-            title = entity.movieEntity.title.ifEmpty { stringResource(R.string.movie_edit_new) },
+            title = entity.serialEntity.title.ifEmpty { stringResource(R.string.serial_edit_new) },
             onNavigateBack = onBackClick
         )
         Column(
@@ -183,7 +183,7 @@ private fun MovieEditScreen(
             AppTextField(
                 value = title,
                 onValueChange = onTitleChanged,
-                label = stringResource(R.string.movie_edit_title),
+                label = stringResource(R.string.serial_edit_title),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 8.dp)
@@ -191,7 +191,7 @@ private fun MovieEditScreen(
             AppTextField(
                 value = titleRu,
                 onValueChange = onTitleRuChanged,
-                label = stringResource(R.string.movie_edit_title_ru),
+                label = stringResource(R.string.serial_edit_title_ru),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 8.dp)
@@ -199,7 +199,7 @@ private fun MovieEditScreen(
             AppTextField(
                 value = genres,
                 onValueChange = onGenresChanged,
-                label = stringResource(R.string.movie_edit_genres),
+                label = stringResource(R.string.serial_edit_genres),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 8.dp)
@@ -207,7 +207,7 @@ private fun MovieEditScreen(
             AppTextField(
                 value = year.formatYear().toString(),
                 onValueChange = {},
-                label = stringResource(R.string.movie_edit_year),
+                label = stringResource(R.string.serial_edit_year),
                 enabled = false,
                 readOnly = true,
                 modifier = Modifier
@@ -218,7 +218,7 @@ private fun MovieEditScreen(
             AppTextField(
                 value = comment,
                 onValueChange = onCommentChanged,
-                label = stringResource(R.string.movie_edit_comment),
+                label = stringResource(R.string.serial_edit_comment),
                 maxLines = 5,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -226,8 +226,8 @@ private fun MovieEditScreen(
             )
             AppSpinner(
                 selectedItem = watchStatus.getText(),
-                items = MovieWatchStatus.getTextList(),
-                label = stringResource(R.string.movie_edit_watch_status),
+                items = SerialWatchStatus.getTextList(),
+                label = stringResource(R.string.serial_edit_watch_status),
                 onSelect = { onWatchStatusChanged(it) },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -239,7 +239,7 @@ private fun MovieEditScreen(
                 modifier = Modifier.padding(top = 16.dp)
             )
             ButtonPrimary(
-                text = stringResource(R.string.movie_edit_save),
+                text = stringResource(R.string.serial_edit_save),
                 onClick = onSaveClick,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -253,15 +253,15 @@ private fun MovieEditScreen(
 @Composable
 private fun ScreenPreview() {
     AppTheme {
-        MovieEditScreen(
-            entity = MovieFullEntity(
-                movieEntity = MovieEntity(
+        SerialEditScreen(
+            entity = SerialFullEntity(
+                serialEntity = SerialEntity(
                     id = 0,
-                    title = "Movie name",
-                    titleRu = "Movie name rus",
+                    title = "Serial name",
+                    titleRu = "Serial name rus",
                     year = 2015,
                     rating = 4,
-                    watchStatus = MovieWatchStatus.WATCH,
+                    watchStatus = SerialWatchStatus.WATCH,
                     overview = getRandomText(20),
                     poster = "",
                     saveTimestamp = 0,
@@ -269,21 +269,21 @@ private fun ScreenPreview() {
                     comment = getRandomText(20)
                 ),
                 genres = listOf(
-                    GenreEntity("Action", GenreType.MOVIE),
-                    GenreEntity("Drama", GenreType.MOVIE),
-                    GenreEntity("Action", GenreType.MOVIE),
-                    GenreEntity("Drama", GenreType.MOVIE),
-                    GenreEntity("Action", GenreType.MOVIE),
-                    GenreEntity("Drama", GenreType.MOVIE)
+                    GenreEntity("Action", GenreType.SERIAL),
+                    GenreEntity("Drama", GenreType.SERIAL),
+                    GenreEntity("Action", GenreType.SERIAL),
+                    GenreEntity("Drama", GenreType.SERIAL),
+                    GenreEntity("Action", GenreType.SERIAL),
+                    GenreEntity("Drama", GenreType.SERIAL)
                 )
             ),
-            title = "Movie name",
-            titleRu = "Movie name rus",
+            title = "Serial name",
+            titleRu = "Serial name rus",
             genres = "Action, Drama, Action, Drama",
             year = 2015,
             comment = getRandomText(20),
             rating = 4,
-            watchStatus = MovieWatchStatus.WATCH,
+            watchStatus = SerialWatchStatus.WATCH,
             onTitleChanged = {},
             onTitleRuChanged = {},
             onGenresChanged = {},

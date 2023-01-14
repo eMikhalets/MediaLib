@@ -7,7 +7,6 @@ data class MovieEntity(
     val overview: String,
     val poster: String,
     val year: Int,
-    val imdbRating: Double,
     val saveTimestamp: Long,
     val lastUpdateTimestamp: Long,
     val comment: String,

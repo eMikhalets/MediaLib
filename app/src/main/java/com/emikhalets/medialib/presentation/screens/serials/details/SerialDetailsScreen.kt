@@ -1,4 +1,4 @@
-package com.emikhalets.medialib.presentation.screens.movies.details
+package com.emikhalets.medialib.presentation.screens.serials.details
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -27,9 +27,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.emikhalets.medialib.R
 import com.emikhalets.medialib.domain.entities.genres.GenreEntity
 import com.emikhalets.medialib.domain.entities.genres.GenreType
-import com.emikhalets.medialib.domain.entities.movies.MovieEntity
-import com.emikhalets.medialib.domain.entities.movies.MovieFullEntity
-import com.emikhalets.medialib.domain.entities.movies.MovieWatchStatus
+import com.emikhalets.medialib.domain.entities.serials.SerialEntity
+import com.emikhalets.medialib.domain.entities.serials.SerialFullEntity
+import com.emikhalets.medialib.domain.entities.serials.SerialWatchStatus
 import com.emikhalets.medialib.domain.entities.utils.MenuIconEntity
 import com.emikhalets.medialib.presentation.core.AppAsyncImage
 import com.emikhalets.medialib.presentation.core.AppLoader
@@ -47,11 +47,11 @@ import com.emikhalets.medialib.utils.getRandomText
 import com.emikhalets.medialib.utils.toast
 
 @Composable
-fun MovieDetailsScreen(
-    navigateToMovieEdit: (movieId: Long) -> Unit,
+fun SerialDetailsScreen(
+    navigateToSerialEdit: (serialId: Long) -> Unit,
     navigateBack: () -> Unit,
-    movieId: Long,
-    viewModel: MovieDetailsViewModel = hiltViewModel(),
+    serialId: Long,
+    viewModel: SerialDetailsViewModel = hiltViewModel(),
 ) {
     val context = LocalContext.current
     val state by viewModel.state.collectAsState()
@@ -62,14 +62,14 @@ fun MovieDetailsScreen(
     var showPosterDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
-        viewModel.getMovie(movieId)
+        viewModel.getSerial(serialId)
     }
 
     LaunchedEffect(state.entity) {
         val entity = state.entity
         if (entity != null) {
-            poster = entity.movieEntity.poster
-            rating = entity.movieEntity.rating
+            poster = entity.serialEntity.poster
+            rating = entity.serialEntity.rating
         }
     }
 
@@ -101,10 +101,10 @@ fun MovieDetailsScreen(
                 rating = rating,
                 onRatingChange = {
                     rating = it
-                    viewModel.updateMovieRating(rating)
+                    viewModel.updateSerialRating(rating)
                 },
                 onPosterClick = { showPosterDialog = true },
-                onMovieEditClick = navigateToMovieEdit,
+                onSerialEditClick = navigateToSerialEdit,
                 onBackClick = navigateBack,
                 onDeleteClick = { showDeleteDialog = true }
             )
@@ -116,19 +116,19 @@ fun MovieDetailsScreen(
             onDismiss = { showDeleteDialog = false },
             onDeleteClick = {
                 showDeleteDialog = false
-                viewModel.deleteMovie()
+                viewModel.deleteSerial()
             }
         )
     }
 
     if (showPosterDialog) {
         PosterEditDialog(
-            url = state.entity?.movieEntity?.poster ?: "",
+            url = state.entity?.serialEntity?.poster ?: "",
             onDismiss = { showPosterDialog = false },
             onSaveClick = { url ->
                 showPosterDialog = false
                 poster = url
-                viewModel.updateMoviePoster(poster)
+                viewModel.updateSerialPoster(poster)
             }
         )
     }
@@ -136,22 +136,22 @@ fun MovieDetailsScreen(
 
 @Composable
 private fun DetailsScreen(
-    entity: MovieFullEntity,
+    entity: SerialFullEntity,
     poster: String,
     rating: Int,
     onRatingChange: (Int) -> Unit,
     onPosterClick: () -> Unit,
-    onMovieEditClick: (movieId: Long) -> Unit,
+    onSerialEditClick: (serialId: Long) -> Unit,
     onBackClick: () -> Unit,
     onDeleteClick: () -> Unit,
 ) {
     Column(modifier = Modifier.fillMaxSize()) {
         AppTopBar(
-            title = stringResource(id = R.string.screen_title_movie_details),
+            title = stringResource(id = R.string.screen_title_serial_details),
             onNavigateBack = onBackClick,
             actions = listOf(
                 MenuIconEntity(R.drawable.ic_round_edit_24) {
-                    onMovieEditClick(entity.movieEntity.id)
+                    onSerialEditClick(entity.serialEntity.id)
                 },
                 MenuIconEntity(R.drawable.ic_round_delete_24) {
                     onDeleteClick()
@@ -183,18 +183,18 @@ private fun DetailsScreen(
                         .padding(start = 8.dp)
                 ) {
                     TextTitle(
-                        text = entity.movieEntity.title,
+                        text = entity.serialEntity.title,
                         fontSize = 24.sp,
                         textAlign = TextAlign.Start,
                         modifier = Modifier.fillMaxWidth()
                     )
-                    if (entity.movieEntity.titleRu.isNotEmpty()) {
+                    if (entity.serialEntity.titleRu.isNotEmpty()) {
                         TextSecondary(
-                            text = entity.movieEntity.titleRu,
+                            text = entity.serialEntity.titleRu,
                             modifier = Modifier.fillMaxWidth()
                         )
                     }
-                    val year = entity.movieEntity.year
+                    val year = entity.serialEntity.year
                     if (year > 0) {
                         TextPrimary(
                             text = year.toString(),
@@ -213,18 +213,18 @@ private fun DetailsScreen(
                 }
             }
             DetailsSection(
-                header = stringResource(R.string.movie_details_genres),
+                header = stringResource(R.string.serial_details_genres),
                 content = entity.formatGenres(),
                 modifier = Modifier.padding(top = 8.dp)
             )
             DetailsSection(
-                header = stringResource(R.string.movie_details_overview),
-                content = entity.movieEntity.overview,
+                header = stringResource(R.string.serial_details_overview),
+                content = entity.serialEntity.overview,
                 modifier = Modifier.padding(top = 8.dp)
             )
             DetailsSection(
-                header = stringResource(R.string.movie_details_comment),
-                content = entity.movieEntity.comment,
+                header = stringResource(R.string.serial_details_comment),
+                content = entity.serialEntity.comment,
                 modifier = Modifier.padding(vertical = 8.dp)
             )
         }
@@ -236,14 +236,14 @@ private fun DetailsScreen(
 private fun ScreenPreview() {
     AppTheme {
         DetailsScreen(
-            entity = MovieFullEntity(
-                movieEntity = MovieEntity(
+            entity = SerialFullEntity(
+                serialEntity = SerialEntity(
                     id = 0,
-                    title = "Movie name",
-                    titleRu = "Movie name rus",
+                    title = "Serial name",
+                    titleRu = "Serial name rus",
                     year = 2015,
                     rating = 4,
-                    watchStatus = MovieWatchStatus.WATCH,
+                    watchStatus = SerialWatchStatus.WATCH,
                     overview = getRandomText(20),
                     poster = "",
                     saveTimestamp = 0,
@@ -251,19 +251,19 @@ private fun ScreenPreview() {
                     comment = getRandomText(20)
                 ),
                 genres = listOf(
-                    GenreEntity("Action", GenreType.MOVIE),
-                    GenreEntity("Drama", GenreType.MOVIE),
-                    GenreEntity("Action", GenreType.MOVIE),
-                    GenreEntity("Drama", GenreType.MOVIE),
-                    GenreEntity("Action", GenreType.MOVIE),
-                    GenreEntity("Drama", GenreType.MOVIE)
+                    GenreEntity("Action", GenreType.SERIAL),
+                    GenreEntity("Drama", GenreType.SERIAL),
+                    GenreEntity("Action", GenreType.SERIAL),
+                    GenreEntity("Drama", GenreType.SERIAL),
+                    GenreEntity("Action", GenreType.SERIAL),
+                    GenreEntity("Drama", GenreType.SERIAL)
                 )
             ),
             poster = "",
             rating = 4,
             onRatingChange = {},
             onPosterClick = {},
-            onMovieEditClick = {},
+            onSerialEditClick = {},
             onBackClick = {},
             onDeleteClick = {}
         )

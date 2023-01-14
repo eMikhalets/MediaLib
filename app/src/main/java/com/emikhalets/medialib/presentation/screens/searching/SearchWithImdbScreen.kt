@@ -1,6 +1,7 @@
 package com.emikhalets.medialib.presentation.screens.searching
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
@@ -70,7 +71,8 @@ fun SearchWithImdbScreen(
                 loadedUrl = it
                 viewModel.parseImdbId(loadedUrl)
             },
-            onSaveClicked = { viewModel.searchAndSaveMovie() },
+            onSaveMovieClicked = { viewModel.searchAndSaveMovie() },
+            onSaveSerialClicked = { viewModel.searchAndSaveSerial() },
             onBackClick = navigateBack
         )
     }
@@ -81,7 +83,8 @@ private fun SearchWithImdbScreen(
     link: String,
     saveEnabled: Boolean,
     onUrlLoaded: (String) -> Unit,
-    onSaveClicked: () -> Unit,
+    onSaveMovieClicked: () -> Unit,
+    onSaveSerialClicked: () -> Unit,
     onBackClick: () -> Unit,
 ) {
     Column(
@@ -99,12 +102,24 @@ private fun SearchWithImdbScreen(
                 .fillMaxSize()
                 .weight(1f)
         )
-        ButtonPrimary(
-            text = stringResource(R.string.searching_save),
-            enabled = saveEnabled,
-            onClick = { onSaveClicked() },
-            modifier = Modifier.fillMaxWidth()
-        )
+        Row(modifier = Modifier.fillMaxWidth()) {
+            ButtonPrimary(
+                text = stringResource(R.string.searching_save_movie),
+                enabled = saveEnabled,
+                onClick = { onSaveMovieClicked() },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f)
+            )
+            ButtonPrimary(
+                text = stringResource(R.string.searching_save_serial),
+                enabled = saveEnabled,
+                onClick = { onSaveSerialClicked() },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f)
+            )
+        }
     }
 }
 
@@ -116,7 +131,8 @@ private fun ScreenPreview() {
             saveEnabled = false,
             link = "",
             onUrlLoaded = {},
-            onSaveClicked = {},
+            onSaveMovieClicked = {},
+            onSaveSerialClicked = {},
             onBackClick = {}
         )
     }

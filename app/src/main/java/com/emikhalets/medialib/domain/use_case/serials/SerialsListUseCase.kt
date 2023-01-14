@@ -21,10 +21,9 @@ class SerialsListUseCase(
     ): Result<Flow<List<SerialFullEntity>>> {
         return withContext(Dispatchers.IO) {
             val newSerialsList = serialsList.filter {
-                it.serialEntity.title.contains(query) ||
-                        it.serialEntity.titleRu.contains(query) ||
-                        query.contains(it.serialEntity.title) ||
-                        query.contains(it.serialEntity.titleRu)
+                val title = it.serialEntity.title.lowercase()
+                val titleRu = it.serialEntity.titleRu.lowercase()
+                title.contains(query) || titleRu.contains(query)
             }
             Result.success(flowOf(newSerialsList))
         }

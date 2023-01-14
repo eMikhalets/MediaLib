@@ -17,6 +17,9 @@ class NetworkRepositoryImpl @Inject constructor(
         return execute {
             val response = moviesApi.getMovieDetails(id)
             if (response.response != false) {
+                if (response.type != "movie") {
+                    throw Exception("Wrong entity type: need 'movie', actual '${response.type}'")
+                }
                 MovieMappers.mapRemoteEntityToEntity(response)
             } else {
                 throw Exception(response.error)
@@ -28,6 +31,9 @@ class NetworkRepositoryImpl @Inject constructor(
         return execute {
             val response = moviesApi.getMovieDetails(id)
             if (response.response != false) {
+                if (response.type != "series") {
+                    throw Exception("Wrong entity type: need 'series', actual '${response.type}'")
+                }
                 SerialMappers.mapRemoteEntityToEntity(response)
             } else {
                 throw Exception(response.error)

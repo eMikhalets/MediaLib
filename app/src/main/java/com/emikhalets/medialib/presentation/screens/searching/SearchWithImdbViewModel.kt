@@ -2,6 +2,7 @@ package com.emikhalets.medialib.presentation.screens.searching
 
 import com.emikhalets.medialib.R
 import com.emikhalets.medialib.domain.entities.movies.MovieFullEntity
+import com.emikhalets.medialib.domain.entities.serials.SerialFullEntity
 import com.emikhalets.medialib.domain.use_case.searching.SearchImdbUseCase
 import com.emikhalets.medialib.utils.BaseViewModel
 import com.emikhalets.medialib.utils.UiString
@@ -49,9 +50,32 @@ class SearchWithImdbViewModel @Inject constructor(
         }
     }
 
+    fun searchAndSaveSerial() {
+        launchIO {
+            setState { it.copy(loading = true) }
+            val imdbId = currentState.imdbId
+            if (imdbId == null) {
+                val message = R.string.error_parsing_imdb_id
+                setState { it.copy(loading = false, error = UiString.create(message)) }
+            } else {
+                useCase.searchSerial(imdbId)
+                    .onSuccess { entity -> saveSerial(entity) }
+                    .onFailure { throwable -> handleFailure(throwable) }
+            }
+        }
+    }
+
     private suspend fun saveMovie(entity: MovieFullEntity) {
         withContext(Dispatchers.IO) {
             useCase.saveMovie(entity)
+                .onSuccess { setState { it.copy(loading = false, saved = true) } }
+                .onFailure { throwable -> handleFailure(throwable) }
+        }
+    }
+
+    private suspend fun saveSerial(entity: SerialFullEntity) {
+        withContext(Dispatchers.IO) {
+            useCase.saveSerial(entity)
                 .onSuccess { setState { it.copy(loading = false, saved = true) } }
                 .onFailure { throwable -> handleFailure(throwable) }
         }

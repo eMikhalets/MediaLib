@@ -1,38 +1,38 @@
-package com.emikhalets.medialib.presentation.screens.movies.edit
+package com.emikhalets.medialib.presentation.screens.serials.edit
 
 import com.emikhalets.medialib.R
 import com.emikhalets.medialib.domain.entities.genres.GenreEntity
 import com.emikhalets.medialib.domain.entities.genres.GenreType
-import com.emikhalets.medialib.domain.entities.movies.MovieEntity
-import com.emikhalets.medialib.domain.entities.movies.MovieFullEntity
-import com.emikhalets.medialib.domain.entities.movies.MovieWatchStatus
-import com.emikhalets.medialib.domain.use_case.movies.MovieEditUseCase
+import com.emikhalets.medialib.domain.entities.serials.SerialEntity
+import com.emikhalets.medialib.domain.entities.serials.SerialFullEntity
+import com.emikhalets.medialib.domain.entities.serials.SerialWatchStatus
+import com.emikhalets.medialib.domain.use_case.serials.SerialEditUseCase
 import com.emikhalets.medialib.utils.BaseViewModel
 import com.emikhalets.medialib.utils.UiString
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class MovieEditViewModel @Inject constructor(
-    private val useCase: MovieEditUseCase,
-) : BaseViewModel<MovieEditState>() {
+class SerialEditViewModel @Inject constructor(
+    private val useCase: SerialEditUseCase,
+) : BaseViewModel<SerialEditState>() {
 
-    override fun initState() = MovieEditState()
+    override fun initState() = SerialEditState()
 
     fun resetError() = setState { it.copy(error = null) }
 
-    fun getMovie(movieId: Long) {
+    fun getSerial(serialId: Long) {
         launchIO {
             setState { it.copy(loading = true) }
-            if (movieId == 0L) {
-                val entity = MovieFullEntity(
-                    movieEntity = MovieEntity(
+            if (serialId == 0L) {
+                val entity = SerialFullEntity(
+                    serialEntity = SerialEntity(
                         id = 0,
                         title = "",
                         titleRu = "",
                         year = 0,
                         rating = 0,
-                        watchStatus = MovieWatchStatus.NONE,
+                        watchStatus = SerialWatchStatus.NONE,
                         overview = "",
                         poster = "",
                         saveTimestamp = 0,
@@ -43,27 +43,27 @@ class MovieEditViewModel @Inject constructor(
                 )
                 setState { it.copy(loading = false, entity = entity) }
             } else {
-                useCase.getMovie(movieId)
+                useCase.getSerial(serialId)
                     .onSuccess { entity -> setState { it.copy(loading = false, entity = entity) } }
                     .onFailure { throwable -> handleFailure(throwable) }
             }
         }
     }
 
-    fun saveMovie(
+    fun saveSerial(
         title: String,
         titleRu: String,
         genres: String,
         year: Int,
         comment: String,
-        watchStatus: MovieWatchStatus,
+        watchStatus: SerialWatchStatus,
         rating: Int,
     ) {
         launchIO {
             val entity = currentState.entity
             if (entity != null) {
                 setState { it.copy(loading = true) }
-                val movieEntity = entity.movieEntity.copy(
+                val serialEntity = entity.serialEntity.copy(
                     title = title,
                     titleRu = titleRu,
                     year = year,
@@ -71,8 +71,9 @@ class MovieEditViewModel @Inject constructor(
                     watchStatus = watchStatus,
                     rating = rating,
                 )
-                val newEntity = entity.copy(movieEntity = movieEntity, genres = parseGenres(genres))
-                useCase.saveMovie(newEntity)
+                val newEntity =
+                    entity.copy(serialEntity = serialEntity, genres = parseGenres(genres))
+                useCase.saveSerial(newEntity)
                     .onSuccess { setState { it.copy(loading = false, saved = true) } }
                     .onFailure { throwable -> handleFailure(throwable) }
             } else {
@@ -89,7 +90,7 @@ class MovieEditViewModel @Inject constructor(
     private fun parseGenres(genres: String): List<GenreEntity> {
         return try {
             val arr = genres.split(", ")
-            arr.map { GenreEntity(it, GenreType.MOVIE) }
+            arr.map { GenreEntity(it, GenreType.SERIAL) }
         } catch (ex: Exception) {
             emptyList()
         }
