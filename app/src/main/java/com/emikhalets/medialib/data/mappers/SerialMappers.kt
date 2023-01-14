@@ -1,7 +1,7 @@
 package com.emikhalets.medialib.data.mappers
 
 import com.emikhalets.medialib.data.database.serials.SerialDbEntity
-import com.emikhalets.medialib.data.network.MovieRemoteEntity
+import com.emikhalets.medialib.data.network.entities.MovieRemoteEntity
 import com.emikhalets.medialib.domain.entities.serials.SerialEntity
 import com.emikhalets.medialib.domain.entities.serials.SerialFullEntity
 import com.emikhalets.medialib.domain.entities.serials.SerialWatchStatus

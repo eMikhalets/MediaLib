@@ -1,12 +1,14 @@
 package com.emikhalets.medialib.data.mappers
 
 import com.emikhalets.medialib.data.database.movies.MovieDbEntity
-import com.emikhalets.medialib.data.network.MovieRemoteEntity
+import com.emikhalets.medialib.data.network.entities.MovieRemoteEntity
+import com.emikhalets.medialib.domain.entities.genres.GenreEntity
+import com.emikhalets.medialib.domain.entities.genres.GenreType
 import com.emikhalets.medialib.domain.entities.movies.MovieEntity
 import com.emikhalets.medialib.domain.entities.movies.MovieFullEntity
 import com.emikhalets.medialib.domain.entities.movies.MovieWatchStatus
 import com.emikhalets.medialib.utils.toDoubleSafe
-import com.emikhalets.medialib.utils.toSafeInt
+import java.util.*
 
 object MovieMappers {
 
@@ -16,18 +18,27 @@ object MovieMappers {
                 id = 0,
                 title = entity.title ?: "",
                 titleRu = "",
-                overview = "",
+                overview = entity.plot ?: "",
                 poster = entity.poster ?: "",
-                year = entity.year.toSafeInt(),
+                year = entity.formatYear(),
                 imdbRating = entity.rating.toDoubleSafe(),
-                saveTimestamp = 0,
-                lastUpdateTimestamp = 0,
+                saveTimestamp = Calendar.getInstance().timeInMillis,
+                lastUpdateTimestamp = Calendar.getInstance().timeInMillis,
                 comment = "",
                 rating = 0,
                 watchStatus = MovieWatchStatus.NONE,
             ),
-            genres = emptyList()
+            genres = mapGenres(entity.genre)
         )
+    }
+
+    private fun mapGenres(genres: String?): List<GenreEntity> {
+        return try {
+            val arr = genres?.split(", ") ?: return emptyList()
+            arr.map { GenreEntity(it, GenreType.MOVIE) }
+        } catch (ex: Exception) {
+            emptyList()
+        }
     }
 
     fun mapDbEntityToEntity(entity: MovieDbEntity): MovieEntity {
