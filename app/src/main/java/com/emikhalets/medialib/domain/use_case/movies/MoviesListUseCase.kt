@@ -24,10 +24,9 @@ class MoviesListUseCase(
                 Result.success(flowOf(moviesList))
             } else {
                 val newMoviesList = moviesList.filter {
-                    it.movieEntity.title.contains(query) ||
-                            it.movieEntity.titleRu.contains(query) ||
-                            query.contains(it.movieEntity.title) ||
-                            query.contains(it.movieEntity.titleRu)
+                    val title = it.movieEntity.title.lowercase()
+                    val titleRu = it.movieEntity.titleRu.lowercase()
+                    title.contains(query) || titleRu.contains(query)
                 }
                 Result.success(flowOf(newMoviesList))
             }

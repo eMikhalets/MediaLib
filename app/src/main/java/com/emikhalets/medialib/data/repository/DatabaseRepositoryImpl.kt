@@ -136,11 +136,15 @@ class DatabaseRepositoryImpl @Inject constructor(
     // Other
 
     private suspend fun getGenres(genres: List<String>): List<GenreEntity> {
-        val list = mutableListOf<GenreEntity>()
-        genres.forEach { genreName ->
-            val genreDb = genresDao.getItem(genreName)
-            list.add(GenresMappers.mapDbEntityToEntity(genreDb))
+        return try {
+            val list = mutableListOf<GenreEntity>()
+            genres.forEach { genreName ->
+                val genreDb = genresDao.getItem(genreName)
+                list.add(GenresMappers.mapDbEntityToEntity(genreDb))
+            }
+            list
+        } catch (ex: Exception) {
+            emptyList()
         }
-        return list
     }
 }
