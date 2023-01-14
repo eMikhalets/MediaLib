@@ -29,13 +29,13 @@ import com.emikhalets.medialib.domain.entities.movies.MovieEntity
 import com.emikhalets.medialib.domain.entities.movies.MovieFullEntity
 import com.emikhalets.medialib.domain.entities.movies.MovieWatchStatus
 import com.emikhalets.medialib.domain.entities.movies.MovieWatchStatus.Companion.getText
-import com.emikhalets.medialib.presentation.core.AppButton
 import com.emikhalets.medialib.presentation.core.AppLoader
 import com.emikhalets.medialib.presentation.core.AppSpinner
 import com.emikhalets.medialib.presentation.core.AppTextField
 import com.emikhalets.medialib.presentation.core.AppTextFieldDate
 import com.emikhalets.medialib.presentation.core.AppTextFullScreen
 import com.emikhalets.medialib.presentation.core.AppTopBar
+import com.emikhalets.medialib.presentation.core.ButtonPrimary
 import com.emikhalets.medialib.presentation.core.RatingBar
 import com.emikhalets.medialib.presentation.dialogs.YearEditDialog
 import com.emikhalets.medialib.presentation.theme.AppTheme
@@ -221,7 +221,7 @@ private fun MovieEditScreen(
             modifier = Modifier.padding(top = 8.dp)
         )
 
-        AppButton(
+        ButtonPrimary(
             text = stringResource(R.string.movie_edit_save),
             onClick = onSaveClick,
             modifier = Modifier.padding(top = 16.dp, bottom = 8.dp)

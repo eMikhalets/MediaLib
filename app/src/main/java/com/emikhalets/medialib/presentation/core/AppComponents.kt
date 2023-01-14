@@ -1,40 +1,88 @@
 package com.emikhalets.medialib.presentation.core
 
 import android.annotation.SuppressLint
+import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
-import coil.compose.AsyncImage
-import coil.request.ImageRequest
-import coil.transform.RoundedCornersTransformation
 import com.emikhalets.medialib.R
-import com.emikhalets.medialib.utils.px
+import com.emikhalets.medialib.presentation.theme.AppColors.textSecondary
+import com.emikhalets.medialib.presentation.theme.AppTheme
+
+@Composable
+fun PickerBox(
+    text: String,
+    activeText: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    @DrawableRes trailingIcon: Int? = null,
+) {
+    val textColor = if (activeText) {
+        MaterialTheme.colors.onBackground
+    } else {
+        MaterialTheme.colors.textSecondary
+    }
+
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = modifier
+            .width(IntrinsicSize.Max)
+            .height(56.dp)
+            .background(
+                color = MaterialTheme.colors.background,
+                shape = MaterialTheme.shapes.small
+            )
+            .border(
+                width = 1.dp,
+                color = MaterialTheme.colors.textSecondary,
+                shape = MaterialTheme.shapes.small
+            )
+            .clip(MaterialTheme.shapes.small)
+            .clickable { onClick() }
+    ) {
+        Text(
+            text = text,
+            color = textColor,
+            fontSize = 16.sp,
+            modifier = Modifier
+                .padding(8.dp)
+                .weight(1f)
+        )
+        if (trailingIcon != null) {
+            IconPrimary(
+                drawableRes = trailingIcon,
+                modifier = Modifier.padding(8.dp)
+            )
+        }
+    }
+}
 
 @Composable
 fun SearchBox(
@@ -42,13 +90,12 @@ fun SearchBox(
     placeholder: String,
     onQueryChange: (String) -> Unit,
     onAddClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .height(IntrinsicSize.Min)
             .fillMaxWidth()
-            .background(MaterialTheme.colors.primary)
-            .padding(8.dp)
     ) {
         AppTextField(
             value = query,
@@ -59,12 +106,12 @@ fun SearchBox(
                 .fillMaxWidth()
                 .weight(1f)
         )
-        Spacer(modifier = Modifier.width(8.dp))
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier
                 .fillMaxHeight()
                 .aspectRatio(1f, true)
+                .padding(start = 8.dp)
                 .clickable { onAddClick() }
         ) {
             IconPrimary(drawableRes = R.drawable.ic_round_add_24)
@@ -73,47 +120,15 @@ fun SearchBox(
 }
 
 @Composable
-fun AppAsyncImage(
-    data: String,
-    height: Dp,
-    modifier: Modifier = Modifier,
-    corners: Float = 8.px,
-    onClick: () -> Unit = {},
-) {
-    AsyncImage(
-        model = ImageRequest.Builder(LocalContext.current)
-            .data(data)
-            .crossfade(true)
-            .transformations(RoundedCornersTransformation(corners))
-            .error(R.drawable.ph_poster)
-            .build(),
-        contentDescription = "",
-        placeholder = painterResource(R.drawable.ph_poster),
-        contentScale = ContentScale.FillHeight,
-        modifier = modifier
-            .height(height)
-            .padding(8.dp)
-            .clickable { onClick() }
-    )
-}
-
-@Composable
-fun PosterListItem(url: String) {
-    AsyncImage(
-        model = ImageRequest.Builder(LocalContext.current)
-            .data(url)
-            .crossfade(true)
-            .transformations(RoundedCornersTransformation(8.px))
-            .error(R.drawable.ph_poster)
-            .build(),
-        contentDescription = null,
-        placeholder = painterResource(R.drawable.ph_poster),
-        contentScale = ContentScale.FillHeight,
+fun AppLoader() {
+    Box(
+        contentAlignment = Alignment.Center,
         modifier = Modifier
-            .size(70.dp, 95.dp)
-            .padding(end = 8.dp)
-
-    )
+            .fillMaxSize()
+            .background(MaterialTheme.colors.surface)
+    ) {
+        CircularProgressIndicator()
+    }
 }
 
 @Composable
@@ -145,8 +160,10 @@ fun Webview(
     url: String,
     onPageLoaded: (String) -> Unit,
     modifier: Modifier = Modifier,
+    overrideLoader: Boolean = false,
 ) {
     val context = LocalContext.current
+
     Box(modifier = modifier) {
         AndroidView(factory = {
             WebView(context).apply {
@@ -155,10 +172,44 @@ fun Webview(
                         super.onPageFinished(view, url)
                         onPageLoaded(url)
                     }
+
+                    override fun shouldOverrideUrlLoading(
+                        view: WebView?,
+                        request: WebResourceRequest?,
+                    ): Boolean {
+                        return overrideLoader
+                    }
                 }
                 settings.javaScriptEnabled = true
                 loadUrl(url)
             }
         })
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun PickerBoxPreview() {
+    AppTheme {
+        PickerBox(
+            text = "Test text",
+            activeText = true,
+            onClick = {},
+            modifier = Modifier.padding(16.dp)
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun SearchBoxPreview() {
+    AppTheme {
+        SearchBox(
+            query = "",
+            placeholder = "Test text",
+            onQueryChange = {},
+            onAddClick = {},
+            modifier = Modifier.padding(16.dp)
+        )
     }
 }

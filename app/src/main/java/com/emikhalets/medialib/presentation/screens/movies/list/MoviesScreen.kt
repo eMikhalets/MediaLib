@@ -46,7 +46,7 @@ import com.emikhalets.medialib.presentation.core.AppLoader
 import com.emikhalets.medialib.presentation.core.AppTextFullScreen
 import com.emikhalets.medialib.presentation.core.AppTopBar
 import com.emikhalets.medialib.presentation.core.IconPrimary
-import com.emikhalets.medialib.presentation.core.RatingRow
+import com.emikhalets.medialib.presentation.core.RatingBar
 import com.emikhalets.medialib.presentation.core.SearchBox
 import com.emikhalets.medialib.presentation.theme.AppTheme
 import com.emikhalets.medialib.utils.px
@@ -199,7 +199,7 @@ private fun MovieBox(
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 if (entity.movieEntity.rating > 0) {
-                    RatingRow(entity.movieEntity.rating)
+                    RatingBar(entity.movieEntity.rating, pointSize = 14.dp)
                 }
             }
         }
