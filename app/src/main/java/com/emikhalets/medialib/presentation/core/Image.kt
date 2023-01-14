@@ -3,6 +3,7 @@ package com.emikhalets.medialib.presentation.core
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -16,6 +17,7 @@ import coil.request.ImageRequest
 import coil.transform.RoundedCornersTransformation
 import com.emikhalets.medialib.R
 import com.emikhalets.medialib.presentation.theme.AppColors.textSecondary
+import com.emikhalets.medialib.utils.POSTER_RATIO
 import com.emikhalets.medialib.utils.px
 
 @Composable
@@ -49,7 +51,7 @@ fun AppAsyncImage(
     url: String,
     height: Dp,
     modifier: Modifier = Modifier,
-    corners: Float = 8.px,
+    corners: Float = 0.px,
     onClick: (() -> Unit)? = null,
 ) {
     AsyncImage(
@@ -65,9 +67,12 @@ fun AppAsyncImage(
         modifier = if (onClick != null) {
             modifier
                 .height(height)
+                .width(height.div(POSTER_RATIO))
                 .clickable { onClick() }
         } else {
-            modifier.height(height)
+            modifier
+                .height(height)
+                .width(height.div(POSTER_RATIO))
         }
     )
 }

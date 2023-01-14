@@ -120,7 +120,10 @@ private fun MoviesScreen(
                 items(moviesList) { entity ->
                     MovieBox(
                         entity = entity,
-                        onMovieClick = onMovieClick
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 4.dp)
+                            .clickable { onMovieClick(entity.movieEntity.id) }
                     )
                 }
             }
@@ -131,15 +134,11 @@ private fun MoviesScreen(
 @Composable
 private fun MovieBox(
     entity: MovieFullEntity,
-    onMovieClick: (movieId: Long) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
-            .fillMaxWidth()
-            .clickable { onMovieClick(entity.movieEntity.id) }
-            .padding(vertical = 4.dp)
     ) {
         AppAsyncImage(
             url = entity.movieEntity.poster,
@@ -237,8 +236,7 @@ private fun MovieItemPreview() {
                     GenreEntity("Action", GenreType.MOVIE),
                     GenreEntity("Drama", GenreType.MOVIE)
                 )
-            ),
-            onMovieClick = {}
+            )
         )
     }
 }
