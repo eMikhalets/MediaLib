@@ -194,12 +194,15 @@ private fun DetailsScreen(
                             modifier = Modifier.fillMaxWidth()
                         )
                     }
-                    TextPrimary(
-                        text = entity.movieEntity.year.toString(),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 8.dp)
-                    )
+                    val year = entity.movieEntity.year
+                    if (year > 0) {
+                        TextPrimary(
+                            text = year.toString(),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(top = 8.dp)
+                        )
+                    }
                     RatingBar(
                         rating = rating,
                         onRatingChange = onRatingChange,

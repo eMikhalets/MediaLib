@@ -21,7 +21,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.emikhalets.medialib.R
-import com.emikhalets.medialib.presentation.theme.AppColors.disabled
 import com.emikhalets.medialib.presentation.theme.AppColors.textSecondary
 import com.emikhalets.medialib.presentation.theme.AppTheme
 
@@ -57,6 +56,7 @@ fun AppTextField(
                 { Text(placeholder) }
             } else null,
             maxLines = maxLines,
+            singleLine = maxLines == 1,
             enabled = enabled,
             readOnly = readOnly,
             isError = error != null,
@@ -66,26 +66,26 @@ fun AppTextField(
             ),
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 textColor = MaterialTheme.colors.onBackground,
-                disabledTextColor = MaterialTheme.colors.disabled,
+                disabledTextColor = MaterialTheme.colors.onBackground,
                 backgroundColor = MaterialTheme.colors.background,
                 cursorColor = MaterialTheme.colors.onBackground,
                 errorCursorColor = MaterialTheme.colors.error,
                 focusedBorderColor = MaterialTheme.colors.onBackground,
                 unfocusedBorderColor = MaterialTheme.colors.textSecondary,
-                disabledBorderColor = MaterialTheme.colors.disabled,
+                disabledBorderColor = MaterialTheme.colors.textSecondary,
                 errorBorderColor = MaterialTheme.colors.error,
                 leadingIconColor = MaterialTheme.colors.textSecondary,
-                disabledLeadingIconColor = MaterialTheme.colors.disabled,
+                disabledLeadingIconColor = MaterialTheme.colors.textSecondary,
                 errorLeadingIconColor = MaterialTheme.colors.error,
                 trailingIconColor = MaterialTheme.colors.textSecondary,
-                disabledTrailingIconColor = MaterialTheme.colors.disabled,
+                disabledTrailingIconColor = MaterialTheme.colors.textSecondary,
                 errorTrailingIconColor = MaterialTheme.colors.error,
                 focusedLabelColor = MaterialTheme.colors.textSecondary,
                 unfocusedLabelColor = MaterialTheme.colors.textSecondary,
-                disabledLabelColor = MaterialTheme.colors.disabled,
+                disabledLabelColor = MaterialTheme.colors.textSecondary,
                 errorLabelColor = MaterialTheme.colors.error,
                 placeholderColor = MaterialTheme.colors.textSecondary,
-                disabledPlaceholderColor = MaterialTheme.colors.disabled
+                disabledPlaceholderColor = MaterialTheme.colors.textSecondary
             ),
             modifier = Modifier.fillMaxWidth()
         )
@@ -137,21 +137,6 @@ private fun LabelPreview() {
             onValueChange = {},
             leadingIconRes = R.drawable.ic_round_search_24,
             label = "Label test",
-            modifier = Modifier.padding(8.dp)
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun DisabledPreview() {
-    AppTheme {
-        AppTextField(
-            value = "Text test",
-            onValueChange = {},
-            leadingIconRes = R.drawable.ic_round_search_24,
-            label = "Label test",
-            enabled = false,
             modifier = Modifier.padding(8.dp)
         )
     }

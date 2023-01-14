@@ -65,7 +65,7 @@ class MovieDetailsViewModel @Inject constructor(
             if (entity != null) {
                 setState { it.copy(loading = true) }
                 useCase.deleteMovie(entity)
-                    .onSuccess { setState { it.copy(loading = false) } }
+                    .onSuccess { setState { it.copy(loading = false, deleted = true) } }
                     .onFailure { throwable -> handleFailure(throwable) }
             } else {
                 val message = R.string.error_delete_entity_null

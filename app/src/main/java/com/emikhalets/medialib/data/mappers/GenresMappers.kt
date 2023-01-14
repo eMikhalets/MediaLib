@@ -11,4 +11,15 @@ object GenresMappers {
             type = dbEntity.type,
         )
     }
+
+    fun mapEntityToDbEntity(entity: GenreEntity): GenreDbEntity {
+        return GenreDbEntity(
+            name = entity.name,
+            type = entity.type,
+        )
+    }
+
+    fun mapListToDbList(list: List<GenreEntity>): List<GenreDbEntity> {
+        return list.map { mapEntityToDbEntity(it) }
+    }
 }

@@ -115,7 +115,7 @@ fun MovieEditScreen(
                 onGenresChanged = { genres = it },
                 onCommentChanged = { comment = it },
                 onRatingChanged = { rating = it },
-                onWatchStatusChanged = { watchStatus = it },
+                onWatchStatusChanged = { watchStatus = MovieWatchStatus.getStatus(context, it) },
                 onYearClick = { showYearDialog = true },
                 onSaveClick = {
                     viewModel.saveMovie(
@@ -160,7 +160,7 @@ private fun MovieEditScreen(
     onGenresChanged: (String) -> Unit,
     onCommentChanged: (String) -> Unit,
     onRatingChanged: (Int) -> Unit,
-    onWatchStatusChanged: (MovieWatchStatus) -> Unit,
+    onWatchStatusChanged: (String) -> Unit,
     onYearClick: () -> Unit,
     onSaveClick: () -> Unit,
     onBackClick: () -> Unit,
@@ -208,6 +208,7 @@ private fun MovieEditScreen(
                 value = year.formatYear().toString(),
                 onValueChange = {},
                 label = stringResource(R.string.movie_edit_year),
+                enabled = false,
                 readOnly = true,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -227,7 +228,7 @@ private fun MovieEditScreen(
                 selectedItem = watchStatus.getText(),
                 items = MovieWatchStatus.getTextList(),
                 label = stringResource(R.string.movie_edit_watch_status),
-                onSelect = { onWatchStatusChanged(MovieWatchStatus.NONE) },
+                onSelect = { onWatchStatusChanged(it) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 8.dp)

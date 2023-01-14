@@ -74,7 +74,7 @@ class MovieEditViewModel @Inject constructor(
                 )
                 val newEntity = entity.copy(movieEntity = movieEntity, genres = parseGenres(genres))
                 useCase.saveMovie(newEntity)
-                    .onSuccess { setState { it.copy(loading = false) } }
+                    .onSuccess { setState { it.copy(loading = false, saved = true) } }
                     .onFailure { throwable -> handleFailure(throwable) }
             } else {
                 val message = R.string.error_save_entity_null

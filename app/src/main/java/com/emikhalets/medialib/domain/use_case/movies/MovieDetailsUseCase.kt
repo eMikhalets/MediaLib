@@ -25,6 +25,6 @@ class MovieDetailsUseCase @Inject constructor(
     }
 
     suspend fun deleteMovie(entity: MovieFullEntity): Result<Unit> {
-        return databaseRepository.updateMovie(entity)
+        return databaseRepository.deleteMovie(entity)
     }
 }

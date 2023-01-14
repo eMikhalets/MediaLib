@@ -58,6 +58,8 @@ class DatabaseRepositoryImpl @Inject constructor(
 
     override suspend fun insertMovie(entity: MovieFullEntity): Result<Unit> {
         return execute {
+            val genresDb = GenresMappers.mapListToDbList(entity.genres)
+            genresDao.insert(genresDb)
             val movieDb = MovieMappers.mapEntityToDbEntity(entity)
             moviesDao.insert(movieDb)
         }
@@ -65,6 +67,8 @@ class DatabaseRepositoryImpl @Inject constructor(
 
     override suspend fun updateMovie(entity: MovieFullEntity): Result<Unit> {
         return execute {
+            val genresDb = GenresMappers.mapListToDbList(entity.genres)
+            genresDao.insert(genresDb)
             val movieDb = MovieMappers.mapEntityToDbEntity(entity)
             moviesDao.update(movieDb)
         }
@@ -114,6 +118,8 @@ class DatabaseRepositoryImpl @Inject constructor(
 
     override suspend fun insertSerial(entity: SerialFullEntity): Result<Unit> {
         return execute {
+            val genresDb = GenresMappers.mapListToDbList(entity.genres)
+            genresDao.insert(genresDb)
             val serialDb = SerialMappers.mapEntityToDbEntity(entity)
             serialsDao.insert(serialDb)
         }
@@ -121,6 +127,8 @@ class DatabaseRepositoryImpl @Inject constructor(
 
     override suspend fun updateSerial(entity: SerialFullEntity): Result<Unit> {
         return execute {
+            val genresDb = GenresMappers.mapListToDbList(entity.genres)
+            genresDao.insert(genresDb)
             val serialDb = SerialMappers.mapEntityToDbEntity(entity)
             serialsDao.update(serialDb)
         }

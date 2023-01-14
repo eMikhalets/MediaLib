@@ -35,6 +35,7 @@ fun AppSpinner(
             value = selectedItem,
             onValueChange = {},
             readOnly = true,
+            enabled = false,
             label = label,
             trailingIconRes = if (expanded) {
                 R.drawable.ic_round_keyboard_arrow_up_24
@@ -47,8 +48,7 @@ fun AppSpinner(
         )
         DropdownMenu(
             expanded = expanded,
-            onDismissRequest = { expanded = false },
-            modifier = Modifier.fillMaxWidth()
+            onDismissRequest = { expanded = false }
         ) {
             items.forEach { item ->
                 DropdownMenuItem(

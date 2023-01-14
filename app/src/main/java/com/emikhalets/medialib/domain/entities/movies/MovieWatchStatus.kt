@@ -1,5 +1,6 @@
 package com.emikhalets.medialib.domain.entities.movies
 
+import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import com.emikhalets.medialib.R
@@ -30,13 +31,12 @@ enum class MovieWatchStatus {
             }
         }
 
-        @Composable
-        fun getStatus(text: String): MovieWatchStatus {
+        fun getStatus(context: Context, text: String): MovieWatchStatus {
             return when (text) {
-                stringResource(R.string.movie_status_watch) -> WATCH
-                stringResource(R.string.movie_status_watch_again) -> WATCH_AGAIN
-                stringResource(R.string.movie_status_watched) -> WATCHED
-                stringResource(R.string.movie_status_dropped) -> DROPPED
+                context.getString(R.string.movie_status_watch) -> WATCH
+                context.getString(R.string.movie_status_watch_again) -> WATCH_AGAIN
+                context.getString(R.string.movie_status_watched) -> WATCHED
+                context.getString(R.string.movie_status_dropped) -> DROPPED
                 else -> NONE
             }
         }
