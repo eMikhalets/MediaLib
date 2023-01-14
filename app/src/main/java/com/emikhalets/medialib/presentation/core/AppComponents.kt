@@ -1,7 +1,7 @@
 package com.emikhalets.medialib.presentation.core
 
 import android.annotation.SuppressLint
-import android.webkit.WebResourceRequest
+import android.graphics.Bitmap
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.compose.foundation.background
@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.emikhalets.medialib.R
 import com.emikhalets.medialib.presentation.theme.AppTheme
+
 
 @Composable
 fun SearchBox(
@@ -106,9 +107,9 @@ fun DetailsSection(
 @Composable
 fun Webview(
     url: String,
-    onPageLoaded: (String) -> Unit,
     modifier: Modifier = Modifier,
-    overrideLoader: Boolean = false,
+    onPageStarted: ((String) -> Unit) = {},
+    onPageFinished: ((String) -> Unit) = {},
 ) {
     val context = LocalContext.current
 
@@ -116,16 +117,15 @@ fun Webview(
         AndroidView(factory = {
             WebView(context).apply {
                 webViewClient = object : WebViewClient() {
-                    override fun onPageFinished(view: WebView, url: String) {
-                        super.onPageFinished(view, url)
-                        onPageLoaded(url)
+
+                    override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
+                        super.onPageStarted(view, url, favicon)
+                        url?.let(onPageStarted)
                     }
 
-                    override fun shouldOverrideUrlLoading(
-                        view: WebView?,
-                        request: WebResourceRequest?,
-                    ): Boolean {
-                        return overrideLoader
+                    override fun onPageFinished(view: WebView?, url: String?) {
+                        super.onPageFinished(view, url)
+                        url?.let(onPageFinished)
                     }
                 }
                 settings.javaScriptEnabled = true

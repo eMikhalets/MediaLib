@@ -10,18 +10,17 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.emikhalets.medialib.R
 import com.emikhalets.medialib.presentation.core.AppTopBar
-import com.emikhalets.medialib.presentation.core.IconPrimary
+import com.emikhalets.medialib.presentation.core.IconSecondary
+import com.emikhalets.medialib.presentation.core.TextTitle
 import com.emikhalets.medialib.presentation.theme.AppTheme
 
 @Composable
@@ -62,15 +61,14 @@ private fun RowScope.MenuItem(
             .clickable { onItemClick() }
             .padding(32.dp)
     ) {
-        IconPrimary(
+        IconSecondary(
             drawableRes = icon,
             modifier = Modifier
                 .aspectRatio(1f, true)
         )
-        Text(
+        TextTitle(
             text = title,
             fontSize = 18.sp,
-            fontWeight = FontWeight.Medium
         )
     }
 }

@@ -15,6 +15,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import coil.transform.RoundedCornersTransformation
 import com.emikhalets.medialib.R
+import com.emikhalets.medialib.presentation.theme.AppColors.textSecondary
 import com.emikhalets.medialib.utils.px
 
 @Composable
@@ -26,6 +27,19 @@ fun IconPrimary(
         painter = painterResource(id = drawableRes),
         contentDescription = null,
         tint = MaterialTheme.colors.onBackground,
+        modifier = modifier
+    )
+}
+
+@Composable
+fun IconSecondary(
+    @DrawableRes drawableRes: Int,
+    modifier: Modifier = Modifier,
+) {
+    Icon(
+        painter = painterResource(id = drawableRes),
+        contentDescription = null,
+        tint = MaterialTheme.colors.textSecondary,
         modifier = modifier
     )
 }

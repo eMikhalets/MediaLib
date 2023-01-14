@@ -3,8 +3,6 @@ package com.emikhalets.medialib.presentation.screens.searching
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.Button
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -21,6 +19,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.emikhalets.medialib.R
 import com.emikhalets.medialib.presentation.core.AppLoader
 import com.emikhalets.medialib.presentation.core.AppTopBar
+import com.emikhalets.medialib.presentation.core.ButtonPrimary
 import com.emikhalets.medialib.presentation.core.Webview
 import com.emikhalets.medialib.presentation.theme.AppTheme
 import com.emikhalets.medialib.utils.toast
@@ -33,6 +32,7 @@ fun SearchWithImdbScreen(
     val context = LocalContext.current
     val state by viewModel.state.collectAsState()
 
+    var isLoading by remember { mutableStateOf(false) }
     var saveEnabled by remember { mutableStateOf(false) }
 
     LaunchedEffect(state.saved) {
@@ -60,7 +60,7 @@ fun SearchWithImdbScreen(
         }
     }
 
-    if (state.loading) {
+    if (state.loading || isLoading) {
         AppLoader()
     } else {
         SearchWithImdbScreen(
@@ -91,18 +91,17 @@ private fun SearchWithImdbScreen(
         )
         Webview(
             url = link,
-            onPageLoaded = { onUrlLoaded(it) },
+            onPageFinished = onUrlLoaded,
             modifier = Modifier
                 .fillMaxSize()
                 .weight(1f)
         )
-        Button(
+        ButtonPrimary(
+            text = stringResource(R.string.searching_save),
             enabled = saveEnabled,
             onClick = { onSaveClicked() },
             modifier = Modifier.fillMaxWidth()
-        ) {
-            Text(text = stringResource(R.string.searching_save))
-        }
+        )
     }
 }
 
