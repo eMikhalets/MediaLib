@@ -11,8 +11,6 @@ data class MovieRemoteEntity(
     @SerializedName("Writer") val whiter: String? = null,
     @SerializedName("Actors") val actors: String? = null,
     @SerializedName("Plot") val plot: String? = null,
-    @SerializedName("Language") val language: String? = null,
-    @SerializedName("Country") val country: String? = null,
     @SerializedName("Awards") val awards: String? = null,
     @SerializedName("Poster") val poster: String? = null,
     @SerializedName("Ratings") val ratings: List<RatingsRemoteEntity>? = null,

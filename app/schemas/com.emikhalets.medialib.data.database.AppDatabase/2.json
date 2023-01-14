@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 2,
-    "identityHash": "18023ca93249066f516880ea8247fadd",
+    "identityHash": "4f9e661b5c4bd94353a28c3a717e7277",
     "entities": [
       {
         "tableName": "movies_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`movie_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `title` TEXT NOT NULL, `title_ru` TEXT NOT NULL, `overview` TEXT NOT NULL, `poster` TEXT NOT NULL, `year` INTEGER NOT NULL, `save_timestamp` INTEGER NOT NULL, `last_update_timestamp` INTEGER NOT NULL, `comment` TEXT NOT NULL, `rating` INTEGER NOT NULL, `watch_status` TEXT NOT NULL, `genres` TEXT NOT NULL, `ratings` TEXT NOT NULL DEFAULT '')",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`movie_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `title` TEXT NOT NULL, `title_ru` TEXT NOT NULL, `overview` TEXT NOT NULL, `poster` TEXT NOT NULL, `year` INTEGER NOT NULL, `save_timestamp` INTEGER NOT NULL, `last_update_timestamp` INTEGER NOT NULL, `comment` TEXT NOT NULL, `rating` INTEGER NOT NULL, `watch_status` TEXT NOT NULL, `genres` TEXT NOT NULL, `ratings` TEXT NOT NULL DEFAULT '', `runtime` TEXT NOT NULL DEFAULT '', `crew` TEXT NOT NULL DEFAULT '', `awards` TEXT NOT NULL DEFAULT '')",
         "fields": [
           {
             "fieldPath": "id",
@@ -86,6 +86,27 @@
             "affinity": "TEXT",
             "notNull": true,
             "defaultValue": "''"
+          },
+          {
+            "fieldPath": "runtime",
+            "columnName": "runtime",
+            "affinity": "TEXT",
+            "notNull": true,
+            "defaultValue": "''"
+          },
+          {
+            "fieldPath": "crew",
+            "columnName": "crew",
+            "affinity": "TEXT",
+            "notNull": true,
+            "defaultValue": "''"
+          },
+          {
+            "fieldPath": "awards",
+            "columnName": "awards",
+            "affinity": "TEXT",
+            "notNull": true,
+            "defaultValue": "''"
           }
         ],
         "primaryKey": {
@@ -99,7 +120,7 @@
       },
       {
         "tableName": "serials_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`serial_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `title` TEXT NOT NULL, `title_ru` TEXT NOT NULL, `overview` TEXT NOT NULL, `poster` TEXT NOT NULL, `year` INTEGER NOT NULL, `save_timestamp` INTEGER NOT NULL, `last_update_timestamp` INTEGER NOT NULL, `comment` TEXT NOT NULL, `rating` INTEGER NOT NULL, `watch_status` TEXT NOT NULL, `genres` TEXT NOT NULL, `ratings` TEXT NOT NULL DEFAULT '')",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`serial_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `title` TEXT NOT NULL, `title_ru` TEXT NOT NULL, `overview` TEXT NOT NULL, `poster` TEXT NOT NULL, `year` INTEGER NOT NULL, `save_timestamp` INTEGER NOT NULL, `last_update_timestamp` INTEGER NOT NULL, `comment` TEXT NOT NULL, `rating` INTEGER NOT NULL, `watch_status` TEXT NOT NULL, `genres` TEXT NOT NULL, `ratings` TEXT NOT NULL DEFAULT '', `runtime` TEXT NOT NULL DEFAULT '', `crew` TEXT NOT NULL DEFAULT '', `awards` TEXT NOT NULL DEFAULT '')",
         "fields": [
           {
             "fieldPath": "id",
@@ -179,6 +200,27 @@
             "affinity": "TEXT",
             "notNull": true,
             "defaultValue": "''"
+          },
+          {
+            "fieldPath": "runtime",
+            "columnName": "runtime",
+            "affinity": "TEXT",
+            "notNull": true,
+            "defaultValue": "''"
+          },
+          {
+            "fieldPath": "crew",
+            "columnName": "crew",
+            "affinity": "TEXT",
+            "notNull": true,
+            "defaultValue": "''"
+          },
+          {
+            "fieldPath": "awards",
+            "columnName": "awards",
+            "affinity": "TEXT",
+            "notNull": true,
+            "defaultValue": "''"
           }
         ],
         "primaryKey": {
@@ -220,7 +262,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '18023ca93249066f516880ea8247fadd')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '4f9e661b5c4bd94353a28c3a717e7277')"
     ]
   }
 }

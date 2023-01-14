@@ -25,8 +25,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.emikhalets.medialib.R
+import com.emikhalets.medialib.domain.entities.crew.CrewEntity
 import com.emikhalets.medialib.domain.entities.genres.GenreEntity
 import com.emikhalets.medialib.domain.entities.genres.GenreType
+import com.emikhalets.medialib.domain.entities.ratings.CrewType
 import com.emikhalets.medialib.domain.entities.ratings.RatingEntity
 import com.emikhalets.medialib.domain.entities.serials.SerialEntity
 import com.emikhalets.medialib.domain.entities.serials.SerialFullEntity
@@ -165,6 +167,7 @@ private fun DetailsScreen(
                 .fillMaxSize()
                 .padding(horizontal = 8.dp)
                 .verticalScroll(rememberScrollState())
+                .padding(bottom = 8.dp)
         ) {
             Row(
                 modifier = Modifier
@@ -196,10 +199,10 @@ private fun DetailsScreen(
                             modifier = Modifier.fillMaxWidth()
                         )
                     }
-                    val year = entity.serialEntity.year
-                    if (year > 0) {
+                    val info = entity.formatDetailsInfo()
+                    if (info.isNotEmpty()) {
                         TextPrimary(
-                            text = year.toString(),
+                            text = info,
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(top = 8.dp)
@@ -224,6 +227,16 @@ private fun DetailsScreen(
                 content = entity.formatRatings(),
                 modifier = Modifier.padding(top = 8.dp)
             )
+            DetailsSectionList(
+                header = stringResource(R.string.serial_details_crew),
+                content = entity.formatCrew(),
+                modifier = Modifier.padding(top = 8.dp)
+            )
+            DetailsSection(
+                header = stringResource(R.string.serial_details_awards),
+                content = entity.serialEntity.awards,
+                modifier = Modifier.padding(top = 8.dp)
+            )
             DetailsSection(
                 header = stringResource(R.string.serial_details_overview),
                 content = entity.serialEntity.overview,
@@ -232,7 +245,7 @@ private fun DetailsScreen(
             DetailsSection(
                 header = stringResource(R.string.serial_details_comment),
                 content = entity.serialEntity.comment,
-                modifier = Modifier.padding(vertical = 8.dp)
+                modifier = Modifier.padding(top = 8.dp)
             )
         }
     }
@@ -255,7 +268,9 @@ private fun ScreenPreview() {
                     poster = "",
                     saveTimestamp = 0,
                     lastUpdateTimestamp = 0,
-                    comment = getRandomText(20)
+                    comment = getRandomText(20),
+                    runtime = "123 min",
+                    awards = getRandomText(5)
                 ),
                 genres = listOf(
                     GenreEntity("Action", GenreType.SERIAL),
@@ -269,6 +284,11 @@ private fun ScreenPreview() {
                     RatingEntity("IMDB", "123"),
                     RatingEntity("IMDB", "123"),
                     RatingEntity("IMDB", "123")
+                ),
+                crew = listOf(
+                    CrewEntity("Name name name", CrewType.DIRECTOR),
+                    CrewEntity("Name name name", CrewType.WRITER),
+                    CrewEntity("Name name name", CrewType.ACTOR)
                 )
             ),
             poster = "",

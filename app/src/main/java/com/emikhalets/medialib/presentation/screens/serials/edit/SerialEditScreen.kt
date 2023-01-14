@@ -185,6 +185,7 @@ private fun SerialEditScreen(
                 .fillMaxSize()
                 .padding(horizontal = 8.dp)
                 .verticalScroll(rememberScrollState())
+                .padding(bottom = 16.dp)
                 .pointerInput(Unit) { detectTapGestures(onTap = { focus.clearFocus() }) }
         ) {
             AppTextField(
@@ -259,7 +260,7 @@ private fun SerialEditScreen(
                 onClick = onSaveClick,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 32.dp, bottom = 16.dp)
+                    .padding(top = 32.dp)
             )
         }
     }
@@ -282,7 +283,9 @@ private fun ScreenPreview() {
                     poster = "",
                     saveTimestamp = 0,
                     lastUpdateTimestamp = 0,
-                    comment = getRandomText(20)
+                    comment = getRandomText(20),
+                    runtime = "",
+                    awards = ""
                 ),
                 genres = listOf(
                     GenreEntity("Action", GenreType.SERIAL),
@@ -292,7 +295,8 @@ private fun ScreenPreview() {
                     GenreEntity("Action", GenreType.SERIAL),
                     GenreEntity("Drama", GenreType.SERIAL)
                 ),
-                ratings = emptyList()
+                ratings = emptyList(),
+                crew = emptyList()
             ),
             title = "Serial name",
             titleRu = "Serial name rus",

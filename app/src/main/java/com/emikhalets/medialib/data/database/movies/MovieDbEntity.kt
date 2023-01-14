@@ -4,8 +4,10 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
+import com.emikhalets.medialib.data.database.converters.CrewConverters
 import com.emikhalets.medialib.data.database.converters.GenresConverters
 import com.emikhalets.medialib.data.database.converters.RatingsConverters
+import com.emikhalets.medialib.domain.entities.crew.CrewEntity
 import com.emikhalets.medialib.domain.entities.genres.GenreEntity
 import com.emikhalets.medialib.domain.entities.movies.MovieWatchStatus
 import com.emikhalets.medialib.domain.entities.ratings.RatingEntity
@@ -29,4 +31,8 @@ data class MovieDbEntity(
     @ColumnInfo(name = "genres") val genres: List<GenreEntity>,
     @TypeConverters(RatingsConverters::class)
     @ColumnInfo(name = "ratings", defaultValue = "") val ratings: List<RatingEntity>,
+    @ColumnInfo(name = "runtime", defaultValue = "") val runtime: String,
+    @TypeConverters(CrewConverters::class)
+    @ColumnInfo(name = "crew", defaultValue = "") val crew: List<CrewEntity>,
+    @ColumnInfo(name = "awards", defaultValue = "") val awards: String,
 )

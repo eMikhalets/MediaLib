@@ -12,4 +12,6 @@ data class MovieEntity(
     val comment: String,
     val rating: Int,
     val watchStatus: MovieWatchStatus,
+    val runtime: String,
+    val awards: String,
 )

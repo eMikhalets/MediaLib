@@ -3,11 +3,13 @@ package com.emikhalets.medialib.data.mappers
 import com.emikhalets.medialib.data.database.movies.MovieDbEntity
 import com.emikhalets.medialib.data.network.entities.MovieRemoteEntity
 import com.emikhalets.medialib.data.network.entities.RatingsRemoteEntity
+import com.emikhalets.medialib.domain.entities.crew.CrewEntity
 import com.emikhalets.medialib.domain.entities.genres.GenreEntity
 import com.emikhalets.medialib.domain.entities.genres.GenreType
 import com.emikhalets.medialib.domain.entities.movies.MovieEntity
 import com.emikhalets.medialib.domain.entities.movies.MovieFullEntity
 import com.emikhalets.medialib.domain.entities.movies.MovieWatchStatus
+import com.emikhalets.medialib.domain.entities.ratings.CrewType
 import com.emikhalets.medialib.domain.entities.ratings.RatingEntity
 import java.util.*
 
@@ -27,9 +29,12 @@ object MovieMappers {
                 comment = "",
                 rating = 0,
                 watchStatus = MovieWatchStatus.NONE,
+                runtime = entity.runtime ?: "",
+                awards = entity.awards ?: ""
             ),
             genres = mapGenres(entity.genre),
-            ratings = mapRatings(entity.ratings)
+            ratings = mapRatings(entity.ratings),
+            crew = mapCrew(entity.director, entity.whiter, entity.actors)
         )
     }
 
@@ -54,6 +59,27 @@ object MovieMappers {
         }
     }
 
+    private fun mapCrew(director: String?, whiter: String?, actors: String?): List<CrewEntity> {
+        return try {
+            val list = mutableListOf<CrewEntity>()
+            if (!director.isNullOrBlank()) {
+                val arr = director.split(", ")
+                arr.forEach { list.add(CrewEntity(it, CrewType.DIRECTOR)) }
+            }
+            if (!whiter.isNullOrBlank()) {
+                val arr = whiter.split(", ")
+                arr.forEach { list.add(CrewEntity(it, CrewType.WRITER)) }
+            }
+            if (!actors.isNullOrBlank()) {
+                val arr = actors.split(", ")
+                arr.forEach { list.add(CrewEntity(it, CrewType.ACTOR)) }
+            }
+            return list
+        } catch (ex: Exception) {
+            emptyList()
+        }
+    }
+
     fun mapDbEntityToEntity(entity: MovieDbEntity): MovieEntity {
         return MovieEntity(
             id = entity.id,
@@ -67,6 +93,8 @@ object MovieMappers {
             comment = entity.comment,
             rating = entity.rating,
             watchStatus = entity.watchStatus,
+            runtime = entity.runtime,
+            awards = entity.awards
         )
     }
 
@@ -84,7 +112,10 @@ object MovieMappers {
             rating = entity.movieEntity.rating,
             watchStatus = entity.movieEntity.watchStatus,
             genres = entity.genres,
-            ratings = entity.ratings
+            ratings = entity.ratings,
+            runtime = entity.movieEntity.runtime,
+            crew = entity.crew,
+            awards = entity.movieEntity.awards
         )
     }
 }

@@ -17,6 +17,8 @@
     <string name="movies_search_placeholder">Movie name</string>
     <string name="movie_details_comment">Comment</string>
     <string name="movie_details_overview">Overview</string>
+    <string name="movie_details_awards">Awards</string>
+    <string name="movie_details_crew">Crew</string>
     <string name="movie_details_genres">Genres</string>
     <string name="movie_details_ratings">Ratings</string>
     <string name="movie_edit_new">New Movie</string>
@@ -34,6 +36,8 @@
     <string name="serials_search_placeholder">Serial name</string>
     <string name="serial_details_comment">Comment</string>
     <string name="serial_details_overview">Overview</string>
+    <string name="serial_details_awards">Awards</string>
+    <string name="serial_details_crew">Crew</string>
     <string name="serial_details_genres">Genres</string>
     <string name="serial_details_ratings">Ratings</string>
     <string name="serial_edit_new">New Serial</string>
@@ -82,7 +86,9 @@
     <string name="screen_title_movie_details">Movie details</string>
     <string name="screen_title_serial_details">Serial details</string>
 
-
-    <string name="save">Save</string>
+    <!--  Crew types  -->
+    <string name="crew_type_director">Director</string>
+    <string name="crew_type_writer">Writer</string>
+    <string name="crew_type_actor">Actor</string>
 
 </resources>

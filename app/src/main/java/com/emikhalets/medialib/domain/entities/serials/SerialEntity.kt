@@ -12,4 +12,6 @@ data class SerialEntity(
     val comment: String,
     val rating: Int,
     val watchStatus: SerialWatchStatus,
+    val runtime: String,
+    val awards: String,
 )
