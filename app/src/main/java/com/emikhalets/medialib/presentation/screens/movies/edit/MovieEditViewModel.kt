@@ -59,6 +59,7 @@ class MovieEditViewModel @Inject constructor(
         comment: String,
         watchStatus: MovieWatchStatus,
         rating: Int,
+        overview: String,
     ) {
         launchIO {
             val entity = currentState.entity
@@ -71,6 +72,7 @@ class MovieEditViewModel @Inject constructor(
                     comment = comment,
                     watchStatus = watchStatus,
                     rating = rating,
+                    overview = overview
                 )
                 val newEntity = entity.copy(movieEntity = movieEntity, genres = parseGenres(genres))
                 useCase.saveMovie(newEntity)

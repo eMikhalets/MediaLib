@@ -59,6 +59,7 @@ class SerialEditViewModel @Inject constructor(
         comment: String,
         watchStatus: SerialWatchStatus,
         rating: Int,
+        overview: String,
     ) {
         launchIO {
             val entity = currentState.entity
@@ -71,6 +72,7 @@ class SerialEditViewModel @Inject constructor(
                     comment = comment,
                     watchStatus = watchStatus,
                     rating = rating,
+                    overview = overview
                 )
                 val newEntity =
                     entity.copy(serialEntity = serialEntity, genres = parseGenres(genres))
