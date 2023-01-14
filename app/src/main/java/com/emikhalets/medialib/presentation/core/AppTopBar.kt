@@ -3,6 +3,7 @@ package com.emikhalets.medialib.presentation.core
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
@@ -49,6 +50,7 @@ fun AppTopBar(
             actions.forEach { menuItem ->
                 Icon(
                     painter = painterResource(id = menuItem.iconRes),
+                    tint = MaterialTheme.colors.onPrimary,
                     contentDescription = null,
                     modifier = Modifier
                         .clickable { menuItem.onClick() }

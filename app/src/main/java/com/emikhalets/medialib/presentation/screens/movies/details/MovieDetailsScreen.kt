@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -20,7 +19,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -38,6 +37,9 @@ import com.emikhalets.medialib.presentation.core.AppTextFullScreen
 import com.emikhalets.medialib.presentation.core.AppTopBar
 import com.emikhalets.medialib.presentation.core.DetailsSection
 import com.emikhalets.medialib.presentation.core.RatingBar
+import com.emikhalets.medialib.presentation.core.TextPrimary
+import com.emikhalets.medialib.presentation.core.TextSecondary
+import com.emikhalets.medialib.presentation.core.TextTitle
 import com.emikhalets.medialib.presentation.dialogs.DeleteFromDbDialog
 import com.emikhalets.medialib.presentation.dialogs.PosterEditDialog
 import com.emikhalets.medialib.presentation.theme.AppTheme
@@ -143,14 +145,9 @@ private fun DetailsScreen(
     onBackClick: () -> Unit,
     onDeleteClick: () -> Unit,
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(horizontal = 8.dp)
-            .verticalScroll(rememberScrollState())
-    ) {
+    Column(modifier = Modifier.fillMaxSize()) {
         AppTopBar(
-            title = stringResource(id = R.string.screen_title_library),
+            title = stringResource(id = R.string.screen_title_movie_details),
             onNavigateBack = onBackClick,
             actions = listOf(
                 MenuIconEntity(R.drawable.ic_round_edit_24) {
@@ -161,73 +158,73 @@ private fun DetailsScreen(
                 }
             )
         )
-        Row(
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .height(IntrinsicSize.Min)
+                .fillMaxSize()
+                .padding(horizontal = 8.dp)
+                .verticalScroll(rememberScrollState())
         ) {
-            AppAsyncImage(
-                data = poster,
-                height = 150.dp,
-                onClick = { onPosterClick() }
-            )
-            Column(
+            Row(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .weight(1f)
-                    .padding(vertical = 16.dp)
-                    .padding(end = 16.dp)
+                    .fillMaxWidth()
+                    .padding(top = 8.dp)
+                    .height(IntrinsicSize.Min)
             ) {
-                Text(
-                    text = entity.movieEntity.title,
-                    fontSize = 24.sp,
-                    fontWeight = FontWeight.Medium,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp)
+                AppAsyncImage(
+                    data = poster,
+                    height = 170.dp,
+                    onClick = { onPosterClick() }
                 )
-                if (entity.movieEntity.titleRu.isNotEmpty()) {
-                    Text(
-                        text = entity.movieEntity.titleRu,
-                        fontSize = 16.sp,
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .weight(1f)
+                        .padding(8.dp)
+                        .padding(start = 8.dp)
+                ) {
+                    TextTitle(
+                        text = entity.movieEntity.title,
+                        fontSize = 24.sp,
+                        textAlign = TextAlign.Start,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    if (entity.movieEntity.titleRu.isNotEmpty()) {
+                        TextSecondary(
+                            text = entity.movieEntity.titleRu,
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                    }
+                    TextPrimary(
+                        text = entity.movieEntity.year.toString(),
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = 16.dp)
+                            .padding(top = 8.dp)
+                    )
+                    RatingBar(
+                        rating = rating,
+                        onRatingChange = onRatingChange,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 8.dp)
                     )
                 }
-                Text(
-                    text = entity.movieEntity.year.toString(),
-                    fontSize = 18.sp,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(start = 16.dp, end = 16.dp, top = 8.dp)
-                )
-                RatingBar(
-                    rating = rating,
-                    onRatingChange = onRatingChange,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 8.dp)
-                )
             }
+            DetailsSection(
+                header = stringResource(R.string.movie_details_genres),
+                content = entity.formatGenres(),
+                modifier = Modifier.padding(top = 8.dp)
+            )
+            DetailsSection(
+                header = stringResource(R.string.movie_details_overview),
+                content = entity.movieEntity.overview,
+                modifier = Modifier.padding(top = 8.dp)
+            )
+            DetailsSection(
+                header = stringResource(R.string.movie_details_comment),
+                content = entity.movieEntity.comment,
+                modifier = Modifier.padding(vertical = 8.dp)
+            )
         }
-        DetailsSection(
-            header = stringResource(R.string.movie_details_comment),
-            content = entity.movieEntity.comment,
-            modifier = Modifier.padding(top = 8.dp)
-        )
-        Text(
-            text = stringResource(R.string.movie_details_genres, entity.formatGenres()),
-            fontSize = 14.sp,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 8.dp)
-        )
-        DetailsSection(
-            header = stringResource(R.string.movie_details_overview),
-            content = entity.movieEntity.overview,
-            modifier = Modifier.padding(top = 4.dp, bottom = 8.dp)
-        )
     }
 }
 

@@ -28,6 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -139,13 +140,14 @@ fun DetailsSection(
 ) {
     if (content.isNotEmpty()) {
         Column(modifier = modifier.fillMaxWidth()) {
-            Text(
+            TextTitle(
                 text = header,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Medium,
+                textAlign = TextAlign.Start,
                 modifier = Modifier.fillMaxWidth()
             )
-            Text(
+            TextPrimary(
                 text = content,
                 fontSize = 14.sp,
                 modifier = Modifier.fillMaxWidth()

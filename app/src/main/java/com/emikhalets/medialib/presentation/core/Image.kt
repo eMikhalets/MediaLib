@@ -3,7 +3,6 @@ package com.emikhalets.medialib.presentation.core
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -12,7 +11,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import coil.transform.RoundedCornersTransformation
@@ -38,7 +36,7 @@ fun AppAsyncImage(
     height: Dp,
     modifier: Modifier = Modifier,
     corners: Float = 8.px,
-    onClick: () -> Unit = {},
+    onClick: (() -> Unit)? = null,
 ) {
     AsyncImage(
         model = ImageRequest.Builder(LocalContext.current)
@@ -50,9 +48,12 @@ fun AppAsyncImage(
         contentDescription = "",
         placeholder = painterResource(R.drawable.ph_poster),
         contentScale = ContentScale.FillHeight,
-        modifier = modifier
-            .height(height)
-            .padding(8.dp)
-            .clickable { onClick() }
+        modifier = if (onClick != null) {
+            modifier
+                .height(height)
+                .clickable { onClick() }
+        } else {
+            modifier.height(height)
+        }
     )
 }
