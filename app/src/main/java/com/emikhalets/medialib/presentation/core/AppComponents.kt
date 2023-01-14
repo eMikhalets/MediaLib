@@ -4,9 +4,7 @@ import android.annotation.SuppressLint
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,14 +16,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -34,56 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.emikhalets.medialib.R
-import com.emikhalets.medialib.presentation.theme.AppColors.textSecondary
 import com.emikhalets.medialib.presentation.theme.AppTheme
-
-@Composable
-fun PickerBox(
-    text: String,
-    activeText: Boolean,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-    @DrawableRes trailingIcon: Int? = null,
-) {
-    val textColor = if (activeText) {
-        MaterialTheme.colors.onBackground
-    } else {
-        MaterialTheme.colors.textSecondary
-    }
-
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = modifier
-            .width(IntrinsicSize.Max)
-            .height(56.dp)
-            .background(
-                color = MaterialTheme.colors.background,
-                shape = MaterialTheme.shapes.small
-            )
-            .border(
-                width = 1.dp,
-                color = MaterialTheme.colors.textSecondary,
-                shape = MaterialTheme.shapes.small
-            )
-            .clip(MaterialTheme.shapes.small)
-            .clickable { onClick() }
-    ) {
-        Text(
-            text = text,
-            color = textColor,
-            fontSize = 16.sp,
-            modifier = Modifier
-                .padding(8.dp)
-                .weight(1f)
-        )
-        if (trailingIcon != null) {
-            IconPrimary(
-                drawableRes = trailingIcon,
-                modifier = Modifier.padding(8.dp)
-            )
-        }
-    }
-}
 
 @Composable
 fun SearchBox(
@@ -186,19 +132,6 @@ fun Webview(
                 loadUrl(url)
             }
         })
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun PickerBoxPreview() {
-    AppTheme {
-        PickerBox(
-            text = "Test text",
-            activeText = true,
-            onClick = {},
-            modifier = Modifier.padding(16.dp)
-        )
     }
 }
 

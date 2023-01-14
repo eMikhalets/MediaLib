@@ -1,17 +1,13 @@
 package com.emikhalets.medialib.presentation.core
 
 import androidx.annotation.DrawableRes
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.ContentAlpha
 import androidx.compose.material.Icon
-import androidx.compose.material.LocalContentAlpha
-import androidx.compose.material.LocalContentColor
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
@@ -36,10 +32,12 @@ fun AppTextField(
     modifier: Modifier = Modifier,
     label: String? = null,
     @DrawableRes leadingIconRes: Int? = null,
+    @DrawableRes trailingIconRes: Int? = null,
     placeholder: String? = null,
     maxLines: Int = 1,
     error: String? = null,
     enabled: Boolean = true,
+    readOnly: Boolean = false,
     keyboardType: KeyboardType = KeyboardType.Text,
 ) {
     Column(modifier = modifier.width(IntrinsicSize.Max)) {
@@ -52,11 +50,15 @@ fun AppTextField(
             leadingIcon = if (leadingIconRes != null) {
                 { Icon(painter = painterResource(leadingIconRes), contentDescription = null) }
             } else null,
+            trailingIcon = if (trailingIconRes != null) {
+                { Icon(painter = painterResource(trailingIconRes), contentDescription = null) }
+            } else null,
             placeholder = if (placeholder != null) {
                 { Text(placeholder) }
             } else null,
             maxLines = maxLines,
             enabled = enabled,
+            readOnly = readOnly,
             isError = error != null,
             keyboardOptions = KeyboardOptions(
                 keyboardType = keyboardType,
@@ -96,38 +98,6 @@ fun AppTextField(
             )
         }
     }
-}
-
-// TODO: refactor as simple text with border
-@Composable
-fun AppTextFieldDate(
-    value: String,
-    label: String? = null,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    OutlinedTextField(
-        value = if (value == "0") "" else value,
-        onValueChange = {},
-        label = if (!label.isNullOrEmpty()) {
-            { Text(label) }
-        } else null,
-        maxLines = 1,
-        readOnly = true,
-        enabled = false,
-        keyboardOptions = KeyboardOptions(
-            keyboardType = KeyboardType.Text,
-            capitalization = KeyboardCapitalization.Sentences
-        ),
-        colors = TextFieldDefaults.outlinedTextFieldColors(
-            backgroundColor = MaterialTheme.colors.background,
-            disabledTextColor = LocalContentColor.current.copy(LocalContentAlpha.current),
-            disabledLabelColor = MaterialTheme.colors.onSurface.copy(ContentAlpha.medium)
-        ),
-        modifier = modifier
-            .fillMaxWidth()
-            .clickable { onClick() }
-    )
 }
 
 @Preview(showBackground = true)

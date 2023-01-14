@@ -10,4 +10,15 @@ data class MovieFullEntity(
     fun formatGenres(): String {
         return genres.joinToString(separator = ", ") { it.name }
     }
+
+    fun formatListItemInfo(): String {
+        return buildString {
+            if (movieEntity.year > 0) {
+                append(movieEntity.year.toString())
+            }
+            if (genres.isNotEmpty()) {
+                append("  -  ${genres.joinToString { it.name }}")
+            }
+        }
+    }
 }

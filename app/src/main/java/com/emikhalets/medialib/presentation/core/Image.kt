@@ -32,7 +32,7 @@ fun IconPrimary(
 
 @Composable
 fun AppAsyncImage(
-    data: String,
+    url: String,
     height: Dp,
     modifier: Modifier = Modifier,
     corners: Float = 8.px,
@@ -40,7 +40,7 @@ fun AppAsyncImage(
 ) {
     AsyncImage(
         model = ImageRequest.Builder(LocalContext.current)
-            .data(data)
+            .data(url)
             .crossfade(true)
             .transformations(RoundedCornersTransformation(corners))
             .error(R.drawable.ph_poster)

@@ -24,6 +24,7 @@
     <string name="movie_edit_genres">Genres</string>
     <string name="movie_edit_year">Year</string>
     <string name="movie_edit_comment">Comment</string>
+    <string name="movie_edit_watch_status">Watch status</string>
     <string name="movie_edit_overview">Overview</string>
     <string name="movie_edit_save">Save</string>
 
@@ -63,7 +64,6 @@
     <string name="screen_title_searching">Searching</string>
     <string name="screen_title_movies">Movies</string>
     <string name="screen_title_movie_details">Movie details</string>
-    <string name="screen_title_movie_edit">Movie edit</string>
     <string name="screen_title_serials">Serials</string>
 
 

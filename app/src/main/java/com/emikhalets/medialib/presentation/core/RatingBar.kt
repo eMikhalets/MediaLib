@@ -8,14 +8,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Star
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.emikhalets.medialib.presentation.theme.AppColors.textSecondary
 import com.emikhalets.medialib.presentation.theme.AppTheme
 
 @Composable
@@ -34,7 +35,11 @@ fun RatingBar(
             val rate = it + 1
             Icon(
                 imageVector = Icons.Rounded.Star,
-                tint = if (rating >= rate) Color.Black else Color.Gray,
+                tint = if (rating >= rate) {
+                    MaterialTheme.colors.onBackground
+                } else {
+                    MaterialTheme.colors.textSecondary
+                },
                 contentDescription = "",
                 modifier = if (onRatingChange != null) {
                     Modifier

@@ -1,8 +1,11 @@
 package com.emikhalets.medialib.presentation.core
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.Text
@@ -23,19 +26,24 @@ fun AppSpinner(
     items: List<String>,
     onSelect: (String) -> Unit,
     modifier: Modifier = Modifier,
+    label: String? = null,
 ) {
     var expanded by remember { mutableStateOf(false) }
 
-    Box(modifier = modifier) {
-        PickerBox(
-            text = selectedItem,
-            activeText = true,
-            onClick = { expanded = !expanded },
-            trailingIcon = if (expanded) {
+    Box(modifier = modifier.width(IntrinsicSize.Max)) {
+        AppTextField(
+            value = selectedItem,
+            onValueChange = {},
+            readOnly = true,
+            label = label,
+            trailingIconRes = if (expanded) {
                 R.drawable.ic_round_keyboard_arrow_up_24
             } else {
                 R.drawable.ic_round_keyboard_arrow_down_24
-            }
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable { expanded = !expanded }
         )
         DropdownMenu(
             expanded = expanded,

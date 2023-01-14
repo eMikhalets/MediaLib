@@ -171,7 +171,7 @@ private fun DetailsScreen(
                     .height(IntrinsicSize.Min)
             ) {
                 AppAsyncImage(
-                    data = poster,
+                    url = poster,
                     height = 170.dp,
                     onClick = { onPosterClick() }
                 )
