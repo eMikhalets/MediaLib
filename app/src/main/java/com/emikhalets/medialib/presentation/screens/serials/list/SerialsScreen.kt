@@ -225,7 +225,9 @@ private fun SerialItemPreview() {
                     poster = "",
                     saveTimestamp = 0,
                     lastUpdateTimestamp = 0,
-                    comment = ""
+                    comment = "",
+                    runtime = "",
+                    awards = ""
                 ),
                 genres = listOf(
                     GenreEntity("Action", GenreType.SERIAL),
@@ -234,7 +236,9 @@ private fun SerialItemPreview() {
                     GenreEntity("Drama", GenreType.SERIAL),
                     GenreEntity("Action", GenreType.SERIAL),
                     GenreEntity("Drama", GenreType.SERIAL)
-                )
+                ),
+                ratings = emptyList(),
+                crew = emptyList()
             )
         )
     }

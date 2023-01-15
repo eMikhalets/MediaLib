@@ -2,6 +2,7 @@ package com.emikhalets.medialib.domain.use_case.serials
 
 import com.emikhalets.medialib.domain.entities.serials.SerialFullEntity
 import com.emikhalets.medialib.domain.repository.DatabaseRepository
+import java.util.*
 import javax.inject.Inject
 
 class SerialEditUseCase @Inject constructor(
@@ -16,7 +17,10 @@ class SerialEditUseCase @Inject constructor(
         return if (entity.serialEntity.id == 0L) {
             databaseRepository.insertSerial(entity)
         } else {
-            databaseRepository.updateSerial(entity)
+            val newMovieEntity = entity.serialEntity
+                .copy(lastUpdateTimestamp = Calendar.getInstance().timeInMillis)
+            val newEntity = entity.copy(serialEntity = newMovieEntity)
+            databaseRepository.updateSerial(newEntity)
         }
     }
 }

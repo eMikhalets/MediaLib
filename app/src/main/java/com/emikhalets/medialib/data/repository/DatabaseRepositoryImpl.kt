@@ -1,8 +1,10 @@
 package com.emikhalets.medialib.data.repository
 
+import com.emikhalets.medialib.data.database.crew.CrewDao
 import com.emikhalets.medialib.data.database.genres.GenresDao
 import com.emikhalets.medialib.data.database.movies.MoviesDao
 import com.emikhalets.medialib.data.database.serials.SerialsDao
+import com.emikhalets.medialib.data.mappers.CrewMappers
 import com.emikhalets.medialib.data.mappers.GenresMappers
 import com.emikhalets.medialib.data.mappers.MovieMappers
 import com.emikhalets.medialib.data.mappers.SerialMappers
@@ -19,6 +21,7 @@ class DatabaseRepositoryImpl @Inject constructor(
     private val moviesDao: MoviesDao,
     private val serialsDao: SerialsDao,
     private val genresDao: GenresDao,
+    private val crewDao: CrewDao,
 ) : DatabaseRepository {
 
     // Movies
@@ -28,9 +31,12 @@ class DatabaseRepositoryImpl @Inject constructor(
             val flow = moviesDao.getAllItemsFlowOrderByLastUpdate()
             flow.map { list ->
                 list.map { movieDb ->
-                    val movieEntity = MovieMappers.mapDbEntityToEntity(movieDb)
-                    val genres = getGenres(movieDb.genres)
-                    MovieFullEntity(movieEntity, genres)
+                    MovieFullEntity(
+                        movieEntity = MovieMappers.mapDbEntityToEntity(movieDb),
+                        genres = movieDb.genres,
+                        ratings = movieDb.ratings,
+                        crew = movieDb.crew
+                    )
                 }
             }
         }
@@ -40,9 +46,12 @@ class DatabaseRepositoryImpl @Inject constructor(
         return execute {
             val flow = moviesDao.getItemFlow(movieId)
             flow.map { movieDb ->
-                val movieEntity = MovieMappers.mapDbEntityToEntity(movieDb)
-                val genres = getGenres(movieDb.genres)
-                MovieFullEntity(movieEntity, genres)
+                MovieFullEntity(
+                    movieEntity = MovieMappers.mapDbEntityToEntity(movieDb),
+                    genres = movieDb.genres,
+                    ratings = movieDb.ratings,
+                    crew = movieDb.crew
+                )
             }
         }
     }
@@ -50,9 +59,12 @@ class DatabaseRepositoryImpl @Inject constructor(
     override suspend fun getMovieById(movieId: Long): Result<MovieFullEntity> {
         return execute {
             val movieDb = moviesDao.getItem(movieId)
-            val movieEntity = MovieMappers.mapDbEntityToEntity(movieDb)
-            val genres = getGenres(movieDb.genres)
-            MovieFullEntity(movieEntity, genres)
+            MovieFullEntity(
+                movieEntity = MovieMappers.mapDbEntityToEntity(movieDb),
+                genres = movieDb.genres,
+                ratings = movieDb.ratings,
+                crew = movieDb.crew
+            )
         }
     }
 
@@ -60,6 +72,8 @@ class DatabaseRepositoryImpl @Inject constructor(
         return execute {
             val genresDb = GenresMappers.mapListToDbList(entity.genres)
             genresDao.insert(genresDb)
+            val crewDb = CrewMappers.mapListToDbList(entity.crew)
+            crewDao.insert(crewDb)
             val movieDb = MovieMappers.mapEntityToDbEntity(entity)
             moviesDao.insert(movieDb)
         }
@@ -69,6 +83,8 @@ class DatabaseRepositoryImpl @Inject constructor(
         return execute {
             val genresDb = GenresMappers.mapListToDbList(entity.genres)
             genresDao.insert(genresDb)
+            val crewDb = CrewMappers.mapListToDbList(entity.crew)
+            crewDao.insert(crewDb)
             val movieDb = MovieMappers.mapEntityToDbEntity(entity)
             moviesDao.update(movieDb)
         }
@@ -88,9 +104,12 @@ class DatabaseRepositoryImpl @Inject constructor(
             val flow = serialsDao.getAllItemsFlowOrderByLastUpdate()
             flow.map { list ->
                 list.map { serialDb ->
-                    val serialEntity = SerialMappers.mapDbEntityToEntity(serialDb)
-                    val genres = getGenres(serialDb.genres)
-                    SerialFullEntity(serialEntity, genres)
+                    SerialFullEntity(
+                        serialEntity = SerialMappers.mapDbEntityToEntity(serialDb),
+                        genres = serialDb.genres,
+                        ratings = serialDb.ratings,
+                        crew = serialDb.crew
+                    )
                 }
             }
         }
@@ -100,9 +119,12 @@ class DatabaseRepositoryImpl @Inject constructor(
         return execute {
             val flow = serialsDao.getItemFlow(serialId)
             flow.map { serialDb ->
-                val serialEntity = SerialMappers.mapDbEntityToEntity(serialDb)
-                val genres = getGenres(serialDb.genres)
-                SerialFullEntity(serialEntity, genres)
+                SerialFullEntity(
+                    serialEntity = SerialMappers.mapDbEntityToEntity(serialDb),
+                    genres = serialDb.genres,
+                    ratings = serialDb.ratings,
+                    crew = serialDb.crew
+                )
             }
         }
     }
@@ -110,9 +132,12 @@ class DatabaseRepositoryImpl @Inject constructor(
     override suspend fun getSerialById(serialId: Long): Result<SerialFullEntity> {
         return execute {
             val serialDb = serialsDao.getItem(serialId)
-            val serialEntity = SerialMappers.mapDbEntityToEntity(serialDb)
-            val genres = getGenres(serialDb.genres)
-            SerialFullEntity(serialEntity, genres)
+            SerialFullEntity(
+                serialEntity = SerialMappers.mapDbEntityToEntity(serialDb),
+                genres = serialDb.genres,
+                ratings = serialDb.ratings,
+                crew = serialDb.crew
+            )
         }
     }
 
@@ -120,6 +145,8 @@ class DatabaseRepositoryImpl @Inject constructor(
         return execute {
             val genresDb = GenresMappers.mapListToDbList(entity.genres)
             genresDao.insert(genresDb)
+            val crewDb = CrewMappers.mapListToDbList(entity.crew)
+            crewDao.insert(crewDb)
             val serialDb = SerialMappers.mapEntityToDbEntity(entity)
             serialsDao.insert(serialDb)
         }
@@ -129,6 +156,8 @@ class DatabaseRepositoryImpl @Inject constructor(
         return execute {
             val genresDb = GenresMappers.mapListToDbList(entity.genres)
             genresDao.insert(genresDb)
+            val crewDb = CrewMappers.mapListToDbList(entity.crew)
+            crewDao.insert(crewDb)
             val serialDb = SerialMappers.mapEntityToDbEntity(entity)
             serialsDao.update(serialDb)
         }

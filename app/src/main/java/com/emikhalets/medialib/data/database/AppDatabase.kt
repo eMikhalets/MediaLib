@@ -1,10 +1,18 @@
 package com.emikhalets.medialib.data.database
 
 import android.content.Context
+import androidx.room.AutoMigration
 import androidx.room.Database
+import androidx.room.DeleteColumn
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import androidx.room.migration.AutoMigrationSpec
+import com.emikhalets.medialib.data.database.converters.CrewConverters
+import com.emikhalets.medialib.data.database.converters.GenresConverters
+import com.emikhalets.medialib.data.database.converters.RatingsConverters
+import com.emikhalets.medialib.data.database.crew.CrewDao
+import com.emikhalets.medialib.data.database.crew.CrewDbEntity
 import com.emikhalets.medialib.data.database.genres.GenreDbEntity
 import com.emikhalets.medialib.data.database.genres.GenresDao
 import com.emikhalets.medialib.data.database.movies.MovieDbEntity
@@ -17,17 +25,21 @@ import com.emikhalets.medialib.data.database.serials.SerialsDao
         MovieDbEntity::class,
         SerialDbEntity::class,
         GenreDbEntity::class,
+        CrewDbEntity::class,
     ],
-    autoMigrations = [],
-    version = 1,
+    autoMigrations = [
+        AutoMigration(from = 1, to = 2, spec = MigrationFrom1To2::class)
+    ],
+    version = 2,
     exportSchema = true
 )
-@TypeConverters(GenresConverters::class)
+@TypeConverters(GenresConverters::class, RatingsConverters::class, CrewConverters::class)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract val moviesDao: MoviesDao
     abstract val serialsDao: SerialsDao
     abstract val genresDao: GenresDao
+    abstract val crewDao: CrewDao
 
     companion object {
 
@@ -42,3 +54,7 @@ abstract class AppDatabase : RoomDatabase() {
             Room.databaseBuilder(context, AppDatabase::class.java, "MediaLib.db").build()
     }
 }
+
+@DeleteColumn(tableName = "movies_table", columnName = "imdb_rating")
+@DeleteColumn(tableName = "serials_table", columnName = "imdb_rating")
+class MigrationFrom1To2 : AutoMigrationSpec

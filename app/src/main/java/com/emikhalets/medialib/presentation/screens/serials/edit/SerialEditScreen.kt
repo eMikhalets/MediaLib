@@ -60,6 +60,7 @@ fun SerialEditScreen(
     var comment by remember { mutableStateOf("") }
     var watchStatus by remember { mutableStateOf(SerialWatchStatus.NONE) }
     var rating by remember { mutableStateOf(0) }
+    var overview by remember { mutableStateOf("") }
     var showYearDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
@@ -76,6 +77,7 @@ fun SerialEditScreen(
             comment = entity.serialEntity.comment
             watchStatus = entity.serialEntity.watchStatus
             rating = entity.serialEntity.rating
+            overview = entity.serialEntity.overview
         }
     }
 
@@ -109,12 +111,14 @@ fun SerialEditScreen(
                 year = year,
                 comment = comment,
                 rating = rating,
+                overview = overview,
                 watchStatus = watchStatus,
                 onTitleChanged = { title = it },
                 onTitleRuChanged = { titleRu = it },
                 onGenresChanged = { genres = it },
                 onCommentChanged = { comment = it },
                 onRatingChanged = { rating = it },
+                onOverviewChanged = { overview = it },
                 onWatchStatusChanged = { watchStatus = SerialWatchStatus.getStatus(context, it) },
                 onYearClick = { showYearDialog = true },
                 onSaveClick = {
@@ -125,7 +129,8 @@ fun SerialEditScreen(
                         year = year,
                         comment = comment,
                         watchStatus = watchStatus,
-                        rating = rating
+                        rating = rating,
+                        overview = overview
                     )
                 },
                 onBackClick = navigateBack
@@ -154,12 +159,14 @@ private fun SerialEditScreen(
     year: Int,
     comment: String,
     rating: Int,
+    overview: String,
     watchStatus: SerialWatchStatus,
     onTitleChanged: (String) -> Unit,
     onTitleRuChanged: (String) -> Unit,
     onGenresChanged: (String) -> Unit,
     onCommentChanged: (String) -> Unit,
     onRatingChanged: (Int) -> Unit,
+    onOverviewChanged: (String) -> Unit,
     onWatchStatusChanged: (String) -> Unit,
     onYearClick: () -> Unit,
     onSaveClick: () -> Unit,
@@ -178,6 +185,7 @@ private fun SerialEditScreen(
                 .fillMaxSize()
                 .padding(horizontal = 8.dp)
                 .verticalScroll(rememberScrollState())
+                .padding(bottom = 16.dp)
                 .pointerInput(Unit) { detectTapGestures(onTap = { focus.clearFocus() }) }
         ) {
             AppTextField(
@@ -215,20 +223,29 @@ private fun SerialEditScreen(
                     .padding(top = 8.dp)
                     .clickable { onYearClick() }
             )
-            AppTextField(
-                value = comment,
-                onValueChange = onCommentChanged,
-                label = stringResource(R.string.serial_edit_comment),
-                maxLines = 5,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 8.dp)
-            )
             AppSpinner(
                 selectedItem = watchStatus.getText(),
                 items = SerialWatchStatus.getTextList(),
                 label = stringResource(R.string.serial_edit_watch_status),
                 onSelect = { onWatchStatusChanged(it) },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 8.dp)
+            )
+            AppTextField(
+                value = overview,
+                onValueChange = onOverviewChanged,
+                label = stringResource(R.string.serial_edit_overview),
+                maxLines = 5,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 8.dp)
+            )
+            AppTextField(
+                value = comment,
+                onValueChange = onCommentChanged,
+                label = stringResource(R.string.serial_edit_comment),
+                maxLines = 5,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 8.dp)
@@ -243,7 +260,7 @@ private fun SerialEditScreen(
                 onClick = onSaveClick,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 32.dp, bottom = 16.dp)
+                    .padding(top = 32.dp)
             )
         }
     }
@@ -266,7 +283,9 @@ private fun ScreenPreview() {
                     poster = "",
                     saveTimestamp = 0,
                     lastUpdateTimestamp = 0,
-                    comment = getRandomText(20)
+                    comment = getRandomText(20),
+                    runtime = "",
+                    awards = ""
                 ),
                 genres = listOf(
                     GenreEntity("Action", GenreType.SERIAL),
@@ -275,7 +294,9 @@ private fun ScreenPreview() {
                     GenreEntity("Drama", GenreType.SERIAL),
                     GenreEntity("Action", GenreType.SERIAL),
                     GenreEntity("Drama", GenreType.SERIAL)
-                )
+                ),
+                ratings = emptyList(),
+                crew = emptyList()
             ),
             title = "Serial name",
             titleRu = "Serial name rus",
@@ -283,12 +304,14 @@ private fun ScreenPreview() {
             year = 2015,
             comment = getRandomText(20),
             rating = 4,
+            overview = getRandomText(20),
             watchStatus = SerialWatchStatus.WATCH,
             onTitleChanged = {},
             onTitleRuChanged = {},
             onGenresChanged = {},
             onCommentChanged = {},
             onRatingChanged = {},
+            onOverviewChanged = {},
             onWatchStatusChanged = {},
             onYearClick = {},
             onSaveClick = {},

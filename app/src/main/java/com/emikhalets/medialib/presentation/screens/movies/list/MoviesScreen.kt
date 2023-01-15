@@ -225,7 +225,9 @@ private fun MovieItemPreview() {
                     poster = "",
                     saveTimestamp = 0,
                     lastUpdateTimestamp = 0,
-                    comment = ""
+                    comment = "",
+                    runtime = "",
+                    awards = ""
                 ),
                 genres = listOf(
                     GenreEntity("Action", GenreType.MOVIE),
@@ -234,7 +236,9 @@ private fun MovieItemPreview() {
                     GenreEntity("Drama", GenreType.MOVIE),
                     GenreEntity("Action", GenreType.MOVIE),
                     GenreEntity("Drama", GenreType.MOVIE)
-                )
+                ),
+                ratings = emptyList(),
+                crew = emptyList()
             )
         )
     }
