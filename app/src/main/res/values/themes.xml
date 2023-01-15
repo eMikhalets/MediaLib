@@ -4,4 +4,9 @@
     <style name="Theme.MediaLib" parent="android:Theme.Material.Light.NoActionBar">
         <item name="android:statusBarColor">@color/purple_700</item>
     </style>
+
+    <style name="DatePickerSpinnerStyle" parent="@android:style/Widget.DeviceDefault.DatePicker">
+        <item name="android:textColorPrimary">@color/purple_700</item>
+        <item name="android:datePickerMode">spinner</item>
+    </style>
 </resources>

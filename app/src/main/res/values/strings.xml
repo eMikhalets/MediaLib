@@ -1,3 +1,94 @@
 <resources>
+    <!--  General  -->
     <string name="app_name">MediaLib</string>
+
+    <!--  Errors  -->
+    <string name="error_internal">Internal error</string>
+    <string name="error_save_entity_null">Error: saving entity is null</string>
+    <string name="error_delete_entity_null">Error: deleting entity is null</string>
+    <string name="error_parsing_imdb_id">Error while parsing imdb id</string>
+
+    <!--  Library  -->
+    <string name="library_menu_item_movies">Movies</string>
+    <string name="library_menu_item_serials">Serials</string>
+
+    <!--  Movies  -->
+    <string name="movies_empty_list">Movies list is empty</string>
+    <string name="movies_search_placeholder">Movie name</string>
+    <string name="movie_details_comment">Comment</string>
+    <string name="movie_details_overview">Overview</string>
+    <string name="movie_details_awards">Awards</string>
+    <string name="movie_details_crew">Crew</string>
+    <string name="movie_details_genres">Genres</string>
+    <string name="movie_details_ratings">Ratings</string>
+    <string name="movie_edit_new">New Movie</string>
+    <string name="movie_edit_title">Title</string>
+    <string name="movie_edit_title_ru">Title russian</string>
+    <string name="movie_edit_genres">Genres</string>
+    <string name="movie_edit_year">Year</string>
+    <string name="movie_edit_comment">Comment</string>
+    <string name="movie_edit_watch_status">Watch status</string>
+    <string name="movie_edit_overview">Overview</string>
+    <string name="movie_edit_save">Save</string>
+
+    <!--  Serials  -->
+    <string name="serials_empty_list">Serials list is empty</string>
+    <string name="serials_search_placeholder">Serial name</string>
+    <string name="serial_details_comment">Comment</string>
+    <string name="serial_details_overview">Overview</string>
+    <string name="serial_details_awards">Awards</string>
+    <string name="serial_details_crew">Crew</string>
+    <string name="serial_details_genres">Genres</string>
+    <string name="serial_details_ratings">Ratings</string>
+    <string name="serial_edit_new">New Serial</string>
+    <string name="serial_edit_title">Title</string>
+    <string name="serial_edit_title_ru">Title russian</string>
+    <string name="serial_edit_genres">Genres</string>
+    <string name="serial_edit_year">Year</string>
+    <string name="serial_edit_comment">Comment</string>
+    <string name="serial_edit_watch_status">Watch status</string>
+    <string name="serial_edit_overview">Overview</string>
+    <string name="serial_edit_save">Save</string>
+
+    <!--  Searching  -->
+    <string name="searching_title">Searching</string>
+    <string name="searching_menu_item_imdb">Search with IMDB</string>
+    <string name="searching_imdb_link">https://www.imdb.com/</string>
+    <string name="searching_save_movie">Save movie</string>
+    <string name="searching_save_serial">Save serial</string>
+
+    <!--  Movie Watch Status  -->
+    <string name="movie_status_watched">Watched</string>
+    <string name="movie_status_watch_again">Watch again</string>
+    <string name="movie_status_watch">Watch</string>
+    <string name="movie_status_dropped">Dropped</string>
+    <string name="movie_status_none">Not selected</string>
+
+    <!--  Serial Watch Status  -->
+    <string name="serial_status_watched">Watched</string>
+    <string name="serial_status_watch_again">Watch again</string>
+    <string name="serial_status_watch">Watch</string>
+    <string name="serial_status_dropped">Dropped</string>
+    <string name="serial_status_none">Not selected</string>
+
+    <!--  Dialogs  -->
+    <string name="dialog_delete_entity_title">Delete from local library?</string>
+    <string name="dialog_edit_poster_url_title">Edit poster URL</string>
+    <string name="dialog_cancel">Cancel</string>
+    <string name="dialog_delete">Delete</string>
+    <string name="dialog_save">Save</string>
+
+    <!--  Screen titles  -->
+    <string name="screen_title_library">Library</string>
+    <string name="screen_title_searching">Searching</string>
+    <string name="screen_title_movies">Movies</string>
+    <string name="screen_title_serials">Serials</string>
+    <string name="screen_title_movie_details">Movie details</string>
+    <string name="screen_title_serial_details">Serial details</string>
+
+    <!--  Crew types  -->
+    <string name="crew_type_director">Director</string>
+    <string name="crew_type_writer">Writer</string>
+    <string name="crew_type_actor">Actor</string>
+
 </resources>
